@@ -29,6 +29,9 @@ export function ContasReceber() {
   const [period, setPeriod] = usePersistentFilter<PeriodKey>('filter.receber.period', 'mes_atual');
   const [customStart, setCustomStart] = usePersistentFilter<string>('filter.receber.customStart', '');
   const [customEnd, setCustomEnd] = usePersistentFilter<string>('filter.receber.customEnd', '');
+  const [editId, setEditId] = useState<string | null>(null);
+  const [editData, setEditData] = useState<Partial<FinTransaction>>({});
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -74,6 +77,49 @@ export function ContasReceber() {
     return Array.from(set);
   }, [transactions]);
 
+  const startEdit = (tx: FinTransaction) => {
+    setEditId(tx.id);
+    setEditData({ ...tx });
+  };
+
+  const cancelEdit = () => {
+    setEditId(null);
+    setEditData({});
+  };
+
+  const handleSave = async () => {
+    if (!editId) return;
+    setSaving(true);
+    const { error: updateError } = await supabase
+      .from('fin_transactions')
+      .update({
+        description: editData.description,
+        category: editData.category,
+        date: editData.date,
+        value: editData.value,
+        is_paid: editData.is_paid,
+      })
+      .eq('id', editId);
+    if (updateError) {
+      setError(updateError.message);
+    } else {
+      setTransactions((prev) =>
+        prev.map((tx) => (tx.id === editId ? ({ ...tx, ...editData } as FinTransaction) : tx))
+      );
+      cancelEdit();
+    }
+    setSaving(false);
+  };
+
+  const markPaid = async (tx: FinTransaction) => {
+    const { error: updateError } = await supabase.from('fin_transactions').update({ is_paid: true }).eq('id', tx.id);
+    if (updateError) {
+      setError(updateError.message);
+    } else {
+      setTransactions((prev) => prev.map((t) => (t.id === tx.id ? { ...t, is_paid: true } : t)));
+    }
+  };
+
   return (
     <section className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
@@ -106,7 +152,7 @@ export function ContasReceber() {
           </select>
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-semibold text-slate-600">Período</label>
+          <label className="text-xs font-semibold text-slate-600">Periodo</label>
           <select
             value={period}
             onChange={(event) => setPeriod(event.target.value as PeriodKey)}
@@ -151,14 +197,96 @@ export function ContasReceber() {
           <span className="text-lg font-bold text-primary">{formatCurrency(total)}</span>
         </div>
         <div className="divide-y divide-slate-100">
-          {filtered.map((tx) => (
-            <div key={tx.id} className="grid grid-cols-1 md:grid-cols-4 gap-3 p-4 text-sm">
-              <div className="font-semibold text-navy">{tx.description || 'Sem descrição'}</div>
-              <div className="text-slate-500">{tx.category || 'Sem categoria'}</div>
-              <div className="text-slate-500">{formatDate(tx.date)}</div>
-              <div className="font-semibold text-navy">{formatCurrency(tx.value)}</div>
-            </div>
-          ))}
+          {filtered.map((tx) => {
+            const isEditing = editId === tx.id;
+            const data = isEditing ? editData : tx;
+            return (
+              <div key={tx.id} className="grid grid-cols-1 md:grid-cols-5 gap-3 p-4 text-sm items-center">
+                <div className="font-semibold text-navy">
+                  {isEditing ? (
+                    <input
+                      className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                      value={data.description || ''}
+                      onChange={(e) => setEditData((prev) => ({ ...prev, description: e.target.value }))}
+                    />
+                  ) : (
+                    tx.description || 'Sem descricao'
+                  )}
+                </div>
+                <div className="text-slate-500">
+                  {isEditing ? (
+                    <input
+                      className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                      value={data.category || ''}
+                      onChange={(e) => setEditData((prev) => ({ ...prev, category: e.target.value }))}
+                    />
+                  ) : (
+                    tx.category || 'Sem categoria'
+                  )}
+                </div>
+                <div className="text-slate-500">
+                  {isEditing ? (
+                    <input
+                      type="date"
+                      className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                      value={(data.date || '').slice(0, 10)}
+                      onChange={(e) => setEditData((prev) => ({ ...prev, date: e.target.value }))}
+                    />
+                  ) : (
+                    formatDate(tx.date)
+                  )}
+                </div>
+                <div className="font-semibold text-navy">
+                  {isEditing ? (
+                    <input
+                      type="number"
+                      className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                      value={data.value ?? 0}
+                      onChange={(e) => setEditData((prev) => ({ ...prev, value: Number(e.target.value) }))}
+                    />
+                  ) : (
+                    formatCurrency(tx.value)
+                  )}
+                </div>
+                <div className="flex gap-2 justify-end">
+                  {isEditing ? (
+                    <>
+                      <button
+                        onClick={handleSave}
+                        disabled={saving}
+                        className="px-3 py-2 rounded-lg bg-primary text-white text-xs font-semibold disabled:opacity-60"
+                      >
+                        Salvar
+                      </button>
+                      <button
+                        onClick={cancelEdit}
+                        className="px-3 py-2 rounded-lg border border-slate-200 text-xs font-semibold"
+                      >
+                        Cancelar
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => startEdit(tx)}
+                        className="px-3 py-2 rounded-lg border border-slate-200 text-xs font-semibold"
+                      >
+                        Editar
+                      </button>
+                      {!tx.is_paid && (
+                        <button
+                          onClick={() => markPaid(tx)}
+                          className="px-3 py-2 rounded-lg bg-primary text-white text-xs font-semibold"
+                        >
+                          Dar baixa
+                        </button>
+                      )}
+                    </>
+                  )}
+                </div>
+              </div>
+            );
+          })}
           {!loading && filtered.length === 0 && (
             <div className="p-6 text-sm text-slate-500">Nenhuma receita encontrada.</div>
           )}
