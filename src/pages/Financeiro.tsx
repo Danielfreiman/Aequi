@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Trash2 } from 'lucide-react';
 import { supabase } from '../lib/supabaseClient';
 import { usePersistentFilter } from '../hooks/usePersistentFilter';
 import { PeriodKey, quickPeriods } from '../services/dateFilters';
@@ -55,6 +56,20 @@ export function Financeiro() {
 
     loadData();
   }, []);
+
+  const handleDelete = async (tx: FinTransaction) => {
+    const ok = window.confirm(`Excluir lançamento "${tx.description || 'Sem descrição'}"? Esta ação não pode ser desfeita.`);
+    if (!ok) return;
+
+    setError(null);
+    const { error: deleteError } = await supabase.from('fin_transactions').delete().eq('id', tx.id);
+    if (deleteError) {
+      setError(deleteError.message);
+      return;
+    }
+
+    setTransactions((prev) => prev.filter((t) => t.id !== tx.id));
+  };
 
   const { start, end } = quickPeriods[period].range();
   const startDate = period === 'custom' && customStart ? new Date(customStart) : start;
@@ -215,13 +230,23 @@ export function Financeiro() {
         </div>
         <div className="divide-y divide-slate-100">
           {filtered.slice(0, 20).map((tx) => (
-            <div key={tx.id} className="grid grid-cols-1 md:grid-cols-5 gap-3 p-4 text-sm">
+            <div key={tx.id} className="grid grid-cols-1 md:grid-cols-6 gap-3 p-4 text-sm items-center">
               <div className="font-semibold text-navy">{tx.description || 'Sem descricao'}</div>
               <div className="text-slate-500">{tx.category || 'Sem categoria'}</div>
               <div className="text-slate-500">{formatDate(tx.date)}</div>
               <div className="text-slate-500">{tx.type}</div>
               <div className={`font-semibold ${tx.type === 'Despesa' ? 'text-red-600' : 'text-navy'}`}>
                 {tx.type === 'Despesa' ? `-${formatCurrency(tx.value)}` : formatCurrency(tx.value)}
+              </div>
+              <div className="flex justify-end">
+                <button
+                  onClick={() => handleDelete(tx)}
+                  className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-red-200 text-red-600 text-xs font-semibold hover:bg-red-50 transition"
+                  title="Excluir"
+                >
+                  <Trash2 size={16} />
+                  Excluir
+                </button>
               </div>
             </div>
           ))}

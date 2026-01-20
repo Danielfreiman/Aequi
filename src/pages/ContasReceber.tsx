@@ -120,6 +120,23 @@ export function ContasReceber() {
     }
   };
 
+  const handleDelete = async (tx: FinTransaction) => {
+    const ok = window.confirm(`Excluir lançamento "${tx.description || 'Sem descrição'}"? Esta ação não pode ser desfeita.`);
+    if (!ok) return;
+
+    setError(null);
+    const { error: deleteError } = await supabase.from('fin_transactions').delete().eq('id', tx.id);
+    if (deleteError) {
+      setError(deleteError.message);
+      return;
+    }
+
+    setTransactions((prev) => prev.filter((t) => t.id !== tx.id));
+    if (editId === tx.id) {
+      cancelEdit();
+    }
+  };
+
   return (
     <section className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
@@ -281,6 +298,12 @@ export function ContasReceber() {
                           Dar baixa
                         </button>
                       )}
+                      <button
+                        onClick={() => handleDelete(tx)}
+                        className="px-3 py-2 rounded-lg border border-red-200 text-red-600 text-xs font-semibold hover:bg-red-50 transition"
+                      >
+                        Excluir
+                      </button>
                     </>
                   )}
                 </div>

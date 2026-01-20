@@ -123,7 +123,7 @@ export function Operacoes() {
   }, []);
 
   const parseCSV = (content: string): ExtractLine[] => {
-    const lines = content.split('\n').filter(line => line.trim());
+    const lines = content.split(/\r?\n/).filter((line) => line.trim());
     const parsed: ExtractLine[] = [];
     
     for (let i = 1; i < lines.length; i++) {
@@ -205,7 +205,7 @@ export function Operacoes() {
       setExtractLines(classified);
       const matchedCount = classified.filter(l => l.matched).length;
       setImportStatus('success');
-      setImportMessage(`${classified.length} transaÃ§Ãµes importadas. ${matchedCount} classificadas automaticamente.`);
+      setImportMessage(`${classified.length} Transações importadas. ${matchedCount} classificadas automaticamente.`);
     } catch (error) {
       setImportStatus('error');
       setImportMessage('Erro ao processar arquivo. Verifique o formato.');
@@ -231,12 +231,12 @@ export function Operacoes() {
   const handleSaveExtract = async () => {
     if (!session?.user?.id) {
       setImportStatus('error');
-      setImportMessage('Você precisa estar logado para salvar as transações.');
+      setImportMessage('Você precisa estar logado para salvar as Transações.');
       return;
     }
     if (!profileId) {
       setImportStatus('error');
-      setImportMessage('Nenhum perfil encontrado para associar as transações.');
+      setImportMessage('Nenhum perfil encontrado para associar as Transações.');
       return;
     }
     if (!selectedBank) {
@@ -248,12 +248,12 @@ export function Operacoes() {
     const unclassified = extractLines.filter((l) => !l.category);
     if (unclassified.length > 0) {
       setImportStatus('error');
-      setImportMessage(`${unclassified.length} transações ainda precisam ser classificadas.`);
+      setImportMessage(`${unclassified.length} Transações ainda precisam ser classificadas.`);
       return;
     }
 
     setImportStatus('loading');
-    setImportMessage('Salvando transações...');
+    setImportMessage('Salvando Transações...');
 
     try {
       const transactions = extractLines.map((line) => ({
@@ -284,7 +284,7 @@ export function Operacoes() {
       setExtractLines([]);
     } catch (error) {
       setImportStatus('error');
-      setImportMessage('Erro ao Salvar Transações`n                <span class="text-xs text-slate-500 flex items-center gap-2">`n                  <span class="inline-flex h-2 w-2 rounded-full bg-primary" />`n                  Será lançado como <strong>Fatura detalhada</strong> (cada linha vira um item).`n                </span>. Tente novamente.');
+      setImportMessage('Erro ao salvar transações.');
       console.error(error);
     }
   };
@@ -685,11 +685,11 @@ export function Operacoes() {
                 </div>
               </div>
 
-              {/* Lista de transaÃ§Ãµes */}
+              {/* Lista de Transações */}
               <div className="rounded-2xl bg-white border border-slate-100 shadow-soft overflow-hidden">
                 <div className="p-5 border-b border-slate-100 flex items-center justify-between">
                   <div>
-                    <h3 className="text-lg font-bold text-navy">TransaÃ§Ãµes do Extrato</h3>
+                    <h3 className="text-lg font-bold text-navy">Transações do Extrato</h3>
                     <p className="text-sm text-slate-500">Classifique cada transaÃ§Ã£o para importar</p>
                   </div>
                   <button
@@ -754,7 +754,7 @@ export function Operacoes() {
                 </div>
               </div>
 
-              <div className="flex gap-3">
+                                          <div className="flex gap-3 items-center flex-wrap">
                 <button
                   onClick={handleSaveExtract}
                   disabled={importStatus === 'loading'}
@@ -765,8 +765,12 @@ export function Operacoes() {
                   ) : (
                     <Check size={18} />
                   )}
-                  Salvar TransaÃ§Ãµes
+                  Salvar Transações
                 </button>
+                <span className="text-xs text-slate-500 flex items-center gap-2">
+                  <span className="inline-flex h-2 w-2 rounded-full bg-primary" />
+                  Será lançado como <strong>Fatura detalhada</strong> (cada linha vira um item).
+                </span>
               </div>
             </>
           )}
@@ -775,6 +779,18 @@ export function Operacoes() {
     </section>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -21,15 +21,15 @@ const itemClass =
 
 export function Sidebar() {
   return (
-    <aside className="hidden md:flex flex-col w-72 bg-navy h-full text-white shrink-0">
+    <aside className="hidden md:flex flex-col w-72 bg-[#0f2c1f] h-full text-white shrink-0 border-r border-white/10">
       <div className="p-8 pb-6">
         <div className="flex items-center gap-3">
-          <div className="size-10 rounded-xl bg-gradient-to-br from-primary to-teal-600 flex items-center justify-center shadow-lg shadow-primary/20">
+          <div className="size-10 rounded-xl bg-gradient-to-br from-[#103826] to-[#2ecc71] flex items-center justify-center shadow-lg shadow-black/10">
             <UtensilsCrossed className="text-white size-6" />
           </div>
           <div className="flex flex-col">
             <h1 className="text-xl font-bold tracking-tight">Aequi</h1>
-            <span className="text-xs text-gray-300 font-semibold uppercase tracking-wide">Parceiros</span>
+            <span className="text-xs text-[#cfe7d6] font-semibold uppercase tracking-wide">Parceiro do operador</span>
           </div>
         </div>
       </div>
@@ -38,7 +38,7 @@ export function Sidebar() {
         <NavLink
           to="/app"
           className={({ isActive }) =>
-            `${itemClass} ${isActive ? 'bg-primary/15 text-white border border-primary/30' : 'text-gray-200'}`
+            `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
           }
         >
           <LayoutDashboard size={18} />
@@ -47,7 +47,7 @@ export function Sidebar() {
         <NavLink
           to="/app/conciliacao"
           className={({ isActive }) =>
-            `${itemClass} ${isActive ? 'bg-primary/15 text-white border border-primary/30' : 'text-gray-200'}`
+            `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
           }
         >
           <Receipt size={18} className="shrink-0" />
@@ -56,7 +56,7 @@ export function Sidebar() {
         <NavLink
           to="/app/cardapio"
           className={({ isActive }) =>
-            `${itemClass} ${isActive ? 'bg-primary/15 text-white border border-primary/30' : 'text-gray-200'}`
+            `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
           }
         >
           <TrendingUp size={18} className="shrink-0" />
@@ -65,7 +65,7 @@ export function Sidebar() {
         <NavLink
           to="/app/integracao-ifood"
           className={({ isActive }) =>
-            `${itemClass} ${isActive ? 'bg-primary/15 text-white border border-primary/30' : 'text-gray-200'}`
+            `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
           }
         >
           <Store size={18} className="shrink-0" />
@@ -74,7 +74,7 @@ export function Sidebar() {
         <NavLink
           to="/app/financeiro"
           className={({ isActive }) =>
-            `${itemClass} ${isActive ? 'bg-primary/15 text-white border border-primary/30' : 'text-gray-200'}`
+            `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
           }
         >
           <Wallet size={18} className="shrink-0" />
@@ -83,7 +83,7 @@ export function Sidebar() {
         <NavLink
           to="/app/contas-pagar"
           className={({ isActive }) =>
-            `${itemClass} ${isActive ? 'bg-primary/15 text-white border border-primary/30' : 'text-gray-200'}`
+            `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
           }
         >
           <BadgeDollarSign size={18} className="shrink-0" />
@@ -92,7 +92,7 @@ export function Sidebar() {
         <NavLink
           to="/app/contas-receber"
           className={({ isActive }) =>
-            `${itemClass} ${isActive ? 'bg-primary/15 text-white border border-primary/30' : 'text-gray-200'}`
+            `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
           }
         >
           <ClipboardList size={18} className="shrink-0" />
@@ -101,7 +101,7 @@ export function Sidebar() {
         <NavLink
           to="/app/dre"
           className={({ isActive }) =>
-            `${itemClass} ${isActive ? 'bg-primary/15 text-white border border-primary/30' : 'text-gray-200'}`
+            `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
           }
         >
           <LineChart size={18} className="shrink-0" />
@@ -110,7 +110,7 @@ export function Sidebar() {
         <NavLink
           to="/app/ponto"
           className={({ isActive }) =>
-            `${itemClass} ${isActive ? 'bg-primary/15 text-white border border-primary/30' : 'text-gray-200'}`
+            `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
           }
         >
           <CalendarClock size={18} className="shrink-0" />
@@ -119,7 +119,7 @@ export function Sidebar() {
         <NavLink
           to="/app/rh"
           className={({ isActive }) =>
-            `${itemClass} ${isActive ? 'bg-primary/15 text-white border border-primary/30' : 'text-gray-200'}`
+            `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
           }
         >
           <Users size={18} className="shrink-0" />
@@ -128,7 +128,7 @@ export function Sidebar() {
         <NavLink
           to="/app/ajustes"
           className={({ isActive }) =>
-            `${itemClass} ${isActive ? 'bg-primary/15 text-white border border-primary/30' : 'text-gray-200'}`
+            `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
           }
         >
           <Settings size={18} className="shrink-0" />
@@ -147,7 +147,7 @@ export function Sidebar() {
           />
           <div className="flex flex-col overflow-hidden">
             <span className="text-sm font-semibold text-white truncate">Chef Antônio</span>
-            <span className="text-xs text-gray-400 truncate">Sapore Italiano</span>
+            <span className="text-xs text-white/60 truncate">Sapore Italiano</span>
           </div>
         </div>
       </div>
