@@ -10,8 +10,56 @@ type FinTransaction = {
   store_id?: string | null;
 };
 
+type PeriodKey = 'mes_atual' | 'mes_anterior' | 'proximo_mes' | 'ano_atual' | 'geral';
+
 const formatCurrency = (value: number) =>
   new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value || 0);
+
+const quickPeriods: Record<
+  PeriodKey,
+  { label: string; range: () => { start: Date | null; end: Date | null } }
+> = {
+  mes_atual: {
+    label: 'Este mes',
+    range: () => {
+      const now = new Date();
+      const start = new Date(now.getFullYear(), now.getMonth(), 1);
+      const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+      return { start, end };
+    },
+  },
+  mes_anterior: {
+    label: 'Mes anterior',
+    range: () => {
+      const now = new Date();
+      const start = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+      const end = new Date(now.getFullYear(), now.getMonth(), 0);
+      return { start, end };
+    },
+  },
+  proximo_mes: {
+    label: 'Proximo mes',
+    range: () => {
+      const now = new Date();
+      const start = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+      const end = new Date(now.getFullYear(), now.getMonth() + 2, 0);
+      return { start, end };
+    },
+  },
+  ano_atual: {
+    label: 'Ano',
+    range: () => {
+      const now = new Date();
+      const start = new Date(now.getFullYear(), 0, 1);
+      const end = new Date(now.getFullYear(), 11, 31);
+      return { start, end };
+    },
+  },
+  geral: {
+    label: 'Geral',
+    range: () => ({ start: null, end: null }),
+  },
+};
 
 export function Dre() {
   const [transactions, setTransactions] = useState<FinTransaction[]>([]);
@@ -19,6 +67,7 @@ export function Dre() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [storeFilter, setStoreFilter] = useState<string>('todas');
+  const [period, setPeriod] = useState<PeriodKey>('mes_atual');
 
   useEffect(() => {
     const loadData = async () => {
@@ -42,10 +91,15 @@ export function Dre() {
   }, []);
 
   const filtered = useMemo(() => {
+    const { start, end } = quickPeriods[period].range();
     return transactions.filter((tx) => {
-      return storeFilter === 'todas' ? true : tx.store_id === storeFilter;
+      const byStore = storeFilter === 'todas' ? true : tx.store_id === storeFilter;
+      const txDate = new Date(tx.date);
+      const byStart = start ? txDate >= start : true;
+      const byEnd = end ? txDate <= end : true;
+      return byStore && byStart && byEnd;
     });
-  }, [transactions, storeFilter]);
+  }, [transactions, storeFilter, period]);
 
   const summary = useMemo(() => {
     const receitas = filtered.filter((tx) => tx.type === 'Receita');
@@ -86,14 +140,13 @@ export function Dre() {
     if (storeFilter === 'todas') return 'Todas as lojas';
     return stores.find((s) => s.id === storeFilter)?.name || 'Loja';
   }, [storeFilter, stores]);
+  const periodLabel = useMemo(() => quickPeriods[period].label, [period]);
 
   return (
     <section className="space-y-6">
       <div>
         <h2 className="text-2xl font-black text-navy">DRE</h2>
-        <p className="text-slate-600 text-sm">
-          Demonstrativo mês a mês, com opção de filtrar por loja ou consolidar todas.
-        </p>
+        <p className="text-slate-600 text-sm">Demonstrativo mes a mes, filtrando por loja ou consolidado.</p>
       </div>
 
       <div className="grid md:grid-cols-3 gap-3">
@@ -112,9 +165,25 @@ export function Dre() {
             ))}
           </select>
         </div>
+
+        <div className="flex flex-col gap-1">
+          <label className="text-xs font-semibold text-slate-600">Periodo</label>
+          <select
+            value={period}
+            onChange={(event) => setPeriod(event.target.value as PeriodKey)}
+            className="rounded-xl border border-slate-200 px-3 py-2 text-sm"
+          >
+            {Object.entries(quickPeriods).map(([key, item]) => (
+              <option key={key} value={key}>
+                {item.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <div className="flex flex-col justify-end text-sm text-slate-500">
           <span>Exibindo: {storeName}</span>
-          <span>Período: últimos lançamentos</span>
+          <span>Periodo: {periodLabel}</span>
         </div>
       </div>
 
@@ -175,8 +244,10 @@ export function Dre() {
 
       <div className="rounded-2xl bg-white border border-slate-100 shadow-soft overflow-hidden">
         <div className="p-5 border-b border-slate-100">
-          <h3 className="text-lg font-bold text-navy">Mês a mês</h3>
-          <p className="text-sm text-slate-500">Consolidado por mês {storeFilter === 'todas' ? '(todas as lojas)' : '(loja filtrada)'}</p>
+          <h3 className="text-lg font-bold text-navy">Mes a mes</h3>
+          <p className="text-sm text-slate-500">
+            Consolidado por mes {storeFilter === 'todas' ? '(todas as lojas)' : '(loja filtrada)'}
+          </p>
         </div>
         <div className="divide-y divide-slate-100">
           {Object.entries(summary.porMes)
@@ -188,12 +259,14 @@ export function Dre() {
                   <div className="font-semibold text-navy">{month}</div>
                   <div className="text-primary font-semibold">{formatCurrency(values.receitas)}</div>
                   <div className="text-navy font-semibold">{formatCurrency(values.despesas)}</div>
-                  <div className={`font-bold ${resultado >= 0 ? 'text-primary' : 'text-red-500'}`}>{formatCurrency(resultado)}</div>
+                  <div className={`font-bold ${resultado >= 0 ? 'text-primary' : 'text-red-500'}`}>
+                    {formatCurrency(resultado)}
+                  </div>
                 </div>
               );
             })}
           {!loading && Object.keys(summary.porMes).length === 0 && (
-            <div className="p-6 text-sm text-slate-500">Sem movimentações para exibir.</div>
+            <div className="p-6 text-sm text-slate-500">Sem movimentacoes para exibir.</div>
           )}
         </div>
       </div>

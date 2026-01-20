@@ -141,6 +141,7 @@ create index if not exists idx_hr_time_cards_employee_external on public.hr_time
 create table if not exists public.fin_transactions (
   id uuid primary key default gen_random_uuid(),
   profile_id uuid not null references public.profiles(id) on delete cascade,
+  store_id uuid references public.stores(id) on delete set null,
   store_external_id text,
   type text not null,
   description text,
@@ -155,6 +156,7 @@ create table if not exists public.fin_transactions (
 
 create index if not exists idx_fin_transactions_profile_date on public.fin_transactions(profile_id, date);
 create index if not exists idx_fin_transactions_store_external on public.fin_transactions(store_external_id);
+create index if not exists idx_fin_transactions_store_id on public.fin_transactions(store_id);
 
 create table if not exists public.user_imports (
   id uuid primary key default gen_random_uuid(),
@@ -195,6 +197,23 @@ begin
 end $$;
 create index if not exists idx_profiles_owner on public.profiles(owner_id);
 create unique index if not exists idx_profiles_owner_cnpj on public.profiles(owner_id, cnpj);
+
+-- fin_transactions: ensure store_id column/FK when migrating
+alter table public.fin_transactions add column if not exists store_id uuid;
+do $$
+begin
+  if exists (select 1 from information_schema.columns where table_name = 'fin_transactions' and column_name = 'store_id') then
+    begin
+      alter table public.fin_transactions
+        drop constraint if exists fin_transactions_store_id_fkey;
+      alter table public.fin_transactions
+        add constraint fin_transactions_store_id_fkey foreign key (store_id) references public.stores(id) on delete set null;
+    exception
+      when others then null;
+    end;
+  end if;
+end $$;
+create index if not exists idx_fin_transactions_store_id on public.fin_transactions(store_id);
 
 -- Enable RLS
 alter table public.profiles enable row level security;

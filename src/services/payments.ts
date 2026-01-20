@@ -23,11 +23,11 @@ const rawApiBase = import.meta.env.VITE_ABACATEPAY_API_URL || '/api/payments';
 const apiBase = rawApiBase.endsWith('/v1') ? rawApiBase : `${rawApiBase.replace(/\/$/, '')}/v1`;
 const apiKey = import.meta.env.VITE_ABACATEPAY_API_KEY;
 
-export async function createCheckoutSession(payload: CheckoutPayload): Promise<CheckoutResponse> {
-  if (!apiKey) {
-    throw new Error('Configure VITE_ABACATEPAY_API_KEY no .env.local');
-  }
+if (!apiKey) {
+  throw new Error('Configure a variável VITE_ABACATEPAY_API_KEY nas Environment Variables da Vercel');
+}
 
+export async function createCheckoutSession(payload: CheckoutPayload): Promise<CheckoutResponse> {
   const response = await fetch(`${apiBase}/checkout`, {
     method: 'POST',
     headers: {
@@ -46,10 +46,6 @@ export async function createCheckoutSession(payload: CheckoutPayload): Promise<C
 }
 
 export async function createCustomer(payload: CustomerPayload) {
-  if (!apiKey) {
-    throw new Error('Configure VITE_ABACATEPAY_API_KEY no .env.local');
-  }
-
   const response = await fetch(`${apiBase}/customer/create`, {
     method: 'POST',
     headers: {
