@@ -27,6 +27,7 @@ export function Ponto() {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [monthTotal, setMonthTotal] = useState<Record<string, number>>({});
 
   useEffect(() => {
     const loadData = async () => {
@@ -46,6 +47,19 @@ export function Ponto() {
       } else {
         setTimeCards(timeData || []);
         setEmployees(empData || []);
+        // calcula total de horas por funcionário no mês corrente
+        const currentMonth = new Date().getMonth();
+        const currentYear = new Date().getFullYear();
+        const totals = (timeData || []).reduce<Record<string, number>>((acc, card) => {
+          const d = new Date(card.date);
+          if (d.getMonth() === currentMonth && d.getFullYear() === currentYear) {
+            const hours = card.hours_worked || 0;
+            const key = card.employee_external_id || 'sem-id';
+            acc[key] = (acc[key] || 0) + hours;
+          }
+          return acc;
+        }, {});
+        setMonthTotal(totals);
       }
       setLoading(false);
     };
@@ -66,12 +80,26 @@ export function Ponto() {
     <section className="space-y-6">
       <div>
         <h2 className="text-2xl font-black text-navy">Ponto</h2>
-        <p className="text-slate-600 text-sm">Registros de entrada/saída e horas trabalhadas.</p>
+        <p className="text-slate-600 text-sm">Registros de entrada/saída e horas trabalhadas, com total do mês por colaborador.</p>
       </div>
 
       {error && <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-600">{error}</div>}
 
       <div className="rounded-2xl bg-white border border-slate-100 shadow-soft overflow-hidden">
+        <div className="p-5 border-b border-slate-100">
+          <h3 className="text-lg font-bold text-navy">Horas no mês</h3>
+          <div className="mt-3 grid md:grid-cols-3 gap-3">
+            {Object.entries(monthTotal).map(([employeeId, total]) => (
+              <div key={employeeId} className="p-4 rounded-xl border border-slate-100 bg-slate-50 text-sm">
+                <p className="font-semibold text-navy">{employeeMap[employeeId] || 'Funcionário'}</p>
+                <p className="text-slate-600">{total.toFixed(1)} horas</p>
+              </div>
+            ))}
+            {!loading && Object.keys(monthTotal).length === 0 && (
+              <div className="text-sm text-slate-500">Sem lançamentos no mês atual.</div>
+            )}
+          </div>
+        </div>
         <div className="p-5 border-b border-slate-100">
           <h3 className="text-lg font-bold text-navy">Últimos registros</h3>
           <p className="text-sm text-slate-500">{loading ? 'Carregando...' : `${timeCards.length} registros`}</p>

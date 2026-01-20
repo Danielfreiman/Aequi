@@ -24,6 +24,10 @@ export function Financeiro() {
   const [transactions, setTransactions] = useState<FinTransaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [statusFilter, setStatusFilter] = useState<'todos' | 'pendente' | 'pago'>('todos');
+  const [categoryFilter, setCategoryFilter] = useState<string>('todas');
+  const [dateStart, setDateStart] = useState<string>('');
+  const [dateEnd, setDateEnd] = useState<string>('');
 
   useEffect(() => {
     const loadData = async () => {
@@ -46,13 +50,30 @@ export function Financeiro() {
     loadData();
   }, []);
 
+  const filtered = useMemo(() => {
+    return transactions.filter((tx) => {
+      const byStatus =
+        statusFilter === 'todos' ? true : statusFilter === 'pago' ? tx.is_paid : !tx.is_paid;
+      const byCategory = categoryFilter === 'todas' ? true : tx.category === categoryFilter;
+      const byDateStart = dateStart ? new Date(tx.date) >= new Date(dateStart) : true;
+      const byDateEnd = dateEnd ? new Date(tx.date) <= new Date(dateEnd) : true;
+      return byStatus && byCategory && byDateStart && byDateEnd;
+    });
+  }, [transactions, statusFilter, categoryFilter, dateStart, dateEnd]);
+
   const summary = useMemo(() => {
-    const contasPagar = transactions.filter((tx) => tx.type === 'Despesa');
-    const contasReceber = transactions.filter((tx) => tx.type === 'Receita');
+    const contasPagar = filtered.filter((tx) => tx.type === 'Despesa');
+    const contasReceber = filtered.filter((tx) => tx.type === 'Receita');
     const totalPagar = contasPagar.reduce((sum, tx) => sum + (tx.value || 0), 0);
     const totalReceber = contasReceber.reduce((sum, tx) => sum + (tx.value || 0), 0);
-    const pendentes = transactions.filter((tx) => !tx.is_paid).length;
+    const pendentes = filtered.filter((tx) => !tx.is_paid).length;
     return { totalPagar, totalReceber, pendentes };
+  }, [filtered]);
+
+  const categories = useMemo(() => {
+    const set = new Set<string>();
+    transactions.forEach((t) => t.category && set.add(t.category));
+    return Array.from(set);
   }, [transactions]);
 
   return (
@@ -60,7 +81,7 @@ export function Financeiro() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h2 className="text-2xl font-black text-navy">Financeiro</h2>
-          <p className="text-slate-600 text-sm">Visão geral das movimentações importadas do Firebase.</p>
+          <p className="text-slate-600 text-sm">Visão geral filtrável por status, categoria e período.</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Link
@@ -76,11 +97,65 @@ export function Financeiro() {
             Contas a receber
           </Link>
           <Link
+            to="/app/operacoes"
+            className="px-4 py-2 rounded-xl border border-navy/20 text-navy text-sm font-semibold hover:bg-navy/5 transition"
+          >
+            Cadastrar operação
+          </Link>
+          <Link
             to="/app/dre"
             className="px-4 py-2 rounded-xl bg-primary text-white text-sm font-semibold hover:brightness-110 transition"
           >
             Ver DRE
           </Link>
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-4 gap-3">
+        <div className="flex flex-col gap-1">
+          <label className="text-xs font-semibold text-slate-600">Status</label>
+          <select
+            value={statusFilter}
+            onChange={(event) => setStatusFilter(event.target.value as typeof statusFilter)}
+            className="rounded-xl border border-slate-200 px-3 py-2 text-sm"
+          >
+            <option value="todos">Todos</option>
+            <option value="pendente">Pendentes</option>
+            <option value="pago">Pagos</option>
+          </select>
+        </div>
+        <div className="flex flex-col gap-1">
+          <label className="text-xs font-semibold text-slate-600">Categoria</label>
+          <select
+            value={categoryFilter}
+            onChange={(event) => setCategoryFilter(event.target.value)}
+            className="rounded-xl border border-slate-200 px-3 py-2 text-sm"
+          >
+            <option value="todas">Todas</option>
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="flex flex-col gap-1">
+          <label className="text-xs font-semibold text-slate-600">De</label>
+          <input
+            type="date"
+            value={dateStart}
+            onChange={(event) => setDateStart(event.target.value)}
+            className="rounded-xl border border-slate-200 px-3 py-2 text-sm"
+          />
+        </div>
+        <div className="flex flex-col gap-1">
+          <label className="text-xs font-semibold text-slate-600">Até</label>
+          <input
+            type="date"
+            value={dateEnd}
+            onChange={(event) => setDateEnd(event.target.value)}
+            className="rounded-xl border border-slate-200 px-3 py-2 text-sm"
+          />
         </div>
       </div>
 
@@ -104,10 +179,10 @@ export function Financeiro() {
       <div className="rounded-2xl bg-white border border-slate-100 shadow-soft overflow-hidden">
         <div className="p-5 border-b border-slate-100">
           <h3 className="text-lg font-bold text-navy">Últimas movimentações</h3>
-          <p className="text-sm text-slate-500">{loading ? 'Carregando dados...' : `${transactions.length} registros`}</p>
+          <p className="text-sm text-slate-500">{loading ? 'Carregando dados...' : `${filtered.length} registros`}</p>
         </div>
         <div className="divide-y divide-slate-100">
-          {transactions.slice(0, 10).map((tx) => (
+          {filtered.slice(0, 20).map((tx) => (
             <div key={tx.id} className="grid grid-cols-1 md:grid-cols-5 gap-3 p-4 text-sm">
               <div className="font-semibold text-navy">{tx.description || 'Sem descrição'}</div>
               <div className="text-slate-500">{tx.category || 'Sem categoria'}</div>
@@ -116,7 +191,7 @@ export function Financeiro() {
               <div className="font-semibold text-navy">{formatCurrency(tx.value)}</div>
             </div>
           ))}
-          {!loading && transactions.length === 0 && (
+          {!loading && filtered.length === 0 && (
             <div className="p-6 text-sm text-slate-500">Nenhuma movimentação encontrada.</div>
           )}
         </div>

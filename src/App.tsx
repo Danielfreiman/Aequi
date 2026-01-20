@@ -13,6 +13,8 @@ import { ContasReceber } from './pages/ContasReceber.tsx';
 import { Ponto } from './pages/Ponto.tsx';
 import { Rh } from './pages/Rh.tsx';
 import { Ajustes } from './pages/Ajustes.tsx';
+import { Assinatura } from './pages/Assinatura.tsx';
+import { Operacoes } from './pages/Operacoes.tsx';
 
 const DashboardLayout = () => (
   <div className="flex h-screen w-full overflow-hidden bg-background-light">
@@ -44,6 +46,7 @@ const App = () => (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/assinar" element={<Assinatura />} />
       <Route path="/app" element={<DashboardLayout />}>
         <Route index element={<Dashboard />} />
         <Route path="conciliacao" element={<Conciliacao />} />
@@ -55,6 +58,7 @@ const App = () => (
         <Route path="ponto" element={<Ponto />} />
         <Route path="rh" element={<Rh />} />
         <Route path="ajustes" element={<Ajustes />} />
+        <Route path="operacoes" element={<Operacoes />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

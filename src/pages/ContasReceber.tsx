@@ -23,6 +23,9 @@ export function ContasReceber() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showPaid, setShowPaid] = useState(false);
+  const [categoryFilter, setCategoryFilter] = useState<string>('todas');
+  const [dateStart, setDateStart] = useState('');
+  const [dateEnd, setDateEnd] = useState('');
 
   useEffect(() => {
     const loadData = async () => {
@@ -45,12 +48,23 @@ export function ContasReceber() {
     loadData();
   }, []);
 
-  const filtered = useMemo(
-    () => transactions.filter((tx) => (showPaid ? tx.is_paid : !tx.is_paid)),
-    [transactions, showPaid]
-  );
+  const filtered = useMemo(() => {
+    return transactions.filter((tx) => {
+      const statusOk = showPaid ? tx.is_paid : !tx.is_paid;
+      const catOk = categoryFilter === 'todas' ? true : tx.category === categoryFilter;
+      const startOk = dateStart ? new Date(tx.date) >= new Date(dateStart) : true;
+      const endOk = dateEnd ? new Date(tx.date) <= new Date(dateEnd) : true;
+      return statusOk && catOk && startOk && endOk;
+    });
+  }, [transactions, showPaid, categoryFilter, dateStart, dateEnd]);
 
   const total = useMemo(() => filtered.reduce((sum, tx) => sum + (tx.value || 0), 0), [filtered]);
+
+  const categories = useMemo(() => {
+    const set = new Set<string>();
+    transactions.forEach((t) => t.category && set.add(t.category));
+    return Array.from(set);
+  }, [transactions]);
 
   return (
     <section className="space-y-6">
@@ -65,6 +79,42 @@ export function ContasReceber() {
         >
           {showPaid ? 'Ver pendentes' : 'Ver recebidas'}
         </button>
+      </div>
+
+      <div className="grid md:grid-cols-3 gap-3">
+        <div className="flex flex-col gap-1">
+          <label className="text-xs font-semibold text-slate-600">Categoria</label>
+          <select
+            value={categoryFilter}
+            onChange={(event) => setCategoryFilter(event.target.value)}
+            className="rounded-xl border border-slate-200 px-3 py-2 text-sm"
+          >
+            <option value="todas">Todas</option>
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="flex flex-col gap-1">
+          <label className="text-xs font-semibold text-slate-600">De</label>
+          <input
+            type="date"
+            value={dateStart}
+            onChange={(event) => setDateStart(event.target.value)}
+            className="rounded-xl border border-slate-200 px-3 py-2 text-sm"
+          />
+        </div>
+        <div className="flex flex-col gap-1">
+          <label className="text-xs font-semibold text-slate-600">Até</label>
+          <input
+            type="date"
+            value={dateEnd}
+            onChange={(event) => setDateEnd(event.target.value)}
+            className="rounded-xl border border-slate-200 px-3 py-2 text-sm"
+          />
+        </div>
       </div>
 
       {error && <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-600">{error}</div>}
