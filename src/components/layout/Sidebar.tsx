@@ -10,6 +10,9 @@ import {
   CalendarClock,
   LineChart,
   UtensilsCrossed,
+  Upload,
+  FileSpreadsheet,
+  Package,
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
@@ -60,6 +63,15 @@ export function Sidebar() {
           <span>Engenharia de Cardápio</span>
         </NavLink>
         <NavLink
+          to="/app/importar-produtos"
+          className={({ isActive }) =>
+            `${itemClass} ${isActive ? 'bg-primary/15 text-white border border-primary/30' : 'text-gray-200'}`
+          }
+        >
+          <Package size={18} className="shrink-0" />
+          <span>Importar Produtos</span>
+        </NavLink>
+        <NavLink
           to="/app/financeiro"
           className={({ isActive }) =>
             `${itemClass} ${isActive ? 'bg-primary/15 text-white border border-primary/30' : 'text-gray-200'}`
@@ -67,6 +79,15 @@ export function Sidebar() {
         >
           <Wallet size={18} className="shrink-0" />
           <span>Financeiro</span>
+        </NavLink>
+        <NavLink
+          to="/app/fatura-detalhada"
+          className={({ isActive }) =>
+            `${itemClass} ${isActive ? 'bg-primary/15 text-white border border-primary/30' : 'text-gray-200'}`
+          }
+        >
+          <FileSpreadsheet size={18} className="shrink-0" />
+          <span>Fatura Detalhada</span>
         </NavLink>
         <NavLink
           to="/app/contas-pagar"
