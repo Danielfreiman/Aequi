@@ -21,10 +21,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   
   const redirectUri = `${baseUrl}/api/ifood/callback`;
   
-  // State para segurança (prevenir CSRF) - inclui o userId se fornecido
-  const { userId } = req.query;
+  // State para segurança (prevenir CSRF) - inclui o userId e storeId se fornecidos
+  const { userId, storeId } = req.query;
   const state = Buffer.from(JSON.stringify({
     userId: userId || '',
+    storeId: storeId || '',
     timestamp: Date.now(),
     random: Math.random().toString(36).substring(7),
   })).toString('base64');

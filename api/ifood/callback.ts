@@ -26,12 +26,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.redirect('/app/integracao-ifood?error=server_config');
   }
 
-  // Decodifica o state para pegar o userId
+  // Decodifica o state para pegar o userId e storeId
   let userId = '';
+  let storeId = '';
   if (state && typeof state === 'string') {
     try {
       const decoded = JSON.parse(Buffer.from(state, 'base64').toString());
       userId = decoded.userId || '';
+      storeId = decoded.storeId || '';
     } catch (e) {
       console.error('Erro ao decodificar state:', e);
     }
@@ -95,6 +97,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
         await supabase.from('ifood_connections').upsert({
           profile_id: userId,
+          store_id: storeId || null, // Vincula à loja selecionada
           merchant_id: merchantData.id,
           merchant_name: merchantData.name,
           corporate_name: merchantData.corporateName,

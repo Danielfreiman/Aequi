@@ -13,6 +13,9 @@ import {
   X,
   Unlink,
   ExternalLink,
+  Archive,
+  Pencil,
+  Trash2,
 } from 'lucide-react';
 import { supabase } from '../lib/supabaseClient';
 import { useAuthSession } from '../hooks/useAuthSession';
@@ -32,7 +35,28 @@ import {
 } from '../services/ifood';
 
 type ConnectionStatus = 'idle' | 'connecting' | 'connected' | 'error' | 'expired';
-type TabType = 'cardapio' | 'pedidos';
+type TabType = 'cardapio' | 'pedidos' | 'produtos';
+
+interface LocalStore {
+  id: string;
+  name: string;
+  external_id: string | null;
+}
+
+interface SavedProduct {
+  id: string;
+  name: string;
+  description: string | null;
+  price: number;
+  original_price: number | null;
+  category: string | null;
+  status: string;
+  external_code: string | null;
+  source: string | null;
+  ifood_id: string | null;
+  created_at: string;
+  updated_at: string;
+}
 
 const currencyFormatter = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
 
@@ -45,6 +69,11 @@ export function IntegracaoIFood() {
   const [connectionMessage, setConnectionMessage] = useState('');
   const [merchant, setMerchant] = useState<IFoodMerchant | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  
+  // Estado das lojas locais (para seleção ao conectar)
+  const [localStores, setLocalStores] = useState<LocalStore[]>([]);
+  const [selectedStoreId, setSelectedStoreId] = useState<string>('');
+  const [connectedStoreName, setConnectedStoreName] = useState<string>('');
   
   // Estado das abas
   const [activeTab, setActiveTab] = useState<TabType>('cardapio');
@@ -68,6 +97,32 @@ export function IntegracaoIFood() {
     end: new Date().toISOString().split('T')[0],
   });
   const [selectedOrder, setSelectedOrder] = useState<IFoodOrder | null>(null);
+
+  // Estado dos produtos salvos (aba Produtos)
+  const [savedProducts, setSavedProducts] = useState<SavedProduct[]>([]);
+  const [loadingSavedProducts, setLoadingSavedProducts] = useState(false);
+  const [savedProductFilter, setSavedProductFilter] = useState<string>('all');
+  const [editingProduct, setEditingProduct] = useState<SavedProduct | null>(null);
+
+  // Carrega lojas locais do usuário
+  const loadLocalStores = async () => {
+    if (!userId) return;
+    
+    const { data } = await supabase
+      .from('stores')
+      .select('id, name, external_id')
+      .eq('profile_id', userId)
+      .order('name');
+    
+    if (data && data.length > 0) {
+      setLocalStores(data);
+      setSelectedStoreId(data[0].id);
+    }
+  };
+
+  useEffect(() => {
+    loadLocalStores();
+  }, [userId]);
 
   // Processa parâmetros da URL (retorno do OAuth)
   useEffect(() => {
@@ -99,7 +154,7 @@ export function IntegracaoIFood() {
     
     const { data } = await supabase
       .from('ifood_connections')
-      .select('*')
+      .select('*, stores(name)')
       .eq('profile_id', userId)
       .single();
     
@@ -115,6 +170,10 @@ export function IntegracaoIFood() {
       });
       setAccessToken(data.access_token);
       setConnectionStatus('connected');
+      // Nome da loja local conectada
+      if (data.stores?.name) {
+        setConnectedStoreName(data.stores.name);
+      }
     } else if (data?.status === 'expired') {
       setConnectionStatus('expired');
       setConnectionMessage('Sua conexão expirou. Por favor, reconecte ao iFood.');
@@ -140,11 +199,21 @@ export function IntegracaoIFood() {
       return;
     }
 
+    if (localStores.length > 0 && !selectedStoreId) {
+      setConnectionStatus('error');
+      setConnectionMessage('Por favor, selecione uma loja antes de conectar.');
+      return;
+    }
+
     setConnectionStatus('connecting');
     setConnectionMessage('Redirecionando para o iFood...');
 
-    // Redireciona para o endpoint de autorização
-    window.location.href = `/api/ifood/authorize?userId=${userId}`;
+    // Redireciona para o endpoint de autorização com userId e storeId
+    const params = new URLSearchParams({ userId });
+    if (selectedStoreId) {
+      params.append('storeId', selectedStoreId);
+    }
+    window.location.href = `/api/ifood/authorize?${params.toString()}`;
   };
 
   const handleDisconnect = async () => {
@@ -163,7 +232,87 @@ export function IntegracaoIFood() {
     setProducts([]);
     setOrders([]);
     setOrdersSummary(null);
+    setConnectedStoreName('');
   };
+
+  // Funções para produtos salvos (aba Produtos)
+  const loadSavedProducts = async () => {
+    if (!userId) return;
+    
+    setLoadingSavedProducts(true);
+    try {
+      const { data, error } = await supabase
+        .from('menu_items')
+        .select('*')
+        .eq('profile_id', userId)
+        .order('category', { ascending: true })
+        .order('name', { ascending: true });
+      
+      if (error) throw error;
+      setSavedProducts(data || []);
+    } catch (error) {
+      console.error('Erro ao carregar produtos salvos:', error);
+    } finally {
+      setLoadingSavedProducts(false);
+    }
+  };
+
+  const handleUpdateProduct = async (product: SavedProduct) => {
+    if (!userId) return;
+    
+    try {
+      const { error } = await supabase
+        .from('menu_items')
+        .update({
+          name: product.name,
+          description: product.description,
+          price: product.price,
+          category: product.category,
+          status: product.status,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', product.id)
+        .eq('profile_id', userId);
+      
+      if (error) throw error;
+      
+      setEditingProduct(null);
+      await loadSavedProducts();
+      setImportMessage('Produto atualizado com sucesso!');
+      setTimeout(() => setImportMessage(''), 3000);
+    } catch (error) {
+      console.error('Erro ao atualizar produto:', error);
+      setImportMessage('Erro ao atualizar produto.');
+    }
+  };
+
+  const handleDeleteProduct = async (productId: string) => {
+    if (!userId || !confirm('Tem certeza que deseja excluir este produto?')) return;
+    
+    try {
+      const { error } = await supabase
+        .from('menu_items')
+        .delete()
+        .eq('id', productId)
+        .eq('profile_id', userId);
+      
+      if (error) throw error;
+      
+      await loadSavedProducts();
+      setImportMessage('Produto excluído com sucesso!');
+      setTimeout(() => setImportMessage(''), 3000);
+    } catch (error) {
+      console.error('Erro ao excluir produto:', error);
+      setImportMessage('Erro ao excluir produto.');
+    }
+  };
+
+  // Carrega produtos salvos quando a aba é ativada
+  useEffect(() => {
+    if (activeTab === 'produtos' && userId) {
+      loadSavedProducts();
+    }
+  }, [activeTab, userId]);
 
   const loadMenu = async () => {
     if (!merchant) return;
@@ -339,6 +488,34 @@ export function IntegracaoIFood() {
                 </div>
               )}
 
+              {/* Seleção de Loja */}
+              {localStores.length > 0 && (
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Selecione a loja para vincular:
+                  </label>
+                  <select
+                    value={selectedStoreId}
+                    onChange={(e) => setSelectedStoreId(e.target.value)}
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 text-slate-700 focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500"
+                  >
+                    {localStores.map(store => (
+                      <option key={store.id} value={store.id}>{store.name}</option>
+                    ))}
+                  </select>
+                  <p className="text-xs text-slate-500 mt-2">
+                    Esta loja será vinculada à conta do iFood após a autorização.
+                  </p>
+                </div>
+              )}
+
+              {localStores.length === 0 && (
+                <div className="mb-4 flex items-center gap-2 p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-700 text-sm">
+                  <AlertCircle size={18} />
+                  Você não tem lojas cadastradas. A conexão será feita sem vínculo com loja.
+                </div>
+              )}
+
               <button
                 onClick={handleConnect}
                 disabled={connectionStatus === 'connecting'}
@@ -382,6 +559,12 @@ export function IntegracaoIFood() {
                   {merchant?.cnpj && (
                     <p className="text-red-200 text-xs font-mono mt-1">{formatCNPJ(merchant.cnpj)}</p>
                   )}
+                  {connectedStoreName && (
+                    <p className="text-red-100 text-xs mt-1 flex items-center gap-1">
+                      <Store size={12} />
+                      Vinculado a: {connectedStoreName}
+                    </p>
+                  )}
                 </div>
               </div>
               <button
@@ -420,7 +603,18 @@ export function IntegracaoIFood() {
               }`}
             >
               <Package size={16} />
-              Cardápio e Complementos
+              Cardápio iFood
+            </button>
+            <button
+              onClick={() => setActiveTab('produtos')}
+              className={`px-4 py-2 text-sm font-semibold border-b-2 transition flex items-center gap-2 ${
+                activeTab === 'produtos'
+                  ? 'border-red-500 text-red-500'
+                  : 'border-transparent text-slate-500 hover:text-slate-700'
+              }`}
+            >
+              <Archive size={16} />
+              Produtos Salvos
             </button>
             <button
               onClick={() => setActiveTab('pedidos')}
@@ -619,6 +813,234 @@ export function IntegracaoIFood() {
                           ))}
                         </div>
                       )}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Tab: Produtos Salvos */}
+          {activeTab === 'produtos' && (
+            <div className="space-y-6">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <select
+                    value={savedProductFilter}
+                    onChange={(e) => setSavedProductFilter(e.target.value)}
+                    className="px-4 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/20"
+                  >
+                    <option value="all">Todas as categorias</option>
+                    {[...new Set(savedProducts.map(p => p.category).filter(Boolean))].map(cat => (
+                      <option key={cat} value={cat!}>{cat}</option>
+                    ))}
+                  </select>
+                  <button
+                    onClick={loadSavedProducts}
+                    disabled={loadingSavedProducts}
+                    className="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 transition flex items-center gap-2"
+                  >
+                    <RefreshCw size={16} className={loadingSavedProducts ? 'animate-spin' : ''} />
+                    Atualizar
+                  </button>
+                </div>
+              </div>
+
+              {importMessage && (
+                <div className={`rounded-xl p-4 text-sm flex items-center gap-2 ${
+                  importMessage.includes('sucesso')
+                    ? 'bg-green-50 border border-green-200 text-green-700'
+                    : 'bg-red-50 border border-red-200 text-red-700'
+                }`}>
+                  {importMessage.includes('sucesso') ? <Check size={16} /> : <AlertCircle size={16} />}
+                  {importMessage}
+                </div>
+              )}
+
+              {/* Resumo */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="rounded-2xl bg-white border border-slate-100 p-5 shadow-soft">
+                  <p className="text-xs uppercase text-slate-500 font-semibold">Total Produtos</p>
+                  <p className="text-2xl font-black text-navy">{savedProducts.length}</p>
+                </div>
+                <div className="rounded-2xl bg-white border border-slate-100 p-5 shadow-soft">
+                  <p className="text-xs uppercase text-slate-500 font-semibold">Ativos</p>
+                  <p className="text-2xl font-black text-green-600">
+                    {savedProducts.filter(p => p.status === 'active').length}
+                  </p>
+                </div>
+                <div className="rounded-2xl bg-white border border-slate-100 p-5 shadow-soft">
+                  <p className="text-xs uppercase text-slate-500 font-semibold">Pausados</p>
+                  <p className="text-2xl font-black text-amber-600">
+                    {savedProducts.filter(p => p.status === 'paused').length}
+                  </p>
+                </div>
+                <div className="rounded-2xl bg-white border border-slate-100 p-5 shadow-soft">
+                  <p className="text-xs uppercase text-slate-500 font-semibold">Do iFood</p>
+                  <p className="text-2xl font-black text-red-500">
+                    {savedProducts.filter(p => p.source === 'ifood').length}
+                  </p>
+                </div>
+              </div>
+
+              {/* Lista de Produtos */}
+              <div className="rounded-2xl bg-white border border-slate-100 shadow-soft overflow-hidden">
+                <div className="p-5 border-b border-slate-100">
+                  <h3 className="text-lg font-bold text-navy">Produtos Salvos no Sistema</h3>
+                  <p className="text-sm text-slate-500">
+                    {loadingSavedProducts ? 'Carregando...' : `${savedProducts.filter(p => savedProductFilter === 'all' || p.category === savedProductFilter).length} produtos`}
+                  </p>
+                </div>
+                
+                <div className="divide-y divide-slate-100 max-h-[500px] overflow-y-auto">
+                  {loadingSavedProducts ? (
+                    <div className="p-8 text-center">
+                      <RefreshCw size={24} className="animate-spin mx-auto text-slate-400 mb-2" />
+                      <p className="text-sm text-slate-500">Carregando produtos...</p>
+                    </div>
+                  ) : savedProducts.filter(p => savedProductFilter === 'all' || p.category === savedProductFilter).length === 0 ? (
+                    <div className="p-8 text-center text-slate-500">
+                      <Archive size={40} className="mx-auto mb-3 text-slate-300" />
+                      <p>Nenhum produto salvo ainda.</p>
+                      <p className="text-xs mt-1">Importe produtos do iFood na aba "Cardápio iFood".</p>
+                    </div>
+                  ) : (
+                    savedProducts
+                      .filter(p => savedProductFilter === 'all' || p.category === savedProductFilter)
+                      .map(product => (
+                        <div key={product.id} className="p-4 hover:bg-slate-50 transition">
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2">
+                                <h4 className="font-semibold text-navy truncate">{product.name}</h4>
+                                <span className={`text-xs px-2 py-0.5 rounded-full ${
+                                  product.status === 'active' 
+                                    ? 'bg-green-100 text-green-700' 
+                                    : 'bg-amber-100 text-amber-700'
+                                }`}>
+                                  {product.status === 'active' ? 'Ativo' : 'Pausado'}
+                                </span>
+                                {product.source === 'ifood' && (
+                                  <span className="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-700">
+                                    iFood
+                                  </span>
+                                )}
+                              </div>
+                              <p className="text-sm text-slate-500 truncate mt-1">{product.description || 'Sem descrição'}</p>
+                              <p className="text-xs text-slate-400 mt-1">
+                                {product.category || 'Sem categoria'}
+                                {product.external_code && ` • Cód: ${product.external_code}`}
+                              </p>
+                            </div>
+                            <div className="text-right flex-shrink-0">
+                              <p className="font-bold text-navy">{currencyFormatter.format(product.price)}</p>
+                              {product.original_price && (
+                                <p className="text-xs text-slate-400 line-through">
+                                  {currencyFormatter.format(product.original_price)}
+                                </p>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <button
+                                onClick={() => setEditingProduct(product)}
+                                className="p-2 hover:bg-slate-100 rounded-lg transition text-slate-400 hover:text-primary"
+                                title="Editar"
+                              >
+                                <Pencil size={16} />
+                              </button>
+                              <button
+                                onClick={() => handleDeleteProduct(product.id)}
+                                className="p-2 hover:bg-red-50 rounded-lg transition text-slate-400 hover:text-red-500"
+                                title="Excluir"
+                              >
+                                <Trash2 size={16} />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                  )}
+                </div>
+              </div>
+
+              {/* Modal de Edição */}
+              {editingProduct && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                  <div className="bg-white rounded-2xl shadow-xl max-w-md w-full max-h-[80vh] overflow-hidden">
+                    <div className="p-5 border-b border-slate-100 flex items-center justify-between">
+                      <h3 className="font-bold text-navy">Editar Produto</h3>
+                      <button
+                        onClick={() => setEditingProduct(null)}
+                        className="p-2 hover:bg-slate-100 rounded-lg transition"
+                      >
+                        <X size={20} />
+                      </button>
+                    </div>
+                    <div className="p-5 space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-1">Nome</label>
+                        <input
+                          type="text"
+                          value={editingProduct.name}
+                          onChange={(e) => setEditingProduct({ ...editingProduct, name: e.target.value })}
+                          className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary/20"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-1">Descrição</label>
+                        <textarea
+                          value={editingProduct.description || ''}
+                          onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })}
+                          rows={3}
+                          className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary/20"
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-slate-700 mb-1">Preço</label>
+                          <input
+                            type="number"
+                            step="0.01"
+                            value={editingProduct.price}
+                            onChange={(e) => setEditingProduct({ ...editingProduct, price: parseFloat(e.target.value) || 0 })}
+                            className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary/20"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-slate-700 mb-1">Categoria</label>
+                          <input
+                            type="text"
+                            value={editingProduct.category || ''}
+                            onChange={(e) => setEditingProduct({ ...editingProduct, category: e.target.value })}
+                            className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary/20"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-1">Status</label>
+                        <select
+                          value={editingProduct.status}
+                          onChange={(e) => setEditingProduct({ ...editingProduct, status: e.target.value })}
+                          className="w-full px-4 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary/20"
+                        >
+                          <option value="active">Ativo</option>
+                          <option value="paused">Pausado</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="p-5 border-t border-slate-100 flex justify-end gap-3">
+                      <button
+                        onClick={() => setEditingProduct(null)}
+                        className="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 transition"
+                      >
+                        Cancelar
+                      </button>
+                      <button
+                        onClick={() => handleUpdateProduct(editingProduct)}
+                        className="px-4 py-2 rounded-xl bg-primary text-white font-semibold hover:brightness-110 transition"
+                      >
+                        Salvar
+                      </button>
                     </div>
                   </div>
                 </div>

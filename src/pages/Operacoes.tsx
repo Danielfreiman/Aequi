@@ -262,7 +262,15 @@ export function Operacoes() {
         description: line.description,
         value: line.value,
         type: line.type === 'credit' ? 'Receita' : 'Despesa',
-        category: line.category,
+        category: 'Fatura detalhada',
+        items: [
+          {
+            description: line.description,
+            category: line.category || 'Importado',
+            value: line.value,
+            type: line.type === 'credit' ? 'Receita' : 'Despesa',
+          },
+        ],
         is_paid: true,
         source: 'extrato_bancario',
         bank: selectedBank,
@@ -276,7 +284,7 @@ export function Operacoes() {
       setExtractLines([]);
     } catch (error) {
       setImportStatus('error');
-      setImportMessage('Erro ao salvar transações. Tente novamente.');
+      setImportMessage('Erro ao Salvar Transações`n                <span class="text-xs text-slate-500 flex items-center gap-2">`n                  <span class="inline-flex h-2 w-2 rounded-full bg-primary" />`n                  Será lançado como <strong>Fatura detalhada</strong> (cada linha vira um item).`n                </span>. Tente novamente.');
       console.error(error);
     }
   };
@@ -767,6 +775,10 @@ export function Operacoes() {
     </section>
   );
 }
+
+
+
+
 
 
 
