@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useCallback } from 'react';
+﻿import { useEffect, useMemo, useState, useCallback } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { format, addMonths } from 'date-fns';
 import { Upload, FileText, Check, AlertCircle, Trash2, RefreshCw } from 'lucide-react';
@@ -37,24 +37,25 @@ const currencyFormatter = new Intl.NumberFormat('pt-BR', {
 
 const EXTRACT_CATEGORIES = [
   { id: 'receita_ifood', name: 'Repasse iFood', type: 'credit' },
-  { id: 'receita_cartao', name: 'Vendas Cartão', type: 'credit' },
+  { id: 'receita_cartao', name: 'Vendas CartÃ£o', type: 'credit' },
   { id: 'receita_pix', name: 'Vendas PIX', type: 'credit' },
   { id: 'receita_dinheiro', name: 'Vendas Dinheiro', type: 'credit' },
   { id: 'despesa_fornecedor', name: 'Fornecedores', type: 'debit' },
   { id: 'despesa_aluguel', name: 'Aluguel', type: 'debit' },
   { id: 'despesa_energia', name: 'Energia', type: 'debit' },
-  { id: 'despesa_agua', name: 'Água', type: 'debit' },
-  { id: 'despesa_gas', name: 'Gás', type: 'debit' },
+  { id: 'despesa_agua', name: 'Ãgua', type: 'debit' },
+  { id: 'despesa_gas', name: 'GÃ¡s', type: 'debit' },
   { id: 'despesa_folha', name: 'Folha de Pagamento', type: 'debit' },
   { id: 'despesa_impostos', name: 'Impostos', type: 'debit' },
   { id: 'despesa_marketing', name: 'Marketing', type: 'debit' },
-  { id: 'despesa_manutencao', name: 'Manutenção', type: 'debit' },
+  { id: 'despesa_manutencao', name: 'ManutenÃ§Ã£o', type: 'debit' },
   { id: 'despesa_outros', name: 'Outras Despesas', type: 'debit' },
-  { id: 'transferencia', name: 'Transferência', type: 'both' },
+  { id: 'transferencia', name: 'TransferÃªncia', type: 'both' },
 ];
 
 export function Operacoes() {
-  const { userId } = useAuthSession();
+  const { session } = useAuthSession();
+  const [profileId, setProfileId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<TabType>('manual');
   const [categories, setCategories] = useState<Category[]>([]);
   const [type, setType] = useState<OperationType>('Despesa');
@@ -71,7 +72,7 @@ export function Operacoes() {
   const [invoiceItems, setInvoiceItems] = useState<InvoiceItem[]>([]);
   const [useInvoice, setUseInvoice] = useState(false);
 
-  // Estados para importação de extrato
+  // Estados para importaÃ§Ã£o de extrato
   const [extractLines, setExtractLines] = useState<ExtractLine[]>([]);
   const [importStatus, setImportStatus] = useState<ImportStatus>('idle');
   const [importMessage, setImportMessage] = useState('');
@@ -80,7 +81,7 @@ export function Operacoes() {
 
   const banks = [
     { id: 'nubank', name: 'Nubank' },
-    { id: 'itau', name: 'Itaú' },
+    { id: 'itau', name: 'ItaÃº' },
     { id: 'bradesco', name: 'Bradesco' },
     { id: 'santander', name: 'Santander' },
     { id: 'bb', name: 'Banco do Brasil' },
@@ -92,10 +93,16 @@ export function Operacoes() {
   ];
 
   useEffect(() => {
+    const loadProfile = async () => {
+      const { data, error } = await supabase.from('profiles').select('id').limit(1).maybeSingle();
+      if (!error && data?.id) setProfileId(data.id);
+    };
+
     const loadCategories = async () => {
       const { data } = await supabase.from('finance_categories').select('id,name').order('name', { ascending: true });
       setCategories(data || []);
     };
+    loadProfile();
     loadCategories();
   }, []);
 
@@ -104,7 +111,7 @@ export function Operacoes() {
     [invoiceItems]
   );
 
-  // Funções para importação de extrato
+  // FunÃ§Ãµes para importaÃ§Ã£o de extrato
   const handleDrag = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -126,7 +133,7 @@ export function Operacoes() {
         parsed.push({
           id: `line-${i}`,
           date: cols[0] || format(new Date(), 'yyyy-MM-dd'),
-          description: cols[1] || 'Sem descrição',
+          description: cols[1] || 'Sem descriÃ§Ã£o',
           value: Math.abs(value),
           type: value >= 0 ? 'credit' : 'debit',
           category: '',
@@ -146,7 +153,7 @@ export function Operacoes() {
         category = 'receita_ifood';
       } else if (desc.includes('pix')) {
         category = line.type === 'credit' ? 'receita_pix' : 'transferencia';
-      } else if (desc.includes('cartao') || desc.includes('cartão') || desc.includes('maquininha')) {
+      } else if (desc.includes('cartao') || desc.includes('cartÃ£o') || desc.includes('maquininha')) {
         category = 'receita_cartao';
       } else if (desc.includes('aluguel') || desc.includes('locacao')) {
         category = 'despesa_aluguel';
@@ -156,7 +163,7 @@ export function Operacoes() {
         category = 'despesa_agua';
       } else if (desc.includes('gas') || desc.includes('comgas') || desc.includes('ultragaz')) {
         category = 'despesa_gas';
-      } else if (desc.includes('folha') || desc.includes('salario') || desc.includes('salário') || desc.includes('funcionario')) {
+      } else if (desc.includes('folha') || desc.includes('salario') || desc.includes('salÃ¡rio') || desc.includes('funcionario')) {
         category = 'despesa_folha';
       } else if (desc.includes('darf') || desc.includes('das') || desc.includes('imposto') || desc.includes('tributo')) {
         category = 'despesa_impostos';
@@ -198,7 +205,7 @@ export function Operacoes() {
       setExtractLines(classified);
       const matchedCount = classified.filter(l => l.matched).length;
       setImportStatus('success');
-      setImportMessage(`${classified.length} transações importadas. ${matchedCount} classificadas automaticamente.`);
+      setImportMessage(`${classified.length} transaÃ§Ãµes importadas. ${matchedCount} classificadas automaticamente.`);
     } catch (error) {
       setImportStatus('error');
       setImportMessage('Erro ao processar arquivo. Verifique o formato.');
@@ -213,18 +220,32 @@ export function Operacoes() {
     );
   };
 
+  const updateExtractDescription = (id: string, description: string) => {
+    setExtractLines((lines) => lines.map((line) => (line.id === id ? { ...line, description } : line)));
+  };
+
   const removeExtractLine = (id: string) => {
     setExtractLines(lines => lines.filter(line => line.id !== id));
   };
 
   const handleSaveExtract = async () => {
-    if (!userId) {
+    if (!session?.user?.id) {
       setImportStatus('error');
       setImportMessage('Você precisa estar logado para salvar as transações.');
       return;
     }
+    if (!profileId) {
+      setImportStatus('error');
+      setImportMessage('Nenhum perfil encontrado para associar as transações.');
+      return;
+    }
+    if (!selectedBank) {
+      setImportStatus('error');
+      setImportMessage('Selecione o banco antes de salvar.');
+      return;
+    }
 
-    const unclassified = extractLines.filter(l => !l.category);
+    const unclassified = extractLines.filter((l) => !l.category);
     if (unclassified.length > 0) {
       setImportStatus('error');
       setImportMessage(`${unclassified.length} transações ainda precisam ser classificadas.`);
@@ -235,8 +256,8 @@ export function Operacoes() {
     setImportMessage('Salvando transações...');
 
     try {
-      const transactions = extractLines.map(line => ({
-        profile_id: userId,
+      const transactions = extractLines.map((line) => ({
+        profile_id: profileId,
         date: line.date,
         description: line.description,
         value: line.value,
@@ -304,7 +325,7 @@ export function Operacoes() {
 
   const handleSubmit = async () => {
     if (!description || (!value && !useInvoice) || !date) {
-      setError('Preencha descrição, valor (ou fatura detalhada) e data.');
+      setError('Preencha descriÃ§Ã£o, valor (ou fatura detalhada) e data.');
       return;
     }
     if (useInvoice && totalInvoice <= 0) {
@@ -320,14 +341,14 @@ export function Operacoes() {
       const rows = createRows();
       const { error: insertError } = await supabase.from('fin_transactions').insert(rows);
       if (insertError) throw insertError;
-      setSuccess('Operação salva com sucesso.');
+      setSuccess('OperaÃ§Ã£o salva com sucesso.');
       setDescription('');
       setCategory('');
       setValue('');
       setInvoiceItems([]);
       setUseInvoice(false);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro ao salvar operação.');
+      setError(err instanceof Error ? err.message : 'Erro ao salvar operaÃ§Ã£o.');
     } finally {
       setLoading(false);
     }
@@ -337,9 +358,9 @@ export function Operacoes() {
     <section className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="text-2xl font-black text-navy">Cadastro de operações</h2>
+          <h2 className="text-2xl font-black text-navy">Cadastro de operaÃ§Ãµes</h2>
           <p className="text-slate-600 text-sm">
-            Lance entradas e saídas manualmente ou importe extratos bancários.
+            Lance entradas e saÃ­das manualmente ou importe extratos bancÃ¡rios.
           </p>
         </div>
       </div>
@@ -354,7 +375,7 @@ export function Operacoes() {
               : 'border-transparent text-slate-500 hover:text-slate-700'
           }`}
         >
-          Lançamento Manual
+          LanÃ§amento Manual
         </button>
         <button
           onClick={() => setActiveTab('extrato')}
@@ -372,7 +393,7 @@ export function Operacoes() {
       {error && <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-600">{error}</div>}
       {success && <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-700">{success}</div>}
 
-      {/* Tab: Lançamento Manual */}
+      {/* Tab: LanÃ§amento Manual */}
       {activeTab === 'manual' && (
         <>
           <div className="grid lg:grid-cols-3 gap-6">
@@ -385,7 +406,7 @@ export function Operacoes() {
                 onChange={(event) => setType(event.target.value as OperationType)}
                 className="rounded-xl border border-slate-200 px-3 py-2 text-sm"
               >
-                <option value="Despesa">Saída</option>
+                <option value="Despesa">SaÃ­da</option>
                 <option value="Receita">Entrada</option>
               </select>
             </div>
@@ -399,11 +420,11 @@ export function Operacoes() {
               />
             </div>
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-semibold text-slate-600">Descrição</label>
+              <label className="text-xs font-semibold text-slate-600">DescriÃ§Ã£o</label>
               <input
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
-                placeholder="Ex: Fatura cartão"
+                placeholder="Ex: Fatura cartÃ£o"
                 className="rounded-xl border border-slate-200 px-3 py-2 text-sm"
               />
             </div>
@@ -434,7 +455,7 @@ export function Operacoes() {
                 disabled={useInvoice}
               />
               {useInvoice && (
-                <span className="text-xs text-slate-500">Valor é calculado pela fatura detalhada.</span>
+                <span className="text-xs text-slate-500">Valor Ã© calculado pela fatura detalhada.</span>
               )}
             </div>
             <div className="flex items-center gap-2 mt-6">
@@ -445,7 +466,7 @@ export function Operacoes() {
                 onChange={(event) => setIsPaid(event.target.checked)}
                 className="size-4"
               />
-              <label htmlFor="isPaid" className="text-sm text-slate-600">Já está pago/recebido</label>
+              <label htmlFor="isPaid" className="text-sm text-slate-600">JÃ¡ estÃ¡ pago/recebido</label>
             </div>
           </div>
 
@@ -457,7 +478,7 @@ export function Operacoes() {
                 onChange={(event) => setRepeatEvery(event.target.value as RepeatEvery)}
                 className="rounded-xl border border-slate-200 px-3 py-2 text-sm"
               >
-                <option value="nenhum">Não repetir</option>
+                <option value="nenhum">NÃ£o repetir</option>
                 <option value="mensal">Mensal</option>
                 <option value="semanal">Semanal (fixa a mesma data)</option>
               </select>
@@ -480,7 +501,7 @@ export function Operacoes() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-bold text-navy">Fatura detalhada</p>
-              <p className="text-xs text-slate-500">Use para lançar um único pagamento com categorias detalhadas para o DRE.</p>
+              <p className="text-xs text-slate-500">Use para lanÃ§ar um Ãºnico pagamento com categorias detalhadas para o DRE.</p>
             </div>
             <label className="flex items-center gap-2 text-sm text-slate-700">
               <input
@@ -500,7 +521,7 @@ export function Operacoes() {
                   <input
                     value={item.description}
                     onChange={(event) => handleUpdateInvoiceItem(item.id, { description: event.target.value })}
-                    placeholder="Descrição do item"
+                    placeholder="DescriÃ§Ã£o do item"
                     className="rounded-xl border border-slate-200 px-3 py-2 text-sm"
                   />
                   <select
@@ -554,7 +575,7 @@ export function Operacoes() {
           disabled={loading}
           className="px-5 py-3 rounded-xl bg-primary text-white font-semibold hover:brightness-110 transition disabled:opacity-60"
         >
-          {loading ? 'Salvando...' : 'Salvar operação'}
+          {loading ? 'Salvando...' : 'Salvar operaÃ§Ã£o'}
         </button>
       </div>
         </>
@@ -563,7 +584,7 @@ export function Operacoes() {
       {/* Tab: Importar Extrato */}
       {activeTab === 'extrato' && (
         <div className="space-y-6">
-          {/* Status da importação */}
+          {/* Status da importaÃ§Ã£o */}
           {importStatus !== 'idle' && (
             <div className={`rounded-xl p-4 flex items-center gap-3 ${
               importStatus === 'loading' ? 'bg-blue-50 border border-blue-200 text-blue-700' :
@@ -577,7 +598,7 @@ export function Operacoes() {
             </div>
           )}
 
-          {/* Upload e seleção de banco */}
+          {/* Upload e seleÃ§Ã£o de banco */}
           {extractLines.length === 0 && (
             <div className="grid md:grid-cols-2 gap-6">
               <div className="rounded-2xl bg-white border border-slate-100 shadow-soft p-6">
@@ -593,7 +614,7 @@ export function Operacoes() {
                   ))}
                 </select>
                 <p className="text-xs text-slate-500 mt-2">
-                  Selecionar o banco ajuda na classificação automática.
+                  Selecionar o banco ajuda na classificaÃ§Ã£o automÃ¡tica.
                 </p>
               </div>
 
@@ -635,11 +656,11 @@ export function Operacoes() {
             <>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="rounded-2xl bg-white border border-slate-100 p-5 shadow-soft">
-                  <p className="text-xs uppercase text-slate-500 font-semibold">Total Créditos</p>
+                  <p className="text-xs uppercase text-slate-500 font-semibold">Total CrÃ©ditos</p>
                   <p className="text-2xl font-black text-green-600">{currencyFormatter.format(totalCredits)}</p>
                 </div>
                 <div className="rounded-2xl bg-white border border-slate-100 p-5 shadow-soft">
-                  <p className="text-xs uppercase text-slate-500 font-semibold">Total Débitos</p>
+                  <p className="text-xs uppercase text-slate-500 font-semibold">Total DÃ©bitos</p>
                   <p className="text-2xl font-black text-red-600">{currencyFormatter.format(totalDebits)}</p>
                 </div>
                 <div className="rounded-2xl bg-white border border-slate-100 p-5 shadow-soft">
@@ -656,12 +677,12 @@ export function Operacoes() {
                 </div>
               </div>
 
-              {/* Lista de transações */}
+              {/* Lista de transaÃ§Ãµes */}
               <div className="rounded-2xl bg-white border border-slate-100 shadow-soft overflow-hidden">
                 <div className="p-5 border-b border-slate-100 flex items-center justify-between">
                   <div>
-                    <h3 className="text-lg font-bold text-navy">Transações do Extrato</h3>
-                    <p className="text-sm text-slate-500">Classifique cada transação para importar</p>
+                    <h3 className="text-lg font-bold text-navy">TransaÃ§Ãµes do Extrato</h3>
+                    <p className="text-sm text-slate-500">Classifique cada transaÃ§Ã£o para importar</p>
                   </div>
                   <button
                     onClick={() => setExtractLines([])}
@@ -683,7 +704,11 @@ export function Operacoes() {
                         </span>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-navy truncate">{line.description}</p>
+                        <input
+                          className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm mb-1"
+                          value={line.description}
+                          onChange={(e) => updateExtractDescription(line.id, e.target.value)}
+                        />
                         <p className="text-xs text-slate-500">{line.date}</p>
                       </div>
                       <div className="flex-shrink-0 w-40">
@@ -732,7 +757,7 @@ export function Operacoes() {
                   ) : (
                     <Check size={18} />
                   )}
-                  Salvar Transações
+                  Salvar TransaÃ§Ãµes
                 </button>
               </div>
             </>
@@ -742,3 +767,7 @@ export function Operacoes() {
     </section>
   );
 }
+
+
+
+

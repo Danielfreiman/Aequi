@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
   Store,
-  Search,
   Package,
   ShoppingBag,
   RefreshCw,
@@ -10,11 +10,9 @@ import {
   ChevronRight,
   Download,
   Calendar,
-  TrendingUp,
   X,
-  Plus,
-  Link2,
   Unlink,
+  ExternalLink,
 } from 'lucide-react';
 import { supabase } from '../lib/supabaseClient';
 import { useAuthSession } from '../hooks/useAuthSession';
@@ -25,30 +23,28 @@ import {
   type IFoodComplementGroup,
   type IFoodOrder,
   type IFoodOrdersSummary,
-  getMerchantByCNPJ,
   getMenuCategories,
   getMenuProducts,
   getProductComplements,
   getOrdersHistory,
   calculateOrdersSummary,
   formatCNPJ,
-  cleanCNPJ,
-  isValidCNPJ,
 } from '../services/ifood';
 
-type ConnectionStatus = 'idle' | 'connecting' | 'connected' | 'error';
-type TabType = 'cardapio' | 'pedidos' | 'config';
+type ConnectionStatus = 'idle' | 'connecting' | 'connected' | 'error' | 'expired';
+type TabType = 'cardapio' | 'pedidos';
 
 const currencyFormatter = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
 
 export function IntegracaoIFood() {
   const { userId } = useAuthSession();
+  const [searchParams, setSearchParams] = useSearchParams();
   
   // Estado da conexão
-  const [cnpj, setCnpj] = useState('');
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>('idle');
   const [connectionMessage, setConnectionMessage] = useState('');
   const [merchant, setMerchant] = useState<IFoodMerchant | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
   
   // Estado das abas
   const [activeTab, setActiveTab] = useState<TabType>('cardapio');
@@ -73,32 +69,59 @@ export function IntegracaoIFood() {
   });
   const [selectedOrder, setSelectedOrder] = useState<IFoodOrder | null>(null);
 
-  // Carrega conexão salva
+  // Processa parâmetros da URL (retorno do OAuth)
   useEffect(() => {
-    const loadSavedConnection = async () => {
-      if (!userId) return;
-      
-      const { data } = await supabase
-        .from('ifood_connections')
-        .select('*')
-        .eq('profile_id', userId)
-        .single();
-      
-      if (data?.merchant_id) {
-        setMerchant({
-          id: data.merchant_id,
-          name: data.merchant_name,
-          corporateName: data.corporate_name,
-          cnpj: data.cnpj,
-          status: 'AVAILABLE',
-          createdAt: data.created_at,
-          address: data.address || {},
-        });
-        setCnpj(formatCNPJ(data.cnpj));
-        setConnectionStatus('connected');
-      }
-    };
+    const success = searchParams.get('success');
+    const error = searchParams.get('error');
+    const merchantName = searchParams.get('merchant');
+
+    if (success === 'true') {
+      setConnectionMessage(`Conectado com sucesso a ${merchantName || 'iFood'}!`);
+      setSearchParams({});
+      loadSavedConnection();
+    } else if (error) {
+      const errorMessages: Record<string, string> = {
+        authorization_denied: 'Você negou a autorização. Tente novamente se desejar conectar.',
+        no_code: 'Erro na autorização. Código não recebido.',
+        server_config: 'Erro de configuração do servidor.',
+        token_exchange: 'Erro ao obter token de acesso.',
+        internal: 'Erro interno. Tente novamente.',
+      };
+      setConnectionStatus('error');
+      setConnectionMessage(errorMessages[error] || 'Erro desconhecido na conexão.');
+      setSearchParams({});
+    }
+  }, [searchParams]);
+
+  // Carrega conexão salva
+  const loadSavedConnection = async () => {
+    if (!userId) return;
     
+    const { data } = await supabase
+      .from('ifood_connections')
+      .select('*')
+      .eq('profile_id', userId)
+      .single();
+    
+    if (data?.merchant_id && data?.status === 'active') {
+      setMerchant({
+        id: data.merchant_id,
+        name: data.merchant_name,
+        corporateName: data.corporate_name,
+        cnpj: data.cnpj || '',
+        status: 'AVAILABLE',
+        createdAt: data.created_at,
+        address: data.address || {},
+      });
+      setAccessToken(data.access_token);
+      setConnectionStatus('connected');
+    } else if (data?.status === 'expired') {
+      setConnectionStatus('expired');
+      setConnectionMessage('Sua conexão expirou. Por favor, reconecte ao iFood.');
+    }
+  };
+
+  useEffect(() => {
     loadSavedConnection();
   }, [userId]);
 
@@ -109,67 +132,19 @@ export function IntegracaoIFood() {
     }
   }, [connectionStatus, merchant]);
 
-  const handleCnpjChange = (value: string) => {
-    // Formata o CNPJ automaticamente
-    const digits = value.replace(/\D/g, '').slice(0, 14);
-    let formatted = digits;
-    
-    if (digits.length > 12) {
-      formatted = `${digits.slice(0, 2)}.${digits.slice(2, 5)}.${digits.slice(5, 8)}/${digits.slice(8, 12)}-${digits.slice(12)}`;
-    } else if (digits.length > 8) {
-      formatted = `${digits.slice(0, 2)}.${digits.slice(2, 5)}.${digits.slice(5, 8)}/${digits.slice(8)}`;
-    } else if (digits.length > 5) {
-      formatted = `${digits.slice(0, 2)}.${digits.slice(2, 5)}.${digits.slice(5)}`;
-    } else if (digits.length > 2) {
-      formatted = `${digits.slice(0, 2)}.${digits.slice(2)}`;
-    }
-    
-    setCnpj(formatted);
-  };
-
-  const handleConnect = async () => {
-    const cleanedCnpj = cleanCNPJ(cnpj);
-    
-    if (!isValidCNPJ(cleanedCnpj)) {
+  // Inicia o fluxo OAuth - redireciona para o iFood
+  const handleConnect = () => {
+    if (!userId) {
       setConnectionStatus('error');
-      setConnectionMessage('CNPJ inválido. Verifique os dígitos.');
+      setConnectionMessage('Você precisa estar logado para conectar ao iFood.');
       return;
     }
 
     setConnectionStatus('connecting');
-    setConnectionMessage('Buscando estabelecimento no iFood...');
+    setConnectionMessage('Redirecionando para o iFood...');
 
-    try {
-      const merchantData = await getMerchantByCNPJ(cleanedCnpj);
-      
-      if (!merchantData) {
-        setConnectionStatus('error');
-        setConnectionMessage('Nenhum estabelecimento encontrado com este CNPJ no iFood.');
-        return;
-      }
-
-      // Salva a conexão no banco
-      if (userId) {
-        await supabase.from('ifood_connections').upsert({
-          profile_id: userId,
-          cnpj: cleanedCnpj,
-          merchant_id: merchantData.id,
-          merchant_name: merchantData.name,
-          corporate_name: merchantData.corporateName,
-          address: merchantData.address,
-          status: 'active',
-          updated_at: new Date().toISOString(),
-        }, { onConflict: 'profile_id' });
-      }
-
-      setMerchant(merchantData);
-      setConnectionStatus('connected');
-      setConnectionMessage(`Conectado a ${merchantData.name}`);
-    } catch (error) {
-      console.error('Erro ao conectar:', error);
-      setConnectionStatus('error');
-      setConnectionMessage('Erro ao conectar. Tente novamente.');
-    }
+    // Redireciona para o endpoint de autorização
+    window.location.href = `/api/ifood/authorize?userId=${userId}`;
   };
 
   const handleDisconnect = async () => {
@@ -181,9 +156,9 @@ export function IntegracaoIFood() {
     }
     
     setMerchant(null);
+    setAccessToken(null);
     setConnectionStatus('idle');
     setConnectionMessage('');
-    setCnpj('');
     setCategories([]);
     setProducts([]);
     setOrders([]);
@@ -255,7 +230,6 @@ export function IntegracaoIFood() {
     setImportMessage('Importando produtos para o sistema...');
     
     try {
-      // Prepara os dados para inserção
       const menuItems = products.map(p => ({
         profile_id: userId,
         name: p.name,
@@ -292,7 +266,6 @@ export function IntegracaoIFood() {
     setImportMessage('Importando pedidos para o financeiro...');
     
     try {
-      // Converte pedidos em transações financeiras
       const transactions = orders
         .filter(o => o.status === 'CONCLUDED')
         .map(order => ({
@@ -342,53 +315,52 @@ export function IntegracaoIFood() {
       {connectionStatus !== 'connected' ? (
         <div className="rounded-2xl bg-white border border-slate-100 shadow-soft p-6">
           <div className="flex items-start gap-4">
-            <div className="size-14 rounded-2xl bg-red-500 flex items-center justify-center flex-shrink-0">
+            <div className="size-14 rounded-2xl bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center flex-shrink-0">
               <Store size={28} className="text-white" />
             </div>
             <div className="flex-1">
               <h3 className="text-lg font-bold text-navy mb-1">Conectar ao iFood</h3>
               <p className="text-sm text-slate-600 mb-4">
-                Digite o CNPJ da sua loja cadastrada no iFood para importar dados automaticamente.
+                Clique no botão abaixo para autorizar o Aequi a acessar os dados da sua loja no iFood.
+                Você será redirecionado para o iFood para fazer login e autorizar o acesso.
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-3">
-                <div className="flex-1">
-                  <input
-                    type="text"
-                    value={cnpj}
-                    onChange={(e) => handleCnpjChange(e.target.value)}
-                    placeholder="00.000.000/0000-00"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 text-lg font-mono"
-                    maxLength={18}
-                  />
-                </div>
-                <button
-                  onClick={handleConnect}
-                  disabled={connectionStatus === 'connecting' || cnpj.length < 18}
-                  className="px-6 py-3 rounded-xl bg-red-500 text-white font-semibold hover:bg-red-600 transition disabled:opacity-60 flex items-center justify-center gap-2"
-                >
-                  {connectionStatus === 'connecting' ? (
-                    <>
-                      <RefreshCw size={18} className="animate-spin" />
-                      Conectando...
-                    </>
-                  ) : (
-                    <>
-                      <Link2 size={18} />
-                      Conectar
-                    </>
-                  )}
-                </button>
-              </div>
-              
-              {connectionMessage && (
-                <div className={`mt-3 flex items-center gap-2 text-sm ${
-                  connectionStatus === 'error' ? 'text-red-600' : 'text-slate-600'
-                }`}>
-                  {connectionStatus === 'error' && <AlertCircle size={16} />}
+              {connectionStatus === 'error' && connectionMessage && (
+                <div className="mb-4 flex items-center gap-2 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm">
+                  <AlertCircle size={18} />
                   {connectionMessage}
                 </div>
               )}
+
+              {connectionStatus === 'expired' && (
+                <div className="mb-4 flex items-center gap-2 p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-700 text-sm">
+                  <AlertCircle size={18} />
+                  {connectionMessage}
+                </div>
+              )}
+
+              <button
+                onClick={handleConnect}
+                disabled={connectionStatus === 'connecting'}
+                className="px-6 py-3 rounded-xl bg-red-500 text-white font-semibold hover:bg-red-600 transition disabled:opacity-60 flex items-center gap-2"
+              >
+                {connectionStatus === 'connecting' ? (
+                  <>
+                    <RefreshCw size={18} className="animate-spin" />
+                    Redirecionando...
+                  </>
+                ) : (
+                  <>
+                    <ExternalLink size={18} />
+                    Conectar com iFood
+                  </>
+                )}
+              </button>
+
+              <p className="text-xs text-slate-500 mt-4">
+                Ao conectar, você autoriza o Aequi a acessar informações do seu cardápio e histórico de pedidos.
+                Você pode desconectar a qualquer momento.
+              </p>
             </div>
           </div>
         </div>
@@ -402,9 +374,14 @@ export function IntegracaoIFood() {
                   <Store size={28} />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold">{merchant?.name}</h3>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-xl font-bold">{merchant?.name}</h3>
+                    <Check size={20} className="text-green-300" />
+                  </div>
                   <p className="text-red-100 text-sm">{merchant?.corporateName}</p>
-                  <p className="text-red-200 text-xs font-mono mt-1">{formatCNPJ(merchant?.cnpj || '')}</p>
+                  {merchant?.cnpj && (
+                    <p className="text-red-200 text-xs font-mono mt-1">{formatCNPJ(merchant.cnpj)}</p>
+                  )}
                 </div>
               </div>
               <button
@@ -416,13 +393,21 @@ export function IntegracaoIFood() {
               </button>
             </div>
             
-            {merchant?.address && (
+            {merchant?.address && Object.keys(merchant.address).length > 0 && (
               <div className="mt-4 pt-4 border-t border-white/20 text-sm text-red-100">
                 <p>{merchant.address.street}, {merchant.address.number} - {merchant.address.neighborhood}</p>
                 <p>{merchant.address.city}/{merchant.address.state} - {merchant.address.postalCode}</p>
               </div>
             )}
           </div>
+
+          {/* Mensagem de sucesso */}
+          {connectionMessage && connectionMessage.includes('sucesso') && (
+            <div className="rounded-xl bg-green-50 border border-green-200 p-4 text-sm text-green-700 flex items-center gap-2">
+              <Check size={16} />
+              {connectionMessage}
+            </div>
+          )}
 
           {/* Tabs */}
           <div className="flex gap-2 border-b border-slate-200">
@@ -453,7 +438,6 @@ export function IntegracaoIFood() {
           {/* Tab: Cardápio */}
           {activeTab === 'cardapio' && (
             <div className="space-y-6">
-              {/* Ações */}
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
                   <select
@@ -490,8 +474,12 @@ export function IntegracaoIFood() {
               </div>
 
               {importMessage && (
-                <div className="rounded-xl bg-green-50 border border-green-200 p-4 text-sm text-green-700 flex items-center gap-2">
-                  <Check size={16} />
+                <div className={`rounded-xl p-4 text-sm flex items-center gap-2 ${
+                  importMessage.includes('sucesso') 
+                    ? 'bg-green-50 border border-green-200 text-green-700'
+                    : 'bg-red-50 border border-red-200 text-red-700'
+                }`}>
+                  {importMessage.includes('sucesso') ? <Check size={16} /> : <AlertCircle size={16} />}
                   {importMessage}
                 </div>
               )}
@@ -641,7 +629,6 @@ export function IntegracaoIFood() {
           {/* Tab: Pedidos */}
           {activeTab === 'pedidos' && (
             <div className="space-y-6">
-              {/* Filtros */}
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-2">
@@ -684,8 +671,12 @@ export function IntegracaoIFood() {
               </div>
 
               {importMessage && (
-                <div className="rounded-xl bg-green-50 border border-green-200 p-4 text-sm text-green-700 flex items-center gap-2">
-                  <Check size={16} />
+                <div className={`rounded-xl p-4 text-sm flex items-center gap-2 ${
+                  importMessage.includes('sucesso') || importMessage.includes('importados')
+                    ? 'bg-green-50 border border-green-200 text-green-700'
+                    : 'bg-red-50 border border-red-200 text-red-700'
+                }`}>
+                  {importMessage.includes('sucesso') || importMessage.includes('importados') ? <Check size={16} /> : <AlertCircle size={16} />}
                   {importMessage}
                 </div>
               )}
@@ -799,7 +790,6 @@ export function IntegracaoIFood() {
                       </button>
                     </div>
                     <div className="p-5 overflow-y-auto max-h-[60vh] space-y-4">
-                      {/* Status e Tipo */}
                       <div className="flex gap-2">
                         <span className={`text-xs px-2 py-1 rounded-full ${
                           selectedOrder.status === 'CONCLUDED'
@@ -817,7 +807,6 @@ export function IntegracaoIFood() {
                         </span>
                       </div>
 
-                      {/* Itens */}
                       <div className="rounded-xl border border-slate-200 overflow-hidden">
                         <div className="bg-slate-50 px-4 py-3">
                           <h4 className="font-semibold text-navy">Itens do Pedido</h4>
@@ -837,7 +826,6 @@ export function IntegracaoIFood() {
                         </div>
                       </div>
 
-                      {/* Totais */}
                       <div className="rounded-xl border border-slate-200 p-4 space-y-2">
                         <div className="flex justify-between text-sm">
                           <span className="text-slate-500">Subtotal</span>
@@ -861,7 +849,6 @@ export function IntegracaoIFood() {
                         </div>
                       </div>
 
-                      {/* Endereço de Entrega */}
                       {selectedOrder.deliveryAddress && (
                         <div className="rounded-xl border border-slate-200 p-4">
                           <h4 className="font-semibold text-navy mb-2">Endereço de Entrega</h4>
