@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes, Outlet } from 'react-router-dom';
+import { HashRouter, Navigate, Route, Routes, Outlet } from 'react-router-dom';
 import { Menu } from 'lucide-react';
 import { Sidebar } from './components/layout/Sidebar';
 import { Home } from './pages/Home.tsx';
@@ -42,7 +42,7 @@ const DashboardLayout = () => (
 );
 
 const App = () => (
-  <BrowserRouter>
+  <HashRouter>
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
@@ -62,7 +62,7 @@ const App = () => (
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
-  </BrowserRouter>
+  </HashRouter>
 );
 
 export default App;
