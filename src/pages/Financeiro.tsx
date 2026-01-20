@@ -28,6 +28,8 @@ export function Financeiro() {
   const [categoryFilter, setCategoryFilter] = useState<string>('todas');
   const [dateStart, setDateStart] = useState<string>('');
   const [dateEnd, setDateEnd] = useState<string>('');
+  const [customDateStart, setCustomDateStart] = useState<string>('');
+  const [customDateEnd, setCustomDateEnd] = useState<string>('');
 
   useEffect(() => {
     const loadData = async () => {
@@ -60,6 +62,19 @@ export function Financeiro() {
       return byStatus && byCategory && byDateStart && byDateEnd;
     });
   }, [transactions, statusFilter, categoryFilter, dateStart, dateEnd]);
+
+  const filteredTransactions = useMemo(() => {
+    return transactions.filter((transaction) => {
+      const transactionDate = new Date(transaction.date);
+      const startDate = customDateStart ? new Date(customDateStart) : null;
+      const endDate = customDateEnd ? new Date(customDateEnd) : null;
+
+      if (startDate && transactionDate < startDate) return false;
+      if (endDate && transactionDate > endDate) return false;
+
+      return true;
+    });
+  }, [transactions, customDateStart, customDateEnd]);
 
   const summary = useMemo(() => {
     const contasPagar = filtered.filter((tx) => tx.type === 'Despesa');
@@ -154,6 +169,27 @@ export function Financeiro() {
             type="date"
             value={dateEnd}
             onChange={(event) => setDateEnd(event.target.value)}
+            className="rounded-xl border border-slate-200 px-3 py-2 text-sm"
+          />
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-4">
+        <div className="flex flex-col gap-1">
+          <label className="text-xs font-semibold text-slate-600">Data Personalizada - De</label>
+          <input
+            type="date"
+            value={customDateStart}
+            onChange={(e) => setCustomDateStart(e.target.value)}
+            className="rounded-xl border border-slate-200 px-3 py-2 text-sm"
+          />
+        </div>
+        <div className="flex flex-col gap-1">
+          <label className="text-xs font-semibold text-slate-600">Data Personalizada - Até</label>
+          <input
+            type="date"
+            value={customDateEnd}
+            onChange={(e) => setCustomDateEnd(e.target.value)}
             className="rounded-xl border border-slate-200 px-3 py-2 text-sm"
           />
         </div>

@@ -19,20 +19,14 @@ export type CheckoutResponse = {
   checkoutUrl?: string;
 };
 
-const rawApiBase = import.meta.env.VITE_ABACATEPAY_API_URL || '/api/payments';
-const apiBase = rawApiBase.endsWith('/v1') ? rawApiBase : `${rawApiBase.replace(/\/$/, '')}/v1`;
-const apiKey = import.meta.env.VITE_ABACATEPAY_API_KEY;
-
-if (!apiKey) {
-  throw new Error('Configure a variável VITE_ABACATEPAY_API_KEY nas Environment Variables da Vercel');
-}
+// Usa backend/proxy serverless para proteger a chave e evitar CORS
+const apiBase = '/api/abacatepay';
 
 export async function createCheckoutSession(payload: CheckoutPayload): Promise<CheckoutResponse> {
   const response = await fetch(`${apiBase}/checkout`, {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify({ ...payload, source: 'aequi-app' }),
   });
@@ -50,7 +44,6 @@ export async function createCustomer(payload: CustomerPayload) {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify(payload),
   });
