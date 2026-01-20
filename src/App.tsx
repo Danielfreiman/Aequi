@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes, Outlet } from 'react-router-dom
 import { Menu } from 'lucide-react';
 import { Sidebar } from './components/layout/Sidebar';
 import { Home } from './pages/Home.tsx';
+import { Login } from './pages/Login.tsx';
 import { Dashboard } from './pages/Dashboard.tsx';
 import { Conciliacao } from './pages/Conciliacao.tsx';
 import { Cardapio } from './pages/Cardapio.tsx';
@@ -42,6 +43,7 @@ const App = () => (
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/app" element={<DashboardLayout />}>
         <Route index element={<Dashboard />} />
         <Route path="conciliacao" element={<Conciliacao />} />

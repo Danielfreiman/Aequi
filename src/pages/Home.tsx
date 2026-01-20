@@ -2,8 +2,9 @@ const plans = [
   {
     name: 'Base',
     price: '7 dias grátis',
+    priceAfter: 'R$ 89/mês após o teste',
     stores: 'Até 1 loja',
-    cta: 'Começar teste',
+    cta: 'Começar teste grátis',
     highlight: true,
     features: [
       'Conciliação iFood automática',
@@ -14,6 +15,7 @@ const plans = [
   {
     name: 'Growth',
     price: 'R$ 149/mês',
+    priceAfter: 'Cobrança mensal',
     stores: 'Até 3 lojas',
     cta: 'Assinar Growth',
     highlight: false,
@@ -26,6 +28,7 @@ const plans = [
   {
     name: 'Scale',
     price: 'R$ 249/mês',
+    priceAfter: 'Cobrança mensal',
     stores: 'Até 5 lojas',
     cta: 'Assinar Scale',
     highlight: false,
@@ -39,22 +42,22 @@ const plans = [
 
 export function Home() {
   return (
-    <section className="flex flex-col gap-10">
+    <section className="flex flex-col gap-12">
       <div className="grid lg:grid-cols-2 gap-8 items-center">
         <div className="space-y-4">
           <span className="px-3 py-1 text-xs font-bold rounded-full bg-primary/10 text-primary">
             Saúde financeira para restaurantes iFood
           </span>
           <h1 className="text-4xl lg:text-5xl font-black text-navy leading-tight">
-            Concilie, precifique e cresça com clareza.
+            Concilie, precifique e cresça com previsibilidade.
           </h1>
           <p className="text-lg text-slate-600">
             A Aequi conecta conciliação iFood, fluxo de caixa e engenharia de cardápio em um só lugar.
-            Veja onde o lucro vaza e reajuste preços com segurança.
+            Veja onde o lucro vaza, ajuste preços e tenha visão diária de caixa.
           </p>
           <div className="flex flex-wrap gap-3">
             <a
-              href="/app"
+              href="/login"
               className="px-5 py-3 rounded-xl bg-primary text-white font-semibold shadow-sm hover:brightness-110 transition"
             >
               Começar teste grátis
@@ -75,6 +78,11 @@ export function Home() {
               <span className="size-2 rounded-full bg-navy" />
               Calculadora de preço com markup e taxas
             </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-4 pt-2 text-xs font-semibold text-slate-500">
+            <span className="px-3 py-1 rounded-full bg-slate-100">Sem cartão no teste</span>
+            <span className="px-3 py-1 rounded-full bg-slate-100">Onboarding guiado</span>
+            <span className="px-3 py-1 rounded-full bg-slate-100">Cancelamento em 1 clique</span>
           </div>
         </div>
 
@@ -111,6 +119,32 @@ export function Home() {
         </div>
       </div>
 
+      <div className="grid md:grid-cols-3 gap-4">
+        {[
+          {
+            title: 'Tempo de conciliação',
+            value: '4 min/dia',
+            desc: 'de horas para minutos com regras automáticas',
+          },
+          {
+            title: 'Margem recuperada',
+            value: '+8,7%',
+            desc: 'após revisão de markup e custos fixos',
+          },
+          {
+            title: 'Visão de caixa',
+            value: 'D+1',
+            desc: 'projeção de saldo e repasse líquido',
+          },
+        ].map((metric) => (
+          <div key={metric.title} className="rounded-2xl bg-white border border-slate-100 p-5 shadow-soft">
+            <p className="text-xs uppercase text-slate-500 font-semibold">{metric.title}</p>
+            <p className="text-2xl font-black text-navy mt-1">{metric.value}</p>
+            <p className="text-sm text-slate-500 mt-1">{metric.desc}</p>
+          </div>
+        ))}
+      </div>
+
       <div className="space-y-4">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <h2 className="text-2xl font-black text-navy">Planos para cada fase do seu delivery</h2>
@@ -137,7 +171,10 @@ export function Home() {
                   </span>
                 )}
               </div>
-              <p className="text-3xl font-black text-navy">{plan.price}</p>
+              <div>
+                <p className="text-3xl font-black text-navy">{plan.price}</p>
+                <p className="text-xs text-slate-500 mt-1">{plan.priceAfter}</p>
+              </div>
               <ul className="space-y-2 text-sm text-slate-600">
                 {plan.features.map((feat) => (
                   <li key={feat} className="flex items-start gap-2">
@@ -160,6 +197,46 @@ export function Home() {
         </div>
         <div className="text-sm text-slate-600">
           Precisa de mais de 5 lojas ou integrações adicionais? Entre em contato e montamos um plano custom.
+        </div>
+      </div>
+
+      <div className="grid lg:grid-cols-2 gap-6">
+        <div className="rounded-2xl bg-white border border-slate-100 p-6 shadow-soft">
+          <h3 className="text-lg font-bold text-navy">Por que a Aequi converte?</h3>
+          <ul className="mt-4 space-y-3 text-sm text-slate-600">
+            <li className="flex items-start gap-2">
+              <span className="mt-1 size-2 rounded-full bg-primary" />
+              Fechamento diário automático com visão de repasse líquido.
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="mt-1 size-2 rounded-full bg-primary" />
+              Cadastro de categorias e contas a pagar/receber centralizado.
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="mt-1 size-2 rounded-full bg-primary" />
+              Alertas de divergência e DRE consolidado por loja.
+            </li>
+          </ul>
+        </div>
+        <div className="rounded-2xl bg-white border border-slate-100 p-6 shadow-soft">
+          <h3 className="text-lg font-bold text-navy">Pronto para crescer?</h3>
+          <p className="text-sm text-slate-600 mt-2">
+            Comece o teste gratuito e tenha acesso a conciliação, fluxo de caixa e precificação em minutos.
+          </p>
+          <div className="flex flex-wrap gap-3 mt-4">
+            <a
+              href="/app"
+              className="px-5 py-3 rounded-xl bg-primary text-white font-semibold shadow-sm hover:brightness-110 transition"
+            >
+              Começar teste grátis
+            </a>
+            <a
+              href="/app/ajustes"
+              className="px-5 py-3 rounded-xl border border-navy/20 text-navy font-semibold hover:bg-navy/5 transition"
+            >
+              Ver categorias e ajustes
+            </a>
+          </div>
         </div>
       </div>
     </section>
