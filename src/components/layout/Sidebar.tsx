@@ -12,6 +12,7 @@ import {
   UtensilsCrossed,
   Upload,
   Package,
+  Store,
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
@@ -62,13 +63,13 @@ export function Sidebar() {
           <span>Engenharia de Cardápio</span>
         </NavLink>
         <NavLink
-          to="/app/importar-produtos"
+          to="/app/integracao-ifood"
           className={({ isActive }) =>
             `${itemClass} ${isActive ? 'bg-primary/15 text-white border border-primary/30' : 'text-gray-200'}`
           }
         >
-          <Package size={18} className="shrink-0" />
-          <span>Importar Produtos</span>
+          <Store size={18} className="shrink-0" />
+          <span>Integração iFood</span>
         </NavLink>
         <NavLink
           to="/app/financeiro"

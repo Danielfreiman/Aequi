@@ -19,6 +19,7 @@ import { Privacidade } from './pages/Privacidade.tsx';
 import { Termos } from './pages/Termos.tsx';
 import { Cookies } from './pages/Cookies.tsx';
 import { ImportarProdutos } from './pages/ImportarProdutos.tsx';
+import { IntegracaoIFood } from './pages/IntegracaoIFood.tsx';
 import { useAuthSession } from './hooks/useAuthSession';
 
 const DashboardLayout = () => {
@@ -79,6 +80,7 @@ const App = () => (
         <Route path="conciliacao" element={<Conciliacao />} />
         <Route path="cardapio" element={<Cardapio />} />
         <Route path="importar-produtos" element={<ImportarProdutos />} />
+        <Route path="integracao-ifood" element={<IntegracaoIFood />} />
         <Route path="financeiro" element={<Financeiro />} />
         <Route path="dre" element={<Dre />} />
         <Route path="contas-pagar" element={<ContasPagar />} />

@@ -1,0 +1,888 @@
+import { useState, useEffect, useCallback } from 'react';
+import {
+  Store,
+  Search,
+  Package,
+  ShoppingBag,
+  RefreshCw,
+  Check,
+  AlertCircle,
+  ChevronRight,
+  Download,
+  Calendar,
+  TrendingUp,
+  X,
+  Plus,
+  Link2,
+  Unlink,
+} from 'lucide-react';
+import { supabase } from '../lib/supabaseClient';
+import { useAuthSession } from '../hooks/useAuthSession';
+import {
+  type IFoodMerchant,
+  type IFoodCategory,
+  type IFoodProduct,
+  type IFoodComplementGroup,
+  type IFoodOrder,
+  type IFoodOrdersSummary,
+  getMerchantByCNPJ,
+  getMenuCategories,
+  getMenuProducts,
+  getProductComplements,
+  getOrdersHistory,
+  calculateOrdersSummary,
+  formatCNPJ,
+  cleanCNPJ,
+  isValidCNPJ,
+} from '../services/ifood';
+
+type ConnectionStatus = 'idle' | 'connecting' | 'connected' | 'error';
+type TabType = 'cardapio' | 'pedidos' | 'config';
+
+const currencyFormatter = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+
+export function IntegracaoIFood() {
+  const { userId } = useAuthSession();
+  
+  // Estado da conexão
+  const [cnpj, setCnpj] = useState('');
+  const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>('idle');
+  const [connectionMessage, setConnectionMessage] = useState('');
+  const [merchant, setMerchant] = useState<IFoodMerchant | null>(null);
+  
+  // Estado das abas
+  const [activeTab, setActiveTab] = useState<TabType>('cardapio');
+  
+  // Estado do cardápio
+  const [categories, setCategories] = useState<IFoodCategory[]>([]);
+  const [products, setProducts] = useState<IFoodProduct[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<IFoodProduct | null>(null);
+  const [complements, setComplements] = useState<IFoodComplementGroup[]>([]);
+  const [loadingMenu, setLoadingMenu] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [importingProducts, setImportingProducts] = useState(false);
+  const [importMessage, setImportMessage] = useState('');
+  
+  // Estado dos pedidos
+  const [orders, setOrders] = useState<IFoodOrder[]>([]);
+  const [ordersSummary, setOrdersSummary] = useState<IFoodOrdersSummary | null>(null);
+  const [loadingOrders, setLoadingOrders] = useState(false);
+  const [dateRange, setDateRange] = useState({
+    start: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    end: new Date().toISOString().split('T')[0],
+  });
+  const [selectedOrder, setSelectedOrder] = useState<IFoodOrder | null>(null);
+
+  // Carrega conexão salva
+  useEffect(() => {
+    const loadSavedConnection = async () => {
+      if (!userId) return;
+      
+      const { data } = await supabase
+        .from('ifood_connections')
+        .select('*')
+        .eq('profile_id', userId)
+        .single();
+      
+      if (data?.merchant_id) {
+        setMerchant({
+          id: data.merchant_id,
+          name: data.merchant_name,
+          corporateName: data.corporate_name,
+          cnpj: data.cnpj,
+          status: 'AVAILABLE',
+          createdAt: data.created_at,
+          address: data.address || {},
+        });
+        setCnpj(formatCNPJ(data.cnpj));
+        setConnectionStatus('connected');
+      }
+    };
+    
+    loadSavedConnection();
+  }, [userId]);
+
+  // Busca cardápio quando conectado
+  useEffect(() => {
+    if (connectionStatus === 'connected' && merchant) {
+      loadMenu();
+    }
+  }, [connectionStatus, merchant]);
+
+  const handleCnpjChange = (value: string) => {
+    // Formata o CNPJ automaticamente
+    const digits = value.replace(/\D/g, '').slice(0, 14);
+    let formatted = digits;
+    
+    if (digits.length > 12) {
+      formatted = `${digits.slice(0, 2)}.${digits.slice(2, 5)}.${digits.slice(5, 8)}/${digits.slice(8, 12)}-${digits.slice(12)}`;
+    } else if (digits.length > 8) {
+      formatted = `${digits.slice(0, 2)}.${digits.slice(2, 5)}.${digits.slice(5, 8)}/${digits.slice(8)}`;
+    } else if (digits.length > 5) {
+      formatted = `${digits.slice(0, 2)}.${digits.slice(2, 5)}.${digits.slice(5)}`;
+    } else if (digits.length > 2) {
+      formatted = `${digits.slice(0, 2)}.${digits.slice(2)}`;
+    }
+    
+    setCnpj(formatted);
+  };
+
+  const handleConnect = async () => {
+    const cleanedCnpj = cleanCNPJ(cnpj);
+    
+    if (!isValidCNPJ(cleanedCnpj)) {
+      setConnectionStatus('error');
+      setConnectionMessage('CNPJ inválido. Verifique os dígitos.');
+      return;
+    }
+
+    setConnectionStatus('connecting');
+    setConnectionMessage('Buscando estabelecimento no iFood...');
+
+    try {
+      const merchantData = await getMerchantByCNPJ(cleanedCnpj);
+      
+      if (!merchantData) {
+        setConnectionStatus('error');
+        setConnectionMessage('Nenhum estabelecimento encontrado com este CNPJ no iFood.');
+        return;
+      }
+
+      // Salva a conexão no banco
+      if (userId) {
+        await supabase.from('ifood_connections').upsert({
+          profile_id: userId,
+          cnpj: cleanedCnpj,
+          merchant_id: merchantData.id,
+          merchant_name: merchantData.name,
+          corporate_name: merchantData.corporateName,
+          address: merchantData.address,
+          status: 'active',
+          updated_at: new Date().toISOString(),
+        }, { onConflict: 'profile_id' });
+      }
+
+      setMerchant(merchantData);
+      setConnectionStatus('connected');
+      setConnectionMessage(`Conectado a ${merchantData.name}`);
+    } catch (error) {
+      console.error('Erro ao conectar:', error);
+      setConnectionStatus('error');
+      setConnectionMessage('Erro ao conectar. Tente novamente.');
+    }
+  };
+
+  const handleDisconnect = async () => {
+    if (userId) {
+      await supabase
+        .from('ifood_connections')
+        .delete()
+        .eq('profile_id', userId);
+    }
+    
+    setMerchant(null);
+    setConnectionStatus('idle');
+    setConnectionMessage('');
+    setCnpj('');
+    setCategories([]);
+    setProducts([]);
+    setOrders([]);
+    setOrdersSummary(null);
+  };
+
+  const loadMenu = async () => {
+    if (!merchant) return;
+    
+    setLoadingMenu(true);
+    try {
+      const [cats, prods] = await Promise.all([
+        getMenuCategories(merchant.id),
+        getMenuProducts(merchant.id),
+      ]);
+      
+      setCategories(cats);
+      setProducts(prods);
+    } catch (error) {
+      console.error('Erro ao carregar cardápio:', error);
+    } finally {
+      setLoadingMenu(false);
+    }
+  };
+
+  const loadProductComplements = async (product: IFoodProduct) => {
+    if (!merchant) return;
+    
+    setSelectedProduct(product);
+    try {
+      const groups = await getProductComplements(merchant.id, product.id);
+      setComplements(groups);
+    } catch (error) {
+      console.error('Erro ao carregar complementos:', error);
+      setComplements([]);
+    }
+  };
+
+  const loadOrders = async () => {
+    if (!merchant) return;
+    
+    setLoadingOrders(true);
+    try {
+      const result = await getOrdersHistory(
+        merchant.id,
+        dateRange.start,
+        dateRange.end
+      );
+      
+      setOrders(result.orders);
+      setOrdersSummary(calculateOrdersSummary(result.orders));
+    } catch (error) {
+      console.error('Erro ao carregar pedidos:', error);
+    } finally {
+      setLoadingOrders(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === 'pedidos' && merchant && orders.length === 0) {
+      loadOrders();
+    }
+  }, [activeTab, merchant]);
+
+  const handleImportProducts = async () => {
+    if (!userId || products.length === 0) return;
+    
+    setImportingProducts(true);
+    setImportMessage('Importando produtos para o sistema...');
+    
+    try {
+      // Prepara os dados para inserção
+      const menuItems = products.map(p => ({
+        profile_id: userId,
+        name: p.name,
+        description: p.description,
+        price: p.price.value,
+        original_price: p.price.originalValue || null,
+        category: categories.find(c => c.id === p.categoryId)?.name || 'Outros',
+        status: p.status === 'AVAILABLE' ? 'active' : 'paused',
+        external_code: p.externalCode,
+        source: 'ifood',
+        ifood_id: p.id,
+      }));
+
+      const { error } = await supabase.from('menu_items').upsert(menuItems, {
+        onConflict: 'profile_id,ifood_id',
+      });
+
+      if (error) throw error;
+
+      setImportMessage(`${products.length} produtos importados com sucesso!`);
+      setTimeout(() => setImportMessage(''), 3000);
+    } catch (error) {
+      console.error('Erro ao importar:', error);
+      setImportMessage('Erro ao importar produtos.');
+    } finally {
+      setImportingProducts(false);
+    }
+  };
+
+  const handleImportOrders = async () => {
+    if (!userId || orders.length === 0) return;
+    
+    setImportingProducts(true);
+    setImportMessage('Importando pedidos para o financeiro...');
+    
+    try {
+      // Converte pedidos em transações financeiras
+      const transactions = orders
+        .filter(o => o.status === 'CONCLUDED')
+        .map(order => ({
+          profile_id: userId,
+          date: order.createdAt.split('T')[0],
+          description: `Pedido iFood #${order.shortCode}`,
+          value: order.total.order,
+          type: 'Receita',
+          category: 'Vendas iFood',
+          is_paid: true,
+          source: 'ifood',
+          ifood_order_id: order.id,
+        }));
+
+      const { error } = await supabase.from('fin_transactions').upsert(transactions, {
+        onConflict: 'profile_id,ifood_order_id',
+      });
+
+      if (error) throw error;
+
+      setImportMessage(`${transactions.length} pedidos importados!`);
+      setTimeout(() => setImportMessage(''), 3000);
+    } catch (error) {
+      console.error('Erro ao importar pedidos:', error);
+      setImportMessage('Erro ao importar pedidos.');
+    } finally {
+      setImportingProducts(false);
+    }
+  };
+
+  const filteredProducts = selectedCategory === 'all' 
+    ? products 
+    : products.filter(p => p.categoryId === selectedCategory);
+
+  return (
+    <section className="space-y-6">
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h2 className="text-2xl font-black text-navy">Integração iFood</h2>
+          <p className="text-slate-600 text-sm">
+            Conecte sua loja para importar cardápio, complementos e histórico de pedidos.
+          </p>
+        </div>
+      </div>
+
+      {/* Card de Conexão */}
+      {connectionStatus !== 'connected' ? (
+        <div className="rounded-2xl bg-white border border-slate-100 shadow-soft p-6">
+          <div className="flex items-start gap-4">
+            <div className="size-14 rounded-2xl bg-red-500 flex items-center justify-center flex-shrink-0">
+              <Store size={28} className="text-white" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-lg font-bold text-navy mb-1">Conectar ao iFood</h3>
+              <p className="text-sm text-slate-600 mb-4">
+                Digite o CNPJ da sua loja cadastrada no iFood para importar dados automaticamente.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-3">
+                <div className="flex-1">
+                  <input
+                    type="text"
+                    value={cnpj}
+                    onChange={(e) => handleCnpjChange(e.target.value)}
+                    placeholder="00.000.000/0000-00"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 text-lg font-mono"
+                    maxLength={18}
+                  />
+                </div>
+                <button
+                  onClick={handleConnect}
+                  disabled={connectionStatus === 'connecting' || cnpj.length < 18}
+                  className="px-6 py-3 rounded-xl bg-red-500 text-white font-semibold hover:bg-red-600 transition disabled:opacity-60 flex items-center justify-center gap-2"
+                >
+                  {connectionStatus === 'connecting' ? (
+                    <>
+                      <RefreshCw size={18} className="animate-spin" />
+                      Conectando...
+                    </>
+                  ) : (
+                    <>
+                      <Link2 size={18} />
+                      Conectar
+                    </>
+                  )}
+                </button>
+              </div>
+              
+              {connectionMessage && (
+                <div className={`mt-3 flex items-center gap-2 text-sm ${
+                  connectionStatus === 'error' ? 'text-red-600' : 'text-slate-600'
+                }`}>
+                  {connectionStatus === 'error' && <AlertCircle size={16} />}
+                  {connectionMessage}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      ) : (
+        <>
+          {/* Card do Merchant Conectado */}
+          <div className="rounded-2xl bg-gradient-to-br from-red-500 to-red-600 text-white p-6 shadow-lg">
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-4">
+                <div className="size-14 rounded-2xl bg-white/20 flex items-center justify-center">
+                  <Store size={28} />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold">{merchant?.name}</h3>
+                  <p className="text-red-100 text-sm">{merchant?.corporateName}</p>
+                  <p className="text-red-200 text-xs font-mono mt-1">{formatCNPJ(merchant?.cnpj || '')}</p>
+                </div>
+              </div>
+              <button
+                onClick={handleDisconnect}
+                className="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition text-sm font-medium flex items-center gap-2"
+              >
+                <Unlink size={16} />
+                Desconectar
+              </button>
+            </div>
+            
+            {merchant?.address && (
+              <div className="mt-4 pt-4 border-t border-white/20 text-sm text-red-100">
+                <p>{merchant.address.street}, {merchant.address.number} - {merchant.address.neighborhood}</p>
+                <p>{merchant.address.city}/{merchant.address.state} - {merchant.address.postalCode}</p>
+              </div>
+            )}
+          </div>
+
+          {/* Tabs */}
+          <div className="flex gap-2 border-b border-slate-200">
+            <button
+              onClick={() => setActiveTab('cardapio')}
+              className={`px-4 py-2 text-sm font-semibold border-b-2 transition flex items-center gap-2 ${
+                activeTab === 'cardapio'
+                  ? 'border-red-500 text-red-500'
+                  : 'border-transparent text-slate-500 hover:text-slate-700'
+              }`}
+            >
+              <Package size={16} />
+              Cardápio e Complementos
+            </button>
+            <button
+              onClick={() => setActiveTab('pedidos')}
+              className={`px-4 py-2 text-sm font-semibold border-b-2 transition flex items-center gap-2 ${
+                activeTab === 'pedidos'
+                  ? 'border-red-500 text-red-500'
+                  : 'border-transparent text-slate-500 hover:text-slate-700'
+              }`}
+            >
+              <ShoppingBag size={16} />
+              Histórico de Pedidos
+            </button>
+          </div>
+
+          {/* Tab: Cardápio */}
+          {activeTab === 'cardapio' && (
+            <div className="space-y-6">
+              {/* Ações */}
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <select
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    className="px-4 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/20"
+                  >
+                    <option value="all">Todas as categorias</option>
+                    {categories.map(cat => (
+                      <option key={cat.id} value={cat.id}>{cat.name}</option>
+                    ))}
+                  </select>
+                  <button
+                    onClick={loadMenu}
+                    disabled={loadingMenu}
+                    className="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 transition flex items-center gap-2"
+                  >
+                    <RefreshCw size={16} className={loadingMenu ? 'animate-spin' : ''} />
+                    Atualizar
+                  </button>
+                </div>
+                <button
+                  onClick={handleImportProducts}
+                  disabled={importingProducts || products.length === 0}
+                  className="px-5 py-2 rounded-xl bg-primary text-white font-semibold hover:brightness-110 transition disabled:opacity-60 flex items-center gap-2"
+                >
+                  {importingProducts ? (
+                    <RefreshCw size={16} className="animate-spin" />
+                  ) : (
+                    <Download size={16} />
+                  )}
+                  Importar para Aequi
+                </button>
+              </div>
+
+              {importMessage && (
+                <div className="rounded-xl bg-green-50 border border-green-200 p-4 text-sm text-green-700 flex items-center gap-2">
+                  <Check size={16} />
+                  {importMessage}
+                </div>
+              )}
+
+              {/* Resumo */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="rounded-2xl bg-white border border-slate-100 p-5 shadow-soft">
+                  <p className="text-xs uppercase text-slate-500 font-semibold">Categorias</p>
+                  <p className="text-2xl font-black text-navy">{categories.length}</p>
+                </div>
+                <div className="rounded-2xl bg-white border border-slate-100 p-5 shadow-soft">
+                  <p className="text-xs uppercase text-slate-500 font-semibold">Produtos</p>
+                  <p className="text-2xl font-black text-navy">{products.length}</p>
+                </div>
+                <div className="rounded-2xl bg-white border border-slate-100 p-5 shadow-soft">
+                  <p className="text-xs uppercase text-slate-500 font-semibold">Ativos</p>
+                  <p className="text-2xl font-black text-green-600">
+                    {products.filter(p => p.status === 'AVAILABLE').length}
+                  </p>
+                </div>
+                <div className="rounded-2xl bg-white border border-slate-100 p-5 shadow-soft">
+                  <p className="text-xs uppercase text-slate-500 font-semibold">Pausados</p>
+                  <p className="text-2xl font-black text-amber-600">
+                    {products.filter(p => p.status === 'UNAVAILABLE').length}
+                  </p>
+                </div>
+              </div>
+
+              {/* Lista de Produtos */}
+              <div className="rounded-2xl bg-white border border-slate-100 shadow-soft overflow-hidden">
+                <div className="p-5 border-b border-slate-100">
+                  <h3 className="text-lg font-bold text-navy">Produtos do Cardápio</h3>
+                  <p className="text-sm text-slate-500">
+                    {loadingMenu ? 'Carregando...' : `${filteredProducts.length} produtos`}
+                  </p>
+                </div>
+                
+                <div className="divide-y divide-slate-100 max-h-[500px] overflow-y-auto">
+                  {loadingMenu ? (
+                    <div className="p-8 text-center">
+                      <RefreshCw size={24} className="animate-spin mx-auto text-slate-400 mb-2" />
+                      <p className="text-sm text-slate-500">Carregando cardápio...</p>
+                    </div>
+                  ) : filteredProducts.length === 0 ? (
+                    <div className="p-8 text-center text-slate-500">
+                      Nenhum produto encontrado.
+                    </div>
+                  ) : (
+                    filteredProducts.map(product => (
+                      <div
+                        key={product.id}
+                        className="p-4 hover:bg-slate-50 cursor-pointer transition"
+                        onClick={() => loadProductComplements(product)}
+                      >
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2">
+                              <h4 className="font-semibold text-navy truncate">{product.name}</h4>
+                              <span className={`text-xs px-2 py-0.5 rounded-full ${
+                                product.status === 'AVAILABLE' 
+                                  ? 'bg-green-100 text-green-700' 
+                                  : 'bg-amber-100 text-amber-700'
+                              }`}>
+                                {product.status === 'AVAILABLE' ? 'Ativo' : 'Pausado'}
+                              </span>
+                            </div>
+                            <p className="text-sm text-slate-500 truncate mt-1">{product.description}</p>
+                            <p className="text-xs text-slate-400 mt-1">
+                              {categories.find(c => c.id === product.categoryId)?.name}
+                              {product.externalCode && ` • Cód: ${product.externalCode}`}
+                            </p>
+                          </div>
+                          <div className="text-right flex-shrink-0">
+                            <p className="font-bold text-navy">{currencyFormatter.format(product.price.value)}</p>
+                            {product.price.originalValue && (
+                              <p className="text-xs text-slate-400 line-through">
+                                {currencyFormatter.format(product.price.originalValue)}
+                              </p>
+                            )}
+                          </div>
+                          <ChevronRight size={20} className="text-slate-300 flex-shrink-0" />
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+
+              {/* Modal de Complementos */}
+              {selectedProduct && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                  <div className="bg-white rounded-2xl shadow-xl max-w-lg w-full max-h-[80vh] overflow-hidden">
+                    <div className="p-5 border-b border-slate-100 flex items-center justify-between">
+                      <div>
+                        <h3 className="font-bold text-navy">{selectedProduct.name}</h3>
+                        <p className="text-sm text-slate-500">{currencyFormatter.format(selectedProduct.price.value)}</p>
+                      </div>
+                      <button
+                        onClick={() => {
+                          setSelectedProduct(null);
+                          setComplements([]);
+                        }}
+                        className="p-2 hover:bg-slate-100 rounded-lg transition"
+                      >
+                        <X size={20} />
+                      </button>
+                    </div>
+                    <div className="p-5 overflow-y-auto max-h-[60vh]">
+                      {complements.length === 0 ? (
+                        <p className="text-slate-500 text-center py-4">
+                          Este produto não possui complementos.
+                        </p>
+                      ) : (
+                        <div className="space-y-4">
+                          {complements.map(group => (
+                            <div key={group.id} className="rounded-xl border border-slate-200 overflow-hidden">
+                              <div className="bg-slate-50 px-4 py-3">
+                                <h4 className="font-semibold text-navy">{group.name}</h4>
+                                <p className="text-xs text-slate-500">
+                                  {group.minQuantity > 0 ? `Obrigatório • ` : ''}
+                                  Máx. {group.maxQuantity} {group.maxQuantity === 1 ? 'opção' : 'opções'}
+                                </p>
+                              </div>
+                              <div className="divide-y divide-slate-100">
+                                {group.complements.map(comp => (
+                                  <div key={comp.id} className="px-4 py-3 flex items-center justify-between">
+                                    <span className="text-sm">{comp.name}</span>
+                                    {comp.price > 0 && (
+                                      <span className="text-sm text-green-600 font-medium">
+                                        + {currencyFormatter.format(comp.price)}
+                                      </span>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Tab: Pedidos */}
+          {activeTab === 'pedidos' && (
+            <div className="space-y-6">
+              {/* Filtros */}
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2">
+                    <Calendar size={16} className="text-slate-400" />
+                    <input
+                      type="date"
+                      value={dateRange.start}
+                      onChange={(e) => setDateRange(prev => ({ ...prev, start: e.target.value }))}
+                      className="px-3 py-2 rounded-xl border border-slate-200 text-sm"
+                    />
+                    <span className="text-slate-400">até</span>
+                    <input
+                      type="date"
+                      value={dateRange.end}
+                      onChange={(e) => setDateRange(prev => ({ ...prev, end: e.target.value }))}
+                      className="px-3 py-2 rounded-xl border border-slate-200 text-sm"
+                    />
+                  </div>
+                  <button
+                    onClick={loadOrders}
+                    disabled={loadingOrders}
+                    className="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 transition flex items-center gap-2"
+                  >
+                    <RefreshCw size={16} className={loadingOrders ? 'animate-spin' : ''} />
+                    Buscar
+                  </button>
+                </div>
+                <button
+                  onClick={handleImportOrders}
+                  disabled={importingProducts || orders.length === 0}
+                  className="px-5 py-2 rounded-xl bg-primary text-white font-semibold hover:brightness-110 transition disabled:opacity-60 flex items-center gap-2"
+                >
+                  {importingProducts ? (
+                    <RefreshCw size={16} className="animate-spin" />
+                  ) : (
+                    <Download size={16} />
+                  )}
+                  Importar Pedidos
+                </button>
+              </div>
+
+              {importMessage && (
+                <div className="rounded-xl bg-green-50 border border-green-200 p-4 text-sm text-green-700 flex items-center gap-2">
+                  <Check size={16} />
+                  {importMessage}
+                </div>
+              )}
+
+              {/* Resumo */}
+              {ordersSummary && (
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                  <div className="rounded-2xl bg-white border border-slate-100 p-5 shadow-soft">
+                    <p className="text-xs uppercase text-slate-500 font-semibold">Total Pedidos</p>
+                    <p className="text-2xl font-black text-navy">{ordersSummary.totalOrders}</p>
+                  </div>
+                  <div className="rounded-2xl bg-white border border-slate-100 p-5 shadow-soft">
+                    <p className="text-xs uppercase text-slate-500 font-semibold">Receita Total</p>
+                    <p className="text-2xl font-black text-green-600">{currencyFormatter.format(ordersSummary.totalRevenue)}</p>
+                  </div>
+                  <div className="rounded-2xl bg-white border border-slate-100 p-5 shadow-soft">
+                    <p className="text-xs uppercase text-slate-500 font-semibold">Ticket Médio</p>
+                    <p className="text-2xl font-black text-primary">{currencyFormatter.format(ordersSummary.averageTicket)}</p>
+                  </div>
+                  <div className="rounded-2xl bg-white border border-slate-100 p-5 shadow-soft">
+                    <p className="text-xs uppercase text-slate-500 font-semibold">Delivery</p>
+                    <p className="text-2xl font-black text-navy">{ordersSummary.deliveryOrders}</p>
+                  </div>
+                  <div className="rounded-2xl bg-white border border-slate-100 p-5 shadow-soft">
+                    <p className="text-xs uppercase text-slate-500 font-semibold">Retirada</p>
+                    <p className="text-2xl font-black text-navy">{ordersSummary.takeoutOrders}</p>
+                  </div>
+                  <div className="rounded-2xl bg-white border border-slate-100 p-5 shadow-soft">
+                    <p className="text-xs uppercase text-slate-500 font-semibold">Cancelados</p>
+                    <p className="text-2xl font-black text-red-500">{ordersSummary.cancelledOrders}</p>
+                  </div>
+                </div>
+              )}
+
+              {/* Lista de Pedidos */}
+              <div className="rounded-2xl bg-white border border-slate-100 shadow-soft overflow-hidden">
+                <div className="p-5 border-b border-slate-100">
+                  <h3 className="text-lg font-bold text-navy">Pedidos</h3>
+                  <p className="text-sm text-slate-500">
+                    {loadingOrders ? 'Carregando...' : `${orders.length} pedidos no período`}
+                  </p>
+                </div>
+                
+                <div className="divide-y divide-slate-100 max-h-[500px] overflow-y-auto">
+                  {loadingOrders ? (
+                    <div className="p-8 text-center">
+                      <RefreshCw size={24} className="animate-spin mx-auto text-slate-400 mb-2" />
+                      <p className="text-sm text-slate-500">Carregando pedidos...</p>
+                    </div>
+                  ) : orders.length === 0 ? (
+                    <div className="p-8 text-center text-slate-500">
+                      Nenhum pedido encontrado no período selecionado.
+                    </div>
+                  ) : (
+                    orders.map(order => (
+                      <div
+                        key={order.id}
+                        className="p-4 hover:bg-slate-50 cursor-pointer transition"
+                        onClick={() => setSelectedOrder(order)}
+                      >
+                        <div className="flex items-center justify-between gap-4">
+                          <div className="flex items-center gap-3">
+                            <div className={`size-10 rounded-full flex items-center justify-center ${
+                              order.status === 'CONCLUDED' 
+                                ? 'bg-green-100 text-green-600'
+                                : 'bg-red-100 text-red-600'
+                            }`}>
+                              {order.status === 'CONCLUDED' ? <Check size={18} /> : <X size={18} />}
+                            </div>
+                            <div>
+                              <p className="font-semibold text-navy">#{order.shortCode}</p>
+                              <p className="text-xs text-slate-500">
+                                {new Date(order.createdAt).toLocaleString('pt-BR')}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-4">
+                            <span className={`text-xs px-2 py-1 rounded-full ${
+                              order.type === 'DELIVERY' 
+                                ? 'bg-blue-100 text-blue-700'
+                                : 'bg-purple-100 text-purple-700'
+                            }`}>
+                              {order.type === 'DELIVERY' ? 'Delivery' : 'Retirada'}
+                            </span>
+                            <p className="font-bold text-navy">{currencyFormatter.format(order.total.order)}</p>
+                            <ChevronRight size={20} className="text-slate-300" />
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+
+              {/* Modal de Detalhes do Pedido */}
+              {selectedOrder && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                  <div className="bg-white rounded-2xl shadow-xl max-w-lg w-full max-h-[80vh] overflow-hidden">
+                    <div className="p-5 border-b border-slate-100 flex items-center justify-between">
+                      <div>
+                        <h3 className="font-bold text-navy">Pedido #{selectedOrder.shortCode}</h3>
+                        <p className="text-sm text-slate-500">
+                          {new Date(selectedOrder.createdAt).toLocaleString('pt-BR')}
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => setSelectedOrder(null)}
+                        className="p-2 hover:bg-slate-100 rounded-lg transition"
+                      >
+                        <X size={20} />
+                      </button>
+                    </div>
+                    <div className="p-5 overflow-y-auto max-h-[60vh] space-y-4">
+                      {/* Status e Tipo */}
+                      <div className="flex gap-2">
+                        <span className={`text-xs px-2 py-1 rounded-full ${
+                          selectedOrder.status === 'CONCLUDED'
+                            ? 'bg-green-100 text-green-700'
+                            : 'bg-red-100 text-red-700'
+                        }`}>
+                          {selectedOrder.status === 'CONCLUDED' ? 'Concluído' : 'Cancelado'}
+                        </span>
+                        <span className={`text-xs px-2 py-1 rounded-full ${
+                          selectedOrder.type === 'DELIVERY'
+                            ? 'bg-blue-100 text-blue-700'
+                            : 'bg-purple-100 text-purple-700'
+                        }`}>
+                          {selectedOrder.type === 'DELIVERY' ? 'Delivery' : 'Retirada'}
+                        </span>
+                      </div>
+
+                      {/* Itens */}
+                      <div className="rounded-xl border border-slate-200 overflow-hidden">
+                        <div className="bg-slate-50 px-4 py-3">
+                          <h4 className="font-semibold text-navy">Itens do Pedido</h4>
+                        </div>
+                        <div className="divide-y divide-slate-100">
+                          {selectedOrder.items.map(item => (
+                            <div key={item.id} className="px-4 py-3 flex items-center justify-between">
+                              <div>
+                                <p className="font-medium">{item.quantity}x {item.name}</p>
+                                {item.observations && (
+                                  <p className="text-xs text-slate-500">Obs: {item.observations}</p>
+                                )}
+                              </div>
+                              <p className="font-medium">{currencyFormatter.format(item.totalPrice)}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Totais */}
+                      <div className="rounded-xl border border-slate-200 p-4 space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-slate-500">Subtotal</span>
+                          <span>{currencyFormatter.format(selectedOrder.total.items)}</span>
+                        </div>
+                        {selectedOrder.total.deliveryFee > 0 && (
+                          <div className="flex justify-between text-sm">
+                            <span className="text-slate-500">Taxa de entrega</span>
+                            <span>{currencyFormatter.format(selectedOrder.total.deliveryFee)}</span>
+                          </div>
+                        )}
+                        {selectedOrder.total.discount > 0 && (
+                          <div className="flex justify-between text-sm text-green-600">
+                            <span>Desconto</span>
+                            <span>-{currencyFormatter.format(selectedOrder.total.discount)}</span>
+                          </div>
+                        )}
+                        <div className="flex justify-between font-bold text-lg pt-2 border-t border-slate-200">
+                          <span>Total</span>
+                          <span>{currencyFormatter.format(selectedOrder.total.order)}</span>
+                        </div>
+                      </div>
+
+                      {/* Endereço de Entrega */}
+                      {selectedOrder.deliveryAddress && (
+                        <div className="rounded-xl border border-slate-200 p-4">
+                          <h4 className="font-semibold text-navy mb-2">Endereço de Entrega</h4>
+                          <p className="text-sm text-slate-600">
+                            {selectedOrder.deliveryAddress.street}, {selectedOrder.deliveryAddress.number}
+                            {selectedOrder.deliveryAddress.complement && ` - ${selectedOrder.deliveryAddress.complement}`}
+                          </p>
+                          <p className="text-sm text-slate-600">
+                            {selectedOrder.deliveryAddress.neighborhood} - {selectedOrder.deliveryAddress.city}/{selectedOrder.deliveryAddress.state}
+                          </p>
+                          <p className="text-sm text-slate-600">{selectedOrder.deliveryAddress.postalCode}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </>
+      )}
+    </section>
+  );
+}

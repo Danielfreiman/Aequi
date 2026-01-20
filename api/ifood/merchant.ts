@@ -1,0 +1,82 @@
+import type { VercelRequest, VercelResponse } from '@vercel/node';
+
+// Simula a API do iFood para desenvolvimento
+// Em produção, substituir por chamadas reais à API do iFood
+
+const IFOOD_API_URL = 'https://merchant-api.ifood.com.br';
+
+// Mock de merchants para desenvolvimento
+const mockMerchants: Record<string, any> = {
+  '12345678000190': {
+    id: 'merchant-001',
+    name: 'Restaurante Sabor & Arte',
+    corporateName: 'SABOR E ARTE ALIMENTOS LTDA',
+    cnpj: '12345678000190',
+    status: 'AVAILABLE',
+    createdAt: '2023-01-15T10:00:00Z',
+    address: {
+      street: 'Rua das Flores',
+      number: '123',
+      neighborhood: 'Centro',
+      city: 'São Paulo',
+      state: 'SP',
+      postalCode: '01310-100',
+    },
+  },
+};
+
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  if (req.method !== 'GET') {
+    return res.status(405).json({ error: 'Método não permitido' });
+  }
+
+  const { cnpj } = req.query;
+
+  if (!cnpj || typeof cnpj !== 'string') {
+    return res.status(400).json({ error: 'CNPJ é obrigatório' });
+  }
+
+  const cleanCnpj = cnpj.replace(/\D/g, '');
+
+  if (cleanCnpj.length !== 14) {
+    return res.status(400).json({ error: 'CNPJ inválido' });
+  }
+
+  try {
+    // Em produção, fazer chamada real à API do iFood:
+    // const response = await fetch(`${IFOOD_API_URL}/merchant/v1.0/merchants?document=${cleanCnpj}`, {
+    //   headers: {
+    //     'Authorization': `Bearer ${accessToken}`,
+    //   },
+    // });
+    
+    // Para desenvolvimento, usar mock
+    const merchant = mockMerchants[cleanCnpj];
+    
+    if (!merchant) {
+      // Cria merchant dinâmico para qualquer CNPJ válido
+      const dynamicMerchant = {
+        id: `merchant-${cleanCnpj.slice(0, 8)}`,
+        name: 'Restaurante Conectado',
+        corporateName: 'EMPRESA CONECTADA LTDA',
+        cnpj: cleanCnpj,
+        status: 'AVAILABLE',
+        createdAt: new Date().toISOString(),
+        address: {
+          street: 'Rua Principal',
+          number: '100',
+          neighborhood: 'Centro',
+          city: 'São Paulo',
+          state: 'SP',
+          postalCode: '01000-000',
+        },
+      };
+      return res.status(200).json(dynamicMerchant);
+    }
+
+    return res.status(200).json(merchant);
+  } catch (error) {
+    console.error('Erro ao buscar merchant:', error);
+    return res.status(500).json({ error: 'Erro interno ao buscar merchant' });
+  }
+}
