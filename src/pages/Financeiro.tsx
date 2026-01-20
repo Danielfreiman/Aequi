@@ -74,10 +74,11 @@ export function Financeiro() {
   const summary = useMemo(() => {
     const contasPagar = filtered.filter((tx) => tx.type === 'Despesa');
     const contasReceber = filtered.filter((tx) => tx.type === 'Receita');
-    const totalPagar = contasPagar.reduce((sum, tx) => sum + (tx.value || 0), 0);
+    const totalPagar = contasPagar.reduce((sum, tx) => sum - (tx.value || 0), 0); // despesas negativas
     const totalReceber = contasReceber.reduce((sum, tx) => sum + (tx.value || 0), 0);
+    const saldo = totalReceber + totalPagar;
     const pendentes = filtered.filter((tx) => !tx.is_paid).length;
-    return { totalPagar, totalReceber, pendentes };
+    return { totalPagar, totalReceber, saldo, pendentes };
   }, [filtered]);
 
   const categories = useMemo(() => {

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
+import { useAuthSession } from '../hooks/useAuthSession';
 
 type Employee = {
   id: string;
@@ -17,6 +18,7 @@ const formatDate = (value: string | null) => {
 };
 
 export function Rh() {
+  const { userId } = useAuthSession();
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -28,6 +30,7 @@ export function Rh() {
       const { data, error: fetchError } = await supabase
         .from('hr_employees')
         .select('id,name,email,role,status,created_at')
+        .eq('profile_id', userId)
         .order('created_at', { ascending: false });
 
       if (fetchError) {
@@ -38,8 +41,10 @@ export function Rh() {
       setLoading(false);
     };
 
-    loadData();
-  }, []);
+    if (userId) {
+      loadData();
+    }
+  }, [userId]);
 
   const summary = useMemo(() => {
     const ativos = employees.filter((employee) => employee.status === 'active').length;
