@@ -1,7 +1,7 @@
 import React from 'react';
-import { Sidebar } from './components/Sidebar';
-import { FinancialChart } from './components/FinancialChart';
-import { DishList } from './components/DishList';
+import { Sidebar } from '../components/Sidebar';
+import { FinancialChart } from '../components/FinancialChart';
+import { DishList } from '../components/DishList';
 import { 
   Calendar, 
   Bell, 
