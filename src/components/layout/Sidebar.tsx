@@ -1,4 +1,16 @@
-import { LayoutDashboard, Receipt, TrendingUp, Settings, UtensilsCrossed } from 'lucide-react';
+import {
+  BadgeDollarSign,
+  ClipboardList,
+  LayoutDashboard,
+  Receipt,
+  Settings,
+  TrendingUp,
+  Users,
+  Wallet,
+  CalendarClock,
+  LineChart,
+  UtensilsCrossed,
+} from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
 const itemClass =
@@ -21,7 +33,7 @@ export function Sidebar() {
 
       <nav className="flex-1 px-4 py-4 flex flex-col gap-1 overflow-y-auto">
         <NavLink
-          to="/home"
+          to="/app"
           className={({ isActive }) =>
             `${itemClass} ${isActive ? 'bg-primary/15 text-white border border-primary/30' : 'text-gray-200'}`
           }
@@ -30,7 +42,7 @@ export function Sidebar() {
           <span>Painel</span>
         </NavLink>
         <NavLink
-          to="/conciliacao"
+          to="/app/conciliacao"
           className={({ isActive }) =>
             `${itemClass} ${isActive ? 'bg-primary/15 text-white border border-primary/30' : 'text-gray-200'}`
           }
@@ -39,7 +51,7 @@ export function Sidebar() {
           <span>Conciliação iFood</span>
         </NavLink>
         <NavLink
-          to="/cardapio"
+          to="/app/cardapio"
           className={({ isActive }) =>
             `${itemClass} ${isActive ? 'bg-primary/15 text-white border border-primary/30' : 'text-gray-200'}`
           }
@@ -48,13 +60,67 @@ export function Sidebar() {
           <span>Engenharia de Cardápio</span>
         </NavLink>
         <NavLink
-          to="/financeiro"
+          to="/app/financeiro"
+          className={({ isActive }) =>
+            `${itemClass} ${isActive ? 'bg-primary/15 text-white border border-primary/30' : 'text-gray-200'}`
+          }
+        >
+          <Wallet size={18} className="shrink-0" />
+          <span>Financeiro</span>
+        </NavLink>
+        <NavLink
+          to="/app/contas-pagar"
+          className={({ isActive }) =>
+            `${itemClass} ${isActive ? 'bg-primary/15 text-white border border-primary/30' : 'text-gray-200'}`
+          }
+        >
+          <BadgeDollarSign size={18} className="shrink-0" />
+          <span>Contas a Pagar</span>
+        </NavLink>
+        <NavLink
+          to="/app/contas-receber"
+          className={({ isActive }) =>
+            `${itemClass} ${isActive ? 'bg-primary/15 text-white border border-primary/30' : 'text-gray-200'}`
+          }
+        >
+          <ClipboardList size={18} className="shrink-0" />
+          <span>Contas a Receber</span>
+        </NavLink>
+        <NavLink
+          to="/app/dre"
+          className={({ isActive }) =>
+            `${itemClass} ${isActive ? 'bg-primary/15 text-white border border-primary/30' : 'text-gray-200'}`
+          }
+        >
+          <LineChart size={18} className="shrink-0" />
+          <span>DRE</span>
+        </NavLink>
+        <NavLink
+          to="/app/ponto"
+          className={({ isActive }) =>
+            `${itemClass} ${isActive ? 'bg-primary/15 text-white border border-primary/30' : 'text-gray-200'}`
+          }
+        >
+          <CalendarClock size={18} className="shrink-0" />
+          <span>Ponto</span>
+        </NavLink>
+        <NavLink
+          to="/app/rh"
+          className={({ isActive }) =>
+            `${itemClass} ${isActive ? 'bg-primary/15 text-white border border-primary/30' : 'text-gray-200'}`
+          }
+        >
+          <Users size={18} className="shrink-0" />
+          <span>RH</span>
+        </NavLink>
+        <NavLink
+          to="/app/ajustes"
           className={({ isActive }) =>
             `${itemClass} ${isActive ? 'bg-primary/15 text-white border border-primary/30' : 'text-gray-200'}`
           }
         >
           <Settings size={18} className="shrink-0" />
-          <span>Financeiro</span>
+          <span>Ajustes</span>
         </NavLink>
       </nav>
 

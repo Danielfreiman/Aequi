@@ -73,6 +73,101 @@ create table if not exists public.cash_flow (
   created_at timestamptz default now()
 );
 
+create table if not exists public.stores (
+  id uuid primary key default gen_random_uuid(),
+  profile_id uuid not null references public.profiles(id) on delete cascade,
+  name text not null,
+  location text,
+  external_id text,
+  created_at timestamptz default now()
+);
+
+create unique index if not exists idx_stores_profile_name on public.stores(profile_id, name);
+create unique index if not exists idx_stores_external_id on public.stores(external_id);
+
+create table if not exists public.finance_categories (
+  id uuid primary key default gen_random_uuid(),
+  profile_id uuid not null references public.profiles(id) on delete cascade,
+  name text not null,
+  source text default 'firebase',
+  created_at timestamptz default now()
+);
+
+create unique index if not exists idx_finance_categories_profile_name on public.finance_categories(profile_id, name);
+
+create table if not exists public.app_settings (
+  id uuid primary key default gen_random_uuid(),
+  profile_id uuid not null references public.profiles(id) on delete cascade,
+  key text not null,
+  value jsonb not null,
+  created_at timestamptz default now()
+);
+
+create unique index if not exists idx_app_settings_profile_key on public.app_settings(profile_id, key);
+
+create table if not exists public.hr_employees (
+  id uuid primary key default gen_random_uuid(),
+  profile_id uuid not null references public.profiles(id) on delete cascade,
+  external_id text,
+  email text,
+  name text not null,
+  role text,
+  status text,
+  created_at timestamptz,
+  updated_at timestamptz default now()
+);
+
+create unique index if not exists idx_hr_employees_profile_email on public.hr_employees(profile_id, email);
+create unique index if not exists idx_hr_employees_external_id on public.hr_employees(external_id);
+
+create table if not exists public.hr_time_cards (
+  id uuid primary key default gen_random_uuid(),
+  profile_id uuid not null references public.profiles(id) on delete cascade,
+  employee_id uuid references public.hr_employees(id) on delete set null,
+  employee_external_id text,
+  date date not null,
+  check_in time,
+  check_out time,
+  lunch_start time,
+  lunch_end time,
+  hours_worked numeric(6,2),
+  notes text,
+  created_at timestamptz,
+  updated_at timestamptz
+);
+
+create index if not exists idx_hr_time_cards_employee_external on public.hr_time_cards(employee_external_id);
+
+create table if not exists public.fin_transactions (
+  id uuid primary key default gen_random_uuid(),
+  profile_id uuid not null references public.profiles(id) on delete cascade,
+  store_external_id text,
+  type text not null,
+  description text,
+  date date not null,
+  category text,
+  value numeric(12,2) not null,
+  is_paid boolean default false,
+  bank_id text,
+  items jsonb,
+  created_at timestamptz default now()
+);
+
+create index if not exists idx_fin_transactions_profile_date on public.fin_transactions(profile_id, date);
+create index if not exists idx_fin_transactions_store_external on public.fin_transactions(store_external_id);
+
+create table if not exists public.user_imports (
+  id uuid primary key default gen_random_uuid(),
+  profile_id uuid not null references public.profiles(id) on delete cascade,
+  email text not null,
+  name text,
+  role text,
+  created_at timestamptz,
+  source text default 'firebase'
+);
+
+create unique index if not exists idx_user_imports_profile_email on public.user_imports(profile_id, email);
+
 -- Migration helpers (safe no-ops on fresh DB)
 alter table public.profiles add column if not exists owner_id uuid;
 update public.profiles set owner_id = id where owner_id is null;
@@ -108,6 +203,13 @@ alter table public.ingredients enable row level security;
 alter table public.product_recipe enable row level security;
 alter table public.ifood_reconciliation enable row level security;
 alter table public.cash_flow enable row level security;
+alter table public.stores enable row level security;
+alter table public.finance_categories enable row level security;
+alter table public.app_settings enable row level security;
+alter table public.hr_employees enable row level security;
+alter table public.hr_time_cards enable row level security;
+alter table public.fin_transactions enable row level security;
+alter table public.user_imports enable row level security;
 
 -- Drop old policies if they exist (idempotent)
 drop policy if exists "profiles_select_own" on public.profiles;
@@ -118,6 +220,13 @@ drop policy if exists "ingredients_by_profile" on public.ingredients;
 drop policy if exists "ifood_reconciliation_by_profile" on public.ifood_reconciliation;
 drop policy if exists "cash_flow_by_profile" on public.cash_flow;
 drop policy if exists "product_recipe_by_profile" on public.product_recipe;
+drop policy if exists "stores_by_profile" on public.stores;
+drop policy if exists "finance_categories_by_profile" on public.finance_categories;
+drop policy if exists "app_settings_by_profile" on public.app_settings;
+drop policy if exists "hr_employees_by_profile" on public.hr_employees;
+drop policy if exists "hr_time_cards_by_profile" on public.hr_time_cards;
+drop policy if exists "fin_transactions_by_profile" on public.fin_transactions;
+drop policy if exists "user_imports_by_profile" on public.user_imports;
 
 -- profiles: usuario enxerga apenas restaurantes que ele e dono (ou master)
 create policy "profiles_select_own" on public.profiles for select using (owner_id = auth.uid() or public.is_master());
@@ -150,6 +259,62 @@ with check (
 );
 
 create policy "cash_flow_by_profile" on public.cash_flow
+using (
+  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
+)
+with check (
+  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
+);
+
+create policy "stores_by_profile" on public.stores
+using (
+  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
+)
+with check (
+  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
+);
+
+create policy "finance_categories_by_profile" on public.finance_categories
+using (
+  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
+)
+with check (
+  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
+);
+
+create policy "app_settings_by_profile" on public.app_settings
+using (
+  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
+)
+with check (
+  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
+);
+
+create policy "hr_employees_by_profile" on public.hr_employees
+using (
+  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
+)
+with check (
+  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
+);
+
+create policy "hr_time_cards_by_profile" on public.hr_time_cards
+using (
+  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
+)
+with check (
+  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
+);
+
+create policy "fin_transactions_by_profile" on public.fin_transactions
+using (
+  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
+)
+with check (
+  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
+);
+
+create policy "user_imports_by_profile" on public.user_imports
 using (
   public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
 )

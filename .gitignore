@@ -11,6 +11,14 @@ node_modules
 dist
 dist-ssr
 *.local
+firebase-service-account.json
+categories.json
+rhEmployees.json
+rhTimeCards.json
+settings.json
+stores.json
+transactions.json
+usuarios.json
 
 # Editor directories and files
 .vscode/*

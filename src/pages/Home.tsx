@@ -53,12 +53,18 @@ export function Home() {
             Veja onde o lucro vaza e reajuste preços com segurança.
           </p>
           <div className="flex flex-wrap gap-3">
-            <button className="px-5 py-3 rounded-xl bg-primary text-white font-semibold shadow-sm hover:brightness-110 transition">
+            <a
+              href="/app"
+              className="px-5 py-3 rounded-xl bg-primary text-white font-semibold shadow-sm hover:brightness-110 transition"
+            >
               Começar teste grátis
-            </button>
-            <button className="px-5 py-3 rounded-xl border border-navy/20 text-navy font-semibold hover:bg-navy/5 transition">
+            </a>
+            <a
+              href="/app/conciliacao"
+              className="px-5 py-3 rounded-xl border border-navy/20 text-navy font-semibold hover:bg-navy/5 transition"
+            >
               Ver conciliação iFood
-            </button>
+            </a>
           </div>
           <div className="flex items-center gap-4 text-sm text-slate-500">
             <div className="flex items-center gap-2">
