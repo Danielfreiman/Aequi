@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
+import { usePersistentFilter } from '../hooks/usePersistentFilter';
+import { quickPeriods, type PeriodKey } from '../services/dateFilters';
 
 type FinTransaction = {
   id: string;
@@ -22,10 +24,11 @@ export function ContasReceber() {
   const [transactions, setTransactions] = useState<FinTransaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [showPaid, setShowPaid] = useState(false);
-  const [categoryFilter, setCategoryFilter] = useState<string>('todas');
-  const [dateStart, setDateStart] = useState('');
-  const [dateEnd, setDateEnd] = useState('');
+  const [showPaid, setShowPaid] = usePersistentFilter<boolean>('filter.receber.showPaid', false);
+  const [categoryFilter, setCategoryFilter] = usePersistentFilter<string>('filter.receber.categoria', 'todas');
+  const [period, setPeriod] = usePersistentFilter<PeriodKey>('filter.receber.period', 'mes_atual');
+  const [customStart, setCustomStart] = usePersistentFilter<string>('filter.receber.customStart', '');
+  const [customEnd, setCustomEnd] = usePersistentFilter<string>('filter.receber.customEnd', '');
 
   useEffect(() => {
     const loadData = async () => {
@@ -48,15 +51,20 @@ export function ContasReceber() {
     loadData();
   }, []);
 
+  const { start, end } = quickPeriods[period].range();
+  const startDate = period === 'custom' && customStart ? new Date(customStart) : start;
+  const endDate = period === 'custom' && customEnd ? new Date(customEnd) : end;
+
   const filtered = useMemo(() => {
     return transactions.filter((tx) => {
       const statusOk = showPaid ? tx.is_paid : !tx.is_paid;
       const catOk = categoryFilter === 'todas' ? true : tx.category === categoryFilter;
-      const startOk = dateStart ? new Date(tx.date) >= new Date(dateStart) : true;
-      const endOk = dateEnd ? new Date(tx.date) <= new Date(dateEnd) : true;
+      const d = new Date(tx.date);
+      const startOk = startDate ? d >= startDate : true;
+      const endOk = endDate ? d <= endDate : true;
       return statusOk && catOk && startOk && endOk;
     });
-  }, [transactions, showPaid, categoryFilter, dateStart, dateEnd]);
+  }, [transactions, showPaid, categoryFilter, startDate, endDate]);
 
   const total = useMemo(() => filtered.reduce((sum, tx) => sum + (tx.value || 0), 0), [filtered]);
 
@@ -98,22 +106,37 @@ export function ContasReceber() {
           </select>
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-semibold text-slate-600">De</label>
-          <input
-            type="date"
-            value={dateStart}
-            onChange={(event) => setDateStart(event.target.value)}
+          <label className="text-xs font-semibold text-slate-600">Período</label>
+          <select
+            value={period}
+            onChange={(event) => setPeriod(event.target.value as PeriodKey)}
             className="rounded-xl border border-slate-200 px-3 py-2 text-sm"
-          />
+          >
+            {Object.entries(quickPeriods).map(([key, item]) => (
+              <option key={key} value={key}>
+                {item.label}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-semibold text-slate-600">Até</label>
-          <input
-            type="date"
-            value={dateEnd}
-            onChange={(event) => setDateEnd(event.target.value)}
-            className="rounded-xl border border-slate-200 px-3 py-2 text-sm"
-          />
+          <label className="text-xs font-semibold text-slate-600">Datas personalizadas</label>
+          <div className="grid grid-cols-2 gap-2">
+            <input
+              type="date"
+              value={customStart}
+              onChange={(event) => setCustomStart(event.target.value)}
+              disabled={period !== 'custom'}
+              className="rounded-xl border border-slate-200 px-3 py-2 text-sm disabled:bg-slate-50"
+            />
+            <input
+              type="date"
+              value={customEnd}
+              onChange={(event) => setCustomEnd(event.target.value)}
+              disabled={period !== 'custom'}
+              className="rounded-xl border border-slate-200 px-3 py-2 text-sm disabled:bg-slate-50"
+            />
+          </div>
         </div>
       </div>
 

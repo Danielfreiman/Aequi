@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabaseClient';
+import { usePersistentFilter } from '../hooks/usePersistentFilter';
+import { PeriodKey, quickPeriods } from '../services/dateFilters';
 
 type FinTransaction = {
   id: string;
@@ -24,12 +26,14 @@ export function Financeiro() {
   const [transactions, setTransactions] = useState<FinTransaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [statusFilter, setStatusFilter] = useState<'todos' | 'pendente' | 'pago'>('todos');
-  const [categoryFilter, setCategoryFilter] = useState<string>('todas');
-  const [dateStart, setDateStart] = useState<string>('');
-  const [dateEnd, setDateEnd] = useState<string>('');
-  const [customDateStart, setCustomDateStart] = useState<string>('');
-  const [customDateEnd, setCustomDateEnd] = useState<string>('');
+  const [statusFilter, setStatusFilter] = usePersistentFilter<'todos' | 'pendente' | 'pago'>(
+    'filter.financeiro.status',
+    'todos'
+  );
+  const [categoryFilter, setCategoryFilter] = usePersistentFilter<string>('filter.financeiro.categoria', 'todas');
+  const [period, setPeriod] = usePersistentFilter<PeriodKey>('filter.financeiro.period', 'mes_atual');
+  const [customStart, setCustomStart] = usePersistentFilter<string>('filter.financeiro.customStart', '');
+  const [customEnd, setCustomEnd] = usePersistentFilter<string>('filter.financeiro.customEnd', '');
 
   useEffect(() => {
     const loadData = async () => {
@@ -52,29 +56,20 @@ export function Financeiro() {
     loadData();
   }, []);
 
+  const { start, end } = quickPeriods[period].range();
+  const startDate = period === 'custom' && customStart ? new Date(customStart) : start;
+  const endDate = period === 'custom' && customEnd ? new Date(customEnd) : end;
+
   const filtered = useMemo(() => {
     return transactions.filter((tx) => {
-      const byStatus =
-        statusFilter === 'todos' ? true : statusFilter === 'pago' ? tx.is_paid : !tx.is_paid;
+      const byStatus = statusFilter === 'todos' ? true : statusFilter === 'pago' ? tx.is_paid : !tx.is_paid;
       const byCategory = categoryFilter === 'todas' ? true : tx.category === categoryFilter;
-      const byDateStart = dateStart ? new Date(tx.date) >= new Date(dateStart) : true;
-      const byDateEnd = dateEnd ? new Date(tx.date) <= new Date(dateEnd) : true;
-      return byStatus && byCategory && byDateStart && byDateEnd;
+      const d = new Date(tx.date);
+      const byStart = startDate ? d >= startDate : true;
+      const byEnd = endDate ? d <= endDate : true;
+      return byStatus && byCategory && byStart && byEnd;
     });
-  }, [transactions, statusFilter, categoryFilter, dateStart, dateEnd]);
-
-  const filteredTransactions = useMemo(() => {
-    return transactions.filter((transaction) => {
-      const transactionDate = new Date(transaction.date);
-      const startDate = customDateStart ? new Date(customDateStart) : null;
-      const endDate = customDateEnd ? new Date(customDateEnd) : null;
-
-      if (startDate && transactionDate < startDate) return false;
-      if (endDate && transactionDate > endDate) return false;
-
-      return true;
-    });
-  }, [transactions, customDateStart, customDateEnd]);
+  }, [transactions, statusFilter, categoryFilter, startDate, endDate]);
 
   const summary = useMemo(() => {
     const contasPagar = filtered.filter((tx) => tx.type === 'Despesa');
@@ -155,43 +150,37 @@ export function Financeiro() {
           </select>
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-semibold text-slate-600">De</label>
-          <input
-            type="date"
-            value={dateStart}
-            onChange={(event) => setDateStart(event.target.value)}
+          <label className="text-xs font-semibold text-slate-600">Período rápido</label>
+          <select
+            value={period}
+            onChange={(event) => setPeriod(event.target.value as PeriodKey)}
             className="rounded-xl border border-slate-200 px-3 py-2 text-sm"
-          />
+          >
+            {Object.entries(quickPeriods).map(([key, item]) => (
+              <option key={key} value={key}>
+                {item.label}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-semibold text-slate-600">Até</label>
-          <input
-            type="date"
-            value={dateEnd}
-            onChange={(event) => setDateEnd(event.target.value)}
-            className="rounded-xl border border-slate-200 px-3 py-2 text-sm"
-          />
-        </div>
-      </div>
-
-      <div className="grid md:grid-cols-2 gap-4">
-        <div className="flex flex-col gap-1">
-          <label className="text-xs font-semibold text-slate-600">Data Personalizada - De</label>
-          <input
-            type="date"
-            value={customDateStart}
-            onChange={(e) => setCustomDateStart(e.target.value)}
-            className="rounded-xl border border-slate-200 px-3 py-2 text-sm"
-          />
-        </div>
-        <div className="flex flex-col gap-1">
-          <label className="text-xs font-semibold text-slate-600">Data Personalizada - Até</label>
-          <input
-            type="date"
-            value={customDateEnd}
-            onChange={(e) => setCustomDateEnd(e.target.value)}
-            className="rounded-xl border border-slate-200 px-3 py-2 text-sm"
-          />
+          <label className="text-xs font-semibold text-slate-600">Datas personalizadas</label>
+          <div className="grid grid-cols-2 gap-2">
+            <input
+              type="date"
+              value={customStart}
+              onChange={(e) => setCustomStart(e.target.value)}
+              disabled={period !== 'custom'}
+              className="rounded-xl border border-slate-200 px-3 py-2 text-sm disabled:bg-slate-50"
+            />
+            <input
+              type="date"
+              value={customEnd}
+              onChange={(e) => setCustomEnd(e.target.value)}
+              disabled={period !== 'custom'}
+              className="rounded-xl border border-slate-200 px-3 py-2 text-sm disabled:bg-slate-50"
+            />
+          </div>
         </div>
       </div>
 

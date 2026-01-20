@@ -1,9 +1,6 @@
--- Aequi database schema for Supabase/PostgreSQL
--- Run in Supabase SQL editor
-
 create extension if not exists "pgcrypto";
 
--- master user helper (full access)
+-- Master para bypass (opcional)
 create or replace function public.is_master()
 returns boolean
 language sql
@@ -13,67 +10,54 @@ as $$
   select coalesce(auth.jwt() ->> 'email', '') = 'danifreiman44@gmail.com';
 $$;
 
-create table if not exists public.profiles (
+-- Perfis (restaurantes/contas)
+create table public.profiles (
   id uuid primary key default gen_random_uuid(),
   owner_id uuid not null references auth.users on delete cascade,
   nome_restaurante text not null,
-  cnpj varchar(14) not null,
+  cnpj varchar(14),
   plan_tier text not null default 'single' check (plan_tier in ('single','multi')),
   created_at timestamptz default now()
 );
+create index idx_profiles_owner on public.profiles(owner_id);
+create unique index idx_profiles_owner_cnpj on public.profiles(owner_id, cnpj);
 
-create index if not exists idx_profiles_owner on public.profiles(owner_id);
-create unique index if not exists idx_profiles_owner_cnpj on public.profiles(owner_id, cnpj);
-
-create table if not exists public.products (
+-- Assinaturas
+create table public.subscriptions (
   id uuid primary key default gen_random_uuid(),
   profile_id uuid not null references public.profiles(id) on delete cascade,
-  nome text not null,
-  preco_venda numeric(12,2) not null,
-  categoria text,
-  custo_fixo numeric(12,2) default 0,
-  markup numeric(6,3) default 0, -- ex: 0.40 = 40%
+  plan_id text not null,              -- id do plano no billing
+  plan_name text,
+  status text default 'active',
+  period_start timestamptz,
+  period_end timestamptz,
+  trial_end timestamptz,
   created_at timestamptz default now()
 );
+create index idx_subscriptions_profile on public.subscriptions(profile_id);
 
-create table if not exists public.ingredients (
+create table public.subscription_items (
   id uuid primary key default gen_random_uuid(),
+  subscription_id uuid not null references public.subscriptions(id) on delete cascade,
   profile_id uuid not null references public.profiles(id) on delete cascade,
-  nome text not null,
-  unidade_medida text not null,           -- g, ml, un
-  custo_unidade numeric(12,4) not null,   -- custo por unidade de medida
+  price_id text,
+  quantity int default 1,
   created_at timestamptz default now()
 );
+create index idx_subscription_items_sub on public.subscription_items(subscription_id);
+create index idx_subscription_items_profile on public.subscription_items(profile_id);
 
-create table if not exists public.product_recipe (
-  product_id uuid references public.products(id) on delete cascade,
-  ingredient_id uuid references public.ingredients(id) on delete cascade,
-  gramatura_ml_qtd numeric(12,4) not null, -- precisao fina para adicionais
-  primary key (product_id, ingredient_id)
-);
-
-create table if not exists public.ifood_reconciliation (
-  order_id text primary key,
+-- Relacionamento usuário<->perfil (multiuser)
+create table public.profile_users (
   profile_id uuid not null references public.profiles(id) on delete cascade,
-  valor_bruto numeric(12,2) not null,
-  taxas_ifood numeric(12,2) not null,
-  repasse_liquido numeric(12,2) not null,
-  status_conferido boolean default false,
-  created_at timestamptz default now()
+  user_id uuid not null references auth.users on delete cascade,
+  role text default 'member', -- owner|admin|member
+  created_at timestamptz default now(),
+  primary key (profile_id, user_id)
 );
 
-create table if not exists public.cash_flow (
-  id uuid primary key default gen_random_uuid(),
-  profile_id uuid not null references public.profiles(id) on delete cascade,
-  tipo text not null check (tipo in ('pagar','receber')),
-  descricao text not null,
-  valor numeric(12,2) not null,
-  vencimento date not null,
-  status_pago boolean default false,
-  created_at timestamptz default now()
-);
-
-create table if not exists public.stores (
+-- Lojas
+create table public.stores (
   id uuid primary key default gen_random_uuid(),
   profile_id uuid not null references public.profiles(id) on delete cascade,
   name text not null,
@@ -81,31 +65,31 @@ create table if not exists public.stores (
   external_id text,
   created_at timestamptz default now()
 );
+create unique index idx_stores_profile_name on public.stores(profile_id, name);
+create unique index idx_stores_external_id on public.stores(external_id);
 
-create unique index if not exists idx_stores_profile_name on public.stores(profile_id, name);
-create unique index if not exists idx_stores_external_id on public.stores(external_id);
-
-create table if not exists public.finance_categories (
+-- Categorias financeiras
+create table public.finance_categories (
   id uuid primary key default gen_random_uuid(),
   profile_id uuid not null references public.profiles(id) on delete cascade,
   name text not null,
   source text default 'firebase',
   created_at timestamptz default now()
 );
+create unique index idx_finance_categories_profile_name on public.finance_categories(profile_id, name);
 
-create unique index if not exists idx_finance_categories_profile_name on public.finance_categories(profile_id, name);
-
-create table if not exists public.app_settings (
+-- Configurações (app_settings)
+create table public.app_settings (
   id uuid primary key default gen_random_uuid(),
   profile_id uuid not null references public.profiles(id) on delete cascade,
   key text not null,
   value jsonb not null,
   created_at timestamptz default now()
 );
+create unique index idx_app_settings_profile_key on public.app_settings(profile_id, key);
 
-create unique index if not exists idx_app_settings_profile_key on public.app_settings(profile_id, key);
-
-create table if not exists public.hr_employees (
+-- RH
+create table public.hr_employees (
   id uuid primary key default gen_random_uuid(),
   profile_id uuid not null references public.profiles(id) on delete cascade,
   external_id text,
@@ -113,14 +97,13 @@ create table if not exists public.hr_employees (
   name text not null,
   role text,
   status text,
-  created_at timestamptz,
+  created_at timestamptz default now(),
   updated_at timestamptz default now()
 );
+create unique index idx_hr_employees_profile_email on public.hr_employees(profile_id, email);
+create unique index idx_hr_employees_external_id on public.hr_employees(external_id);
 
-create unique index if not exists idx_hr_employees_profile_email on public.hr_employees(profile_id, email);
-create unique index if not exists idx_hr_employees_external_id on public.hr_employees(external_id);
-
-create table if not exists public.hr_time_cards (
+create table public.hr_time_cards (
   id uuid primary key default gen_random_uuid(),
   profile_id uuid not null references public.profiles(id) on delete cascade,
   employee_id uuid references public.hr_employees(id) on delete set null,
@@ -132,18 +115,18 @@ create table if not exists public.hr_time_cards (
   lunch_end time,
   hours_worked numeric(6,2),
   notes text,
-  created_at timestamptz,
-  updated_at timestamptz
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
 );
+create index idx_hr_time_cards_employee_external on public.hr_time_cards(employee_external_id);
 
-create index if not exists idx_hr_time_cards_employee_external on public.hr_time_cards(employee_external_id);
-
-create table if not exists public.fin_transactions (
+-- Transações financeiras (contas + DRE)
+create table public.fin_transactions (
   id uuid primary key default gen_random_uuid(),
   profile_id uuid not null references public.profiles(id) on delete cascade,
   store_id uuid references public.stores(id) on delete set null,
   store_external_id text,
-  type text not null,
+  type text not null check (type in ('Receita','Despesa')),
   description text,
   date date not null,
   category text,
@@ -153,70 +136,81 @@ create table if not exists public.fin_transactions (
   items jsonb,
   created_at timestamptz default now()
 );
+create index idx_fin_transactions_profile_date on public.fin_transactions(profile_id, date);
+create index idx_fin_transactions_store_external on public.fin_transactions(store_external_id);
+create index idx_fin_transactions_store_id on public.fin_transactions(store_id);
 
-create index if not exists idx_fin_transactions_profile_date on public.fin_transactions(profile_id, date);
-create index if not exists idx_fin_transactions_store_external on public.fin_transactions(store_external_id);
-create index if not exists idx_fin_transactions_store_id on public.fin_transactions(store_id);
+-- Produtos e receitas
+create table public.products (
+  id uuid primary key default gen_random_uuid(),
+  profile_id uuid not null references public.profiles(id) on delete cascade,
+  nome text not null,
+  preco_venda numeric(12,2) not null,
+  categoria text,
+  custo_fixo numeric(12,2) default 0,
+  markup numeric(6,3) default 0,
+  created_at timestamptz default now()
+);
+create index idx_products_profile on public.products(profile_id);
 
-create table if not exists public.user_imports (
+create table public.ingredients (
+  id uuid primary key default gen_random_uuid(),
+  profile_id uuid not null references public.profiles(id) on delete cascade,
+  nome text not null,
+  unidade_medida text not null,
+  custo_unidade numeric(12,4) not null,
+  created_at timestamptz default now()
+);
+create index idx_ingredients_profile on public.ingredients(profile_id);
+
+create table public.product_recipe (
+  product_id uuid references public.products(id) on delete cascade,
+  ingredient_id uuid references public.ingredients(id) on delete cascade,
+  gramatura_ml_qtd numeric(12,4) not null,
+  primary key (product_id, ingredient_id)
+);
+
+-- Conciliação iFood
+create table public.ifood_reconciliation (
+  order_id text primary key,
+  profile_id uuid not null references public.profiles(id) on delete cascade,
+  valor_bruto numeric(12,2) not null,
+  taxas_ifood numeric(12,2) not null,
+  repasse_liquido numeric(12,2) not null,
+  status_conferido boolean default false,
+  created_at timestamptz default now()
+);
+
+-- Fluxo de caixa
+create table public.cash_flow (
+  id uuid primary key default gen_random_uuid(),
+  profile_id uuid not null references public.profiles(id) on delete cascade,
+  tipo text not null check (tipo in ('pagar','receber')),
+  descricao text not null,
+  valor numeric(12,2) not null,
+  vencimento date not null,
+  status_pago boolean default false,
+  created_at timestamptz default now()
+);
+create index idx_cash_flow_profile on public.cash_flow(profile_id, vencimento);
+
+-- Imports (firebase/users)
+create table public.user_imports (
   id uuid primary key default gen_random_uuid(),
   profile_id uuid not null references public.profiles(id) on delete cascade,
   email text not null,
   name text,
   role text,
-  created_at timestamptz,
+  created_at timestamptz default now(),
   source text default 'firebase'
 );
+create unique index idx_user_imports_profile_email on public.user_imports(profile_id, email);
 
-create unique index if not exists idx_user_imports_profile_email on public.user_imports(profile_id, email);
-
--- Migration helpers (safe no-ops on fresh DB)
-alter table public.profiles add column if not exists owner_id uuid;
-update public.profiles set owner_id = id where owner_id is null;
-alter table public.profiles alter column owner_id set not null;
-do $$
-begin
-  if not exists (
-    select 1 from pg_constraint where conname = 'profiles_owner_id_fkey'
-  ) then
-    alter table public.profiles
-      add constraint profiles_owner_id_fkey foreign key (owner_id) references auth.users(id) on delete cascade;
-  end if;
-end $$;
-alter table public.profiles add column if not exists plan_tier text;
-update public.profiles set plan_tier = coalesce(plan_tier, 'single');
-alter table public.profiles alter column plan_tier set default 'single';
-alter table public.profiles alter column plan_tier set not null;
-do $$
-begin
-  if not exists (
-    select 1 from pg_constraint where conname = 'profiles_plan_tier_check'
-  ) then
-    alter table public.profiles add constraint profiles_plan_tier_check check (plan_tier in ('single','multi'));
-  end if;
-end $$;
-create index if not exists idx_profiles_owner on public.profiles(owner_id);
-create unique index if not exists idx_profiles_owner_cnpj on public.profiles(owner_id, cnpj);
-
--- fin_transactions: ensure store_id column/FK when migrating
-alter table public.fin_transactions add column if not exists store_id uuid;
-do $$
-begin
-  if exists (select 1 from information_schema.columns where table_name = 'fin_transactions' and column_name = 'store_id') then
-    begin
-      alter table public.fin_transactions
-        drop constraint if exists fin_transactions_store_id_fkey;
-      alter table public.fin_transactions
-        add constraint fin_transactions_store_id_fkey foreign key (store_id) references public.stores(id) on delete set null;
-    exception
-      when others then null;
-    end;
-  end if;
-end $$;
-create index if not exists idx_fin_transactions_store_id on public.fin_transactions(store_id);
-
--- Enable RLS
+-- RLS
 alter table public.profiles enable row level security;
+alter table public.subscriptions enable row level security;
+alter table public.subscription_items enable row level security;
+alter table public.profile_users enable row level security;
 alter table public.products enable row level security;
 alter table public.ingredients enable row level security;
 alter table public.product_recipe enable row level security;
@@ -230,136 +224,61 @@ alter table public.hr_time_cards enable row level security;
 alter table public.fin_transactions enable row level security;
 alter table public.user_imports enable row level security;
 
--- Drop old policies if they exist (idempotent)
-drop policy if exists "profiles_select_own" on public.profiles;
-drop policy if exists "profiles_insert_own" on public.profiles;
-drop policy if exists "profiles_update_own" on public.profiles;
-drop policy if exists "products_by_profile" on public.products;
-drop policy if exists "ingredients_by_profile" on public.ingredients;
-drop policy if exists "ifood_reconciliation_by_profile" on public.ifood_reconciliation;
-drop policy if exists "cash_flow_by_profile" on public.cash_flow;
-drop policy if exists "product_recipe_by_profile" on public.product_recipe;
-drop policy if exists "stores_by_profile" on public.stores;
-drop policy if exists "finance_categories_by_profile" on public.finance_categories;
-drop policy if exists "app_settings_by_profile" on public.app_settings;
-drop policy if exists "hr_employees_by_profile" on public.hr_employees;
-drop policy if exists "hr_time_cards_by_profile" on public.hr_time_cards;
-drop policy if exists "fin_transactions_by_profile" on public.fin_transactions;
-drop policy if exists "user_imports_by_profile" on public.user_imports;
-
--- profiles: usuario enxerga apenas restaurantes que ele e dono (ou master)
+-- Policies (master ou owner/participante)
 create policy "profiles_select_own" on public.profiles for select using (owner_id = auth.uid() or public.is_master());
 create policy "profiles_insert_own" on public.profiles for insert with check (owner_id = auth.uid() or public.is_master());
 create policy "profiles_update_own" on public.profiles for update using (owner_id = auth.uid() or public.is_master()) with check (owner_id = auth.uid() or public.is_master());
 
--- Tabelas com profile_id direto (verifica que o profile pertence ao usuario ou master)
-create policy "products_by_profile" on public.products
-using (
-  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
-)
-with check (
-  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
-);
+-- helper para checar vínculo via profile_users
+create or replace view public.profile_membership as
+select pu.user_id, p.id as profile_id, p.owner_id
+from public.profile_users pu
+join public.profiles p on p.id = pu.profile_id;
 
-create policy "ingredients_by_profile" on public.ingredients
-using (
-  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
-)
-with check (
-  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
-);
+-- policies genéricas por profile_id
+do $$
+declare tbl text;
+begin
+  for tbl in select unnest(array[
+    'products','ingredients','ifood_reconciliation','cash_flow',
+    'stores','finance_categories','app_settings','hr_employees',
+    'hr_time_cards','fin_transactions','user_imports','subscriptions','subscription_items'
+  ]) loop
+    execute format($f$
+      drop policy if exists "%1$s_by_profile" on public.%1$s;
+      create policy "%1$s_by_profile" on public.%1$s
+      using (
+        public.is_master()
+        or exists (select 1 from public.profiles p where p.id = profile_id and (p.owner_id = auth.uid() or exists (select 1 from public.profile_users m where m.profile_id = p.id and m.user_id = auth.uid())))
+      )
+      with check (
+        public.is_master()
+        or exists (select 1 from public.profiles p where p.id = profile_id and (p.owner_id = auth.uid() or exists (select 1 from public.profile_users m where m.profile_id = p.id and m.user_id = auth.uid())))
+      );
+    $f$, tbl);
+  end loop;
+end $$;
 
-create policy "ifood_reconciliation_by_profile" on public.ifood_reconciliation
-using (
-  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
-)
-with check (
-  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
-);
-
-create policy "cash_flow_by_profile" on public.cash_flow
-using (
-  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
-)
-with check (
-  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
-);
-
-create policy "stores_by_profile" on public.stores
-using (
-  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
-)
-with check (
-  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
-);
-
-create policy "finance_categories_by_profile" on public.finance_categories
-using (
-  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
-)
-with check (
-  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
-);
-
-create policy "app_settings_by_profile" on public.app_settings
-using (
-  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
-)
-with check (
-  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
-);
-
-create policy "hr_employees_by_profile" on public.hr_employees
-using (
-  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
-)
-with check (
-  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
-);
-
-create policy "hr_time_cards_by_profile" on public.hr_time_cards
-using (
-  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
-)
-with check (
-  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
-);
-
-create policy "fin_transactions_by_profile" on public.fin_transactions
-using (
-  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
-)
-with check (
-  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
-);
-
-create policy "user_imports_by_profile" on public.user_imports
-using (
-  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
-)
-with check (
-  public.is_master() or exists (select 1 from public.profiles p where p.id = profile_id and p.owner_id = auth.uid())
-);
-
--- product_recipe: vincula via product_id/ingredient_id ao dono ou master
+-- product_recipe específica
+drop policy if exists "product_recipe_by_profile" on public.product_recipe;
 create policy "product_recipe_by_profile" on public.product_recipe
 using (
   public.is_master() or exists (
     select 1 from public.products p
     join public.profiles pr on pr.id = p.profile_id
-    where p.id = product_id and pr.owner_id = auth.uid()
+    where p.id = product_id and (pr.owner_id = auth.uid() or exists (select 1 from public.profile_users m where m.profile_id = pr.id and m.user_id = auth.uid()))
   )
- ) with check (
+) with check (
   public.is_master() or (
     exists (
       select 1 from public.products p
       join public.profiles pr on pr.id = p.profile_id
-      where p.id = product_id and pr.owner_id = auth.uid()
+      where p.id = product_id and (pr.owner_id = auth.uid() or exists (select 1 from public.profile_users m where m.profile_id = pr.id and m.user_id = auth.uid()))
     )
     and exists (
       select 1 from public.ingredients i
       join public.profiles pr on pr.id = i.profile_id
-      where i.id = ingredient_id and pr.owner_id = auth.uid()
+      where i.id = ingredient_id and (pr.owner_id = auth.uid() or exists (select 1 from public.profile_users m where m.profile_id = pr.id and m.user_id = auth.uid()))
     )
   )
 );

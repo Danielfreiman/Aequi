@@ -1,0 +1,937 @@
+{"description":"INSS - Léo (3/12)","type":"Despesa","items":[{"description":"Compra açaí  (3/3)","value":1000,"category":"Custos (CMV/CMV)"},{"description":"trste 2  (3/3)","value":50,"category":"Custos (CMV/CMV)"}],"category":"Fatura Detalhada","value":1298,"date":"2026-03-20","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS - Julio","type":"Despesa","category":"Impostos e Taxas","value":167,"date":"2025-09-19","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Andinho Saco Kraft","type":"Despesa","category":"Custos (CMV/CMV)","value":45.6,"date":"2025-09-27","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Luz Corredor","type":"Despesa","category":"Água, Luz e Internet","value":40,"date":"2025-06-23","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Giz Móveis Daniel (9/10)","type":"Receita","category":"Emprestimo","value":223.3,"date":"2026-08-16","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emp Daniel","type":"Receita","category":"Emprestimo","value":1600,"date":"2025-11-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Léo","type":"Despesa","category":"Emprestimo","value":1500,"date":"2025-05-30","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Diarias Isa Julho","type":"Despesa","category":"Pessoal e Salários","value":478.06,"date":"2025-10-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Iphone Daniel (10/10)","type":"Receita","category":"Emprestimo","value":335.2,"date":"2026-09-16","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (29/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-07-22","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Emprestimo Nubank Giro  (6/20)","type":"Despesa","category":"Emprestimo","value":2691.84,"date":"2026-06-03","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Plano de Saúde Amil (8/12)","type":"Despesa","category":"Outros","value":1210.86,"date":"2026-08-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Empréstimo 99 Leo 1/6","type":"Despesa","category":"Emprestimo","value":1050.62,"date":"2025-05-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":1577.16,"date":"2025-08-20","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Imposto - Açaí  (10/12)","type":"Despesa","category":"Impostos e Taxas","value":1000,"date":"2026-10-20","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS - Julio (9/12)","type":"Despesa","items":{},"category":"Impostos e Taxas","value":167,"date":"2026-09-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Aluguel","type":"Despesa","category":"Aluguel e Condomínio","value":2700,"date":"2025-09-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto LF Neto","type":"Despesa","category":"Custos (CMV/CMV)","value":232.57,"date":"2025-09-29","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"CCN Distribuidora","type":"Despesa","items":[{"description":"Teste 3  (2/4)","value":10,"category":"Custos (CMV/CMV)"},{"description":"teste  (2/3)","value":50,"category":"Custos (CMV/CMV)"},{"description":"teste 2  (2/2)","value":40,"category":"Custos (CMV/CMV)"},{"description":"Teste (2/3)","value":10,"category":"Custos (CMV/CMV)"},{"description":"Teste 2  (2/2)","value":20,"category":"Custos (CMV/CMV)"},{"description":"Teste 2  (2/2)","value":30,"category":"Custos (CMV/CMV)"},{"description":"Teste (2/2)","value":90,"category":"Custos (CMV/CMV)"},{"category":"Custos (CMV/CMV)","description":"teste 2  (2/3)","value":10},{"description":"dfdf (2/2)","value":100,"category":"Custos (CMV/CMV)"},{"description":"dfsfdf (2/3)","value":20,"category":"Custos (CMV/CMV)"}],"category":"Fatura Detalhada","value":762.9,"date":"2025-02-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1","bankId":"EmT3wtErD97yCUdJSI14"}
+{"description":"Imposto - burguer  (2/12)","type":"Despesa","category":"Aluguel e Condomínio","value":1000,"date":"2026-02-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood (39/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-09-30","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Açaí (2/12)","type":"Despesa","items":[{"description":"Compra açaí  (2/3)","value":1000,"category":"Custos (CMV/CMV)"},{"description":"teste 3  (2/2)","value":40,"category":"Custos (CMV/CMV)"}],"category":"Fatura Detalhada","value":1410,"date":"2026-02-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Condominio","type":"Despesa","category":"Aluguel e Condomínio","value":40,"date":"2025-12-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Aluguel (12/12)","type":"Despesa","category":"Aluguel e Condomínio","value":2700,"date":"2026-12-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Aluguel (7/12)","type":"Despesa","category":"Aluguel e Condomínio","value":2700,"date":"2026-07-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (27/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-07-08","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Condominio (9/12)","type":"Despesa","category":"Aluguel e Condomínio","value":40,"date":"2026-09-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (2/52)","type":"Receita","items":{},"category":"Venda de Mercadorias","value":7349.4,"date":"2026-01-14","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pagamento PrinLab - Calendarios + Adesivos","type":"Despesa","category":"Custos (CMV/CMV)","value":275,"date":"2025-11-19","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Pic Pay Fatura","type":"Despesa","category":"Custos (CMV/CMV)","value":4104.06,"date":"2025-06-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pró Labore - Léo","type":"Despesa","category":"Pró-Labore (Sócios)","value":600,"date":"2025-06-15","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Internet","type":"Despesa","items":[{"description":"teste (2/2)","value":90,"category":"Custos (CMV/CMV)"},{"description":"cgvfd (2/3)","value":10,"category":"Custos (CMV/CMV)"}],"category":"Fatura Detalhada","value":200,"date":"2025-02-24","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1","bankId":"zAo5QdJBtjbvIQnzhPPc"}
+{"description":"Contador Burguer (9/13)","type":"Despesa","category":"Contabilidade e outros serviços","value":450,"date":"2026-08-16","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Boleto Nestlé","type":"Despesa","category":"Custos (CMV/CMV)","value":296.93,"date":"2025-09-26","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Bling","type":"Despesa","category":"Outros","value":55,"date":"2025-11-10","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood (29/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-07-22","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Nubank giro 3/24","type":"Despesa","category":"Emprestimo","value":2691.84,"date":"2025-12-03","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS Julio (10/12)","type":"Despesa","category":"Impostos e Taxas","value":167,"date":"2026-10-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood (48/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-12-02","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emp. Léo","type":"Despesa","category":"Emprestimo","value":769,"date":"2025-07-15","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto - Açaí  (7/12)","type":"Despesa","category":"Impostos e Taxas","value":1000,"date":"2026-07-20","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS Julio (11/12)","type":"Despesa","category":"Impostos e Taxas","value":167,"date":"2026-11-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Emp.  Léo","type":"Despesa","category":"Emprestimo","value":7000,"date":"2025-10-04","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (42/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-10-21","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Imposto Açaí","type":"Despesa","category":"Impostos e Taxas","value":417.66,"date":"2025-11-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Nubank Léo Prime 1/10","type":"Despesa","category":"Custos (CMV/CMV)","value":147.29,"date":"2025-06-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS - Léo (11/12)","type":"Despesa","category":"Impostos e Taxas","value":248,"date":"2026-11-20","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emp. Bela","type":"Despesa","category":"Emprestimo","value":150,"date":"2025-09-24","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Plano de Saúde Amil (1/12)","type":"Despesa","category":"Outros","value":1210.86,"date":"2026-01-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Açaí (10/13)","type":"Despesa","category":"Contabilidade e outros serviços","value":370,"date":"2026-09-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Andinho Kraft","type":"Despesa","category":"Custos (CMV/CMV)","value":56,"date":"2025-10-25","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Diarias Isa","type":"Despesa","category":"Pessoal e Salários","value":300,"date":"2025-06-28","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Açaí (9/12)","type":"Despesa","category":"Contabilidade e outros serviços","value":370,"date":"2026-09-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":909.51,"date":"2025-12-17","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Imposto - Açaí  (11/12)","type":"Despesa","category":"Impostos e Taxas","value":1000,"date":"2026-11-20","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Empréstimo Vanuza","type":"Despesa","category":"Emprestimo","value":1400,"date":"2025-10-13","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Nubank Léo R. Quality Açaís (5/6)","type":"Despesa","category":"Custos (CMV/CMV)","value":444.11,"date":"2026-05-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Internet Loja Sumicity (6/12)","type":"Despesa","category":"Água, Luz e Internet","value":129,"date":"2026-06-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto Nestlé Maio","type":"Despesa","category":"Custos (CMV/CMV)","value":314.59,"date":"2025-06-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Água (10/12)","type":"Despesa","category":"Água, Luz e Internet","value":200,"date":"2026-10-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Condominio","type":"Despesa","category":"Aluguel e Condomínio","value":70,"date":"2025-08-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emp. Léo","type":"Receita","category":"Emprestimo","value":300,"date":"2025-09-16","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emp. Léo","type":"Receita","category":"Emprestimo","value":170,"date":"2025-09-22","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Água (11/12)","type":"Despesa","category":"Água, Luz e Internet","value":200,"date":"2026-11-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pix Boys Somas:","type":"Despesa","category":"Pessoal e Salários","value":38,"date":"2025-09-02","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Desconto Atencipação Pagamento Giro Nubank","type":"Receita","category":"Emprestimo","value":13.82,"date":"2025-12-26","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Luz Corredor (11/12)","type":"Despesa","category":"Água, Luz e Internet","value":50,"date":"2026-11-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (22/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-06-03","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Burguer (1/13)","type":"Despesa","category":"Contabilidade e outros serviços","value":450,"date":"2025-12-10","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Contador Açaí (1/13)","type":"Despesa","category":"Contabilidade e outros serviços","value":370,"date":"2025-12-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (34/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-08-26","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pagamento Emprestimo Isa","type":"Despesa","category":"Emprestimo","value":146,"date":"2025-12-24","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (32/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-08-12","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (17/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-04-29","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":2191.31,"date":"2025-07-02","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Provisionamento (1/12)","type":"Despesa","category":"Água, Luz e Internet","value":120,"date":"2026-01-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Diarias Isa","type":"Despesa","category":"Pessoal e Salários","value":300,"date":"2025-05-30","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":370.92,"date":"2025-05-07","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto LF Neto","type":"Despesa","category":"Custos (CMV/CMV)","value":382.62,"date":"2025-08-26","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":2935.56,"date":"2025-09-03","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"CNH Daniel Emprestimo (4/4)","type":"Receita","category":"Emprestimo","value":454,"date":"2026-03-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emp. Léo","type":"Receita","category":"Emprestimo","value":365,"date":"2025-12-16","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":3692,"date":"2025-08-27","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Água","type":"Despesa","category":"Água, Luz e Internet","value":200,"date":"2025-12-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto Nestlé","type":"Despesa","category":"Custos (CMV/CMV)","value":165.43,"date":"2026-01-02","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Nubank Giro  (17/20)","type":"Despesa","items":{"description":"Açaí (6/9)","value":500,"category":"Custos (CMV/CMV)"},"category":"Fatura Detalhada","value":3191.84,"date":"2027-05-03","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Internet","type":"Despesa","category":"Água, Luz e Internet","value":129.9,"date":"2025-12-09","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Açaí (7/12)","type":"Despesa","category":"Contabilidade e outros serviços","value":370,"date":"2026-07-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS Julio (1/12)","type":"Despesa","category":"Impostos e Taxas","value":167,"date":"2026-01-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Seguro Imóvel 1/3","type":"Despesa","items":[{"description":"Teste 3  (3/4)","value":10,"category":"Custos (CMV/CMV)"},{"description":"teste  (3/3)","value":50,"category":"Custos (CMV/CMV)"},{"category":"Custos (CMV/CMV)","description":"Teste (3/3)","value":10},{"description":"Teste (3/3)","value":80,"category":"Custos (CMV/CMV)"},{"description":"Teste (3/3)","value":70,"category":"Custos (CMV/CMV)"},{"category":"Custos (CMV/CMV)","description":"teste 2  (3/3)","value":10},{"description":"dfsfdf (3/3)","value":20,"category":"Custos (CMV/CMV)"}],"category":"Fatura Detalhada","value":380.3,"date":"2025-03-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1","bankId":"EmT3wtErD97yCUdJSI14"}
+{"description":"Luz Corredor","type":"Despesa","category":"Água, Luz e Internet","value":40,"date":"2025-11-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (51/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-12-23","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto LF Neto","type":"Despesa","category":"Custos (CMV/CMV)","value":233.47,"date":"2025-06-20","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Emprestimo Nubank Giro  (7/20)","type":"Despesa","category":"Emprestimo","value":2691.84,"date":"2026-07-03","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Frete Café BH","type":"Despesa","category":"Custos (CMV/CMV)","value":112.84,"date":"2025-10-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS Julio (6/12)","type":"Despesa","category":"Impostos e Taxas","value":167,"date":"2026-06-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood (28/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-07-15","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Valorizzi Contabilidade Burguer","type":"Despesa","category":"Contabilidade e outros serviços","value":459.15,"date":"2025-05-12","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Bling (2/12)","type":"Despesa","category":"Outros","value":55,"date":"2026-02-10","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Luz Corredor","type":"Despesa","items":{"description":"Teste 3  (4/4)","value":10,"category":"Custos (CMV/CMV)"},"category":"Fatura Detalhada","value":50,"date":"2025-04-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Internet Loja Sumicity (3/12)","type":"Despesa","category":"Água, Luz e Internet","value":129,"date":"2026-03-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS - Léo","type":"Despesa","category":"Impostos e Taxas","value":248,"date":"2025-09-19","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pró Labore Léo (10/12)","type":"Despesa","category":"Pró-Labore (Sócios)","value":2000,"date":"2026-10-26","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Nubank Giro  (13/20)","type":"Despesa","items":{"description":"Açaí (2/9)","value":500,"category":"Custos (CMV/CMV)"},"category":"Fatura Detalhada","value":3191.84,"date":"2027-01-03","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Luz Corredor","type":"Despesa","items":{"description":"cgvfd (3/3)","value":10,"category":"Custos (CMV/CMV)"},"category":"Fatura Detalhada","value":40,"date":"2025-03-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1","bankId":"zAo5QdJBtjbvIQnzhPPc"}
+{"description":"Anota ai Açaí","type":"Receita","category":"Venda de Mercadorias","value":449.97,"date":"2025-09-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Provisionamento (5/12)","type":"Despesa","category":"Água, Luz e Internet","value":120,"date":"2026-05-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Condominio (5/12)","type":"Despesa","category":"Aluguel e Condomínio","value":40,"date":"2026-05-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":3610.5,"date":"2025-05-21","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Condominio (4/12)","type":"Despesa","category":"Aluguel e Condomínio","value":40,"date":"2026-04-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (2/52)","type":"Receita","items":{},"category":"Venda de Mercadorias","value":1262.4,"date":"2026-01-14","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Água (3/12)","type":"Despesa","category":"Água, Luz e Internet","value":200,"date":"2026-03-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Sistema Bling Burguer do Zé","type":"Despesa","category":"Outros","value":55,"date":"2025-07-17","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Aluguel","type":"Despesa","category":"Aluguel e Condomínio","value":2700,"date":"2025-03-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto - burguer  (9/12)","type":"Despesa","category":"Aluguel e Condomínio","value":1000,"date":"2026-09-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Emprestimo Nubank Léo - 4/12","type":"Despesa","category":"Emprestimo","value":1112.35,"date":"2025-06-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo","type":"Receita","category":"Emprestimo","value":6322.05,"date":"2025-04-29","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Firjan","type":"Despesa","category":"Outros","value":50,"date":"2025-04-26","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Internet","type":"Despesa","category":"Água, Luz e Internet","value":99.9,"date":"2025-05-12","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Nubank Léo Prime  (3/3)","type":"Despesa","category":"Material de Escritório","value":147.29,"date":"2026-02-09","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Valorizzi","type":"Despesa","category":"Contabilidade e outros serviços","value":950,"date":"2025-02-12","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Nubank Giro  (19/20)","type":"Despesa","items":{"description":"Açaí (8/9)","value":500,"category":"Custos (CMV/CMV)"},"category":"Fatura Detalhada","value":3191.84,"date":"2027-07-03","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":3077.27,"date":"2025-08-13","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto LF Neto","type":"Despesa","category":"Custos (CMV/CMV)","value":293.1,"date":"2025-09-15","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Plano de Saúde Amil (3/12)","type":"Despesa","category":"Outros","value":1210.86,"date":"2026-03-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Água (6/12)","type":"Despesa","category":"Água, Luz e Internet","value":200,"date":"2026-06-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS - Julio (11/12)","type":"Despesa","items":{},"category":"Impostos e Taxas","value":167,"date":"2026-11-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"INSS - Julio","type":"Despesa","category":"Impostos e Taxas","value":166.98,"date":"2025-06-20","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Pró Labore - Léo","type":"Despesa","category":"Pró-Labore (Sócios)","value":1400,"date":"2025-06-26","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS - Julio (5/12)","type":"Despesa","items":{},"category":"Impostos e Taxas","value":167,"date":"2026-05-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Pago","type":"Receita","category":"Venda de Mercadorias","value":4240.73,"date":"2025-10-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pró Labore - Léo","type":"Despesa","category":"Pró-Labore (Sócios)","value":1665,"date":"2025-09-29","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Empréstimo 99 Leo 1/3","type":"Despesa","category":"Emprestimo","value":857.95,"date":"2025-09-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emp. Julio","type":"Despesa","category":"Emprestimo","value":2700,"date":"2025-07-09","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Diarias Isa Julho","type":"Despesa","category":"Pessoal e Salários","value":347.98,"date":"2025-08-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Internet","type":"Despesa","category":"Água, Luz e Internet","value":100,"date":"2025-08-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":2517.21,"date":"2025-08-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (46/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-11-18","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Giz Móveis Daniel (8/10)","type":"Receita","category":"Emprestimo","value":223.3,"date":"2026-07-16","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Condominio (11/12)","type":"Despesa","category":"Aluguel e Condomínio","value":40,"date":"2026-11-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Iphone Daniel (4/10)","type":"Receita","category":"Emprestimo","value":335.2,"date":"2026-03-16","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Seguro Imóvel 2/3","type":"Despesa","category":"Aluguel e Condomínio","value":130.3,"date":"2025-04-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Bling (1/12)","type":"Despesa","category":"Outros","value":55,"date":"2026-01-10","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"cortina pia","type":"Despesa","category":"Outros","value":29.99,"date":"2025-12-17","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Cartão Caixa Léo Promos Bramil","type":"Despesa","category":"Custos (CMV/CMV)","value":158.41,"date":"2025-10-28","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Cartão Caixa Léo","type":"Despesa","category":"Custos (CMV/CMV)","value":167.57,"date":"2025-09-28","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Burguer","type":"Despesa","category":"Contabilidade e outros serviços","value":450,"date":"2025-08-10","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Emp Vanuza 1/3","type":"Receita","category":"Emprestimo","value":490,"date":"2025-11-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emp. Café Montserrat","type":"Despesa","category":"Emprestimo","value":6000,"date":"2025-10-06","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Luz","type":"Despesa","category":"Água, Luz e Internet","value":469.36,"date":"2025-07-17","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Nubank Fatura PJ","type":"Despesa","category":"Custos (CMV/CMV)","value":3573.62,"date":"2025-04-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (44/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-11-04","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Luz","type":"Despesa","items":{},"category":"Água, Luz e Internet","value":561.39,"date":"2025-12-16","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Burguer (2/13)","type":"Despesa","category":"Contabilidade e outros serviços","value":450,"date":"2026-01-16","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood (8/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-02-25","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Imposto Burguer","type":"Despesa","category":"Impostos e Taxas","value":327.38,"date":"2025-08-20","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Emprestimo Nubank Giro  (9/20)","type":"Despesa","category":"Emprestimo","value":2691.84,"date":"2026-09-03","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Aluguel","type":"Despesa","category":"Aluguel e Condomínio","value":2700,"date":"2025-06-07","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (43/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-10-28","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Anota ai Açaí","type":"Receita","category":"Venda de Mercadorias","value":215.17,"date":"2025-09-03","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (38/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-09-23","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Pago","type":"Receita","category":"Venda de Mercadorias","value":3042,"date":"2025-10-01","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Bônus Isabela (1/2)","type":"Despesa","items":{},"category":"Pessoal e Salários","value":500,"date":"2026-01-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto M. Mix","type":"Despesa","category":"Custos (CMV/CMV)","value":1335.1,"date":"2025-04-16","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Plano de Saúde Amil (12/12)","type":"Despesa","category":"Outros","value":1210.86,"date":"2026-12-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Luz","type":"Despesa","category":"Água, Luz e Internet","value":241.23,"date":"2025-04-16","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (45/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-11-11","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"INSS - Julio (6/12)","type":"Despesa","items":{},"category":"Impostos e Taxas","value":167,"date":"2026-06-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Empréstimo 99 Leo 3/3","type":"Despesa","category":"Emprestimo","value":535.47,"date":"2025-09-07","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto Nestlé","type":"Despesa","category":"Custos (CMV/CMV)","value":337.62,"date":"2025-12-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Condominio","type":"Despesa","category":"Aluguel e Condomínio","value":70,"date":"2025-11-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Internet Loja Sumicity (7/12)","type":"Despesa","category":"Água, Luz e Internet","value":129,"date":"2026-07-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Luz","type":"Despesa","category":"Água, Luz e Internet","value":174.69,"date":"2025-03-17","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Vendas Ton","type":"Receita","category":"Venda de Mercadorias","value":406.28,"date":"2025-07-29","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (25/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-06-24","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto","type":"Despesa","category":"Impostos e Taxas","value":337.67,"date":"2025-02-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS - Julio (3/12)","type":"Despesa","items":{},"category":"Impostos e Taxas","value":167,"date":"2026-03-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Pic Pay Fatura","type":"Despesa","category":"Custos (CMV/CMV)","value":5713.17,"date":"2025-11-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Compra Rio Quality Stdr Léo (1/2)","type":"Despesa","category":"Custos (CMV/CMV)","value":98.63,"date":"2025-12-16","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto - Açaí  (1/12)","type":"Despesa","items":{},"category":"Impostos e Taxas","value":531,"date":"2026-01-20","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Açaí (10/12)","type":"Despesa","category":"Contabilidade e outros serviços","value":370,"date":"2026-10-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Giz Móveis Daniel (3/10)","type":"Receita","category":"Emprestimo","value":223.3,"date":"2026-02-16","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Provisionamento","type":"Despesa","category":"Aluguel e Condomínio","value":120,"date":"2025-07-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (30/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-07-29","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":1442.7,"date":"2025-11-05","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Emprestimo Denilson","type":"Receita","category":"Emprestimo","value":7000,"date":"2025-06-09","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Giz Móveis Daniel (6/10)","type":"Receita","category":"Emprestimo","value":223.3,"date":"2026-05-16","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Internet","type":"Despesa","category":"Água, Luz e Internet","value":100,"date":"2025-10-09","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Água (12/12)","type":"Despesa","category":"Água, Luz e Internet","value":200,"date":"2026-12-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Neon Fatura","type":"Despesa","category":"Custos (CMV/CMV)","value":1055.38,"date":"2025-11-15","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (42/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-10-21","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto Camilo dos Santos","type":"Despesa","category":"Outros","value":193,"date":"2025-11-14","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (13/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-04-01","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood (13/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-04-01","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Entregas Léo","type":"Despesa","items":{},"category":"Prestação de Serviços","value":786.33,"date":"2025-12-24","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":2838.7,"date":"2025-07-09","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Nubank Fatura PJ","type":"Despesa","category":"Custos (CMV/CMV)","value":2961.99,"date":"2025-05-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (35/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-09-02","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Bling","type":"Despesa","category":"Outros","value":55,"date":"2025-12-10","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Condominio","type":"Despesa","category":"Aluguel e Condomínio","value":70,"date":"2025-03-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Daniel","type":"Despesa","category":"Despesa","value":900,"date":"2025-08-29","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pró Labore - Léo","type":"Despesa","category":"Pró-Labore (Sócios)","value":2000,"date":"2025-04-29","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":1869.44,"date":"2025-07-09","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Provisionamento (8/12)","type":"Despesa","category":"Água, Luz e Internet","value":120,"date":"2026-08-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Plano de Saúde Amil (11/12)","type":"Despesa","category":"Outros","value":1210.86,"date":"2026-11-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Giz Móveis Daniel (7/10)","type":"Receita","category":"Emprestimo","value":223.3,"date":"2026-06-16","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Diarias Isa Julho","type":"Despesa","category":"Pessoal e Salários","value":428.17,"date":"2025-12-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Provisionamento","type":"Despesa","category":"Aluguel e Condomínio","value":120,"date":"2025-03-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pró Labore Léo (2/12)","type":"Despesa","category":"Pró-Labore (Sócios)","value":2000,"date":"2026-02-26","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Empréstimo 99 Leo 4/6","type":"Despesa","category":"Emprestimo","value":1050.62,"date":"2025-08-06","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo 99 léo","type":"Receita","category":"Emprestimo","value":6000,"date":"2026-01-06","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo","type":"Receita","category":"Emprestimo","value":163,"date":"2025-08-26","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Iphone Daniel (2/10)","type":"Receita","category":"Emprestimo","value":335.2,"date":"2026-01-16","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Nubank Giro  (2/20)","type":"Despesa","category":"Emprestimo","value":2691.84,"date":"2026-02-03","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto - Açaí  (2/12)","type":"Despesa","category":"Impostos e Taxas","value":1000,"date":"2026-02-20","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS - Léo (7/12)","type":"Despesa","category":"Impostos e Taxas","value":248,"date":"2026-07-20","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (18/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-05-06","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Boleto M. Mix 1/3","type":"Despesa","category":"Custos (CMV/CMV)","value":2604.07,"date":"2025-11-01","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Inss Leo","type":"Despesa","category":"Pessoal e Salários","value":248,"date":"2025-12-17","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Condominio (8/12)","type":"Despesa","category":"Aluguel e Condomínio","value":40,"date":"2026-08-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto Nestlé","type":"Despesa","category":"Custos (CMV/CMV)","value":145.44,"date":"2025-04-28","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":2454.13,"date":"2025-02-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (41/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-10-14","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (3/52)","type":"Receita","items":{},"category":"Venda de Mercadorias","value":1497,"date":"2026-01-21","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"INSS - Léo (5/12)","type":"Despesa","category":"Impostos e Taxas","value":248,"date":"2026-05-20","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (47/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-11-25","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pic Pay Fatura","type":"Despesa","category":"Custos (CMV/CMV)","value":3636.65,"date":"2025-05-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Fatura Santander - Verificar se é a ult. mesmo.","type":"Despesa","category":"Custos (CMV/CMV)","value":65,"date":"2026-01-20","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Iphone Daniel (8/10)","type":"Receita","category":"Emprestimo","value":335.2,"date":"2026-07-16","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Anota ai","type":"Receita","category":"Venda de Mercadorias","value":151.03,"date":"2025-08-12","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Luz Corredor (5/12)","type":"Despesa","category":"Água, Luz e Internet","value":50,"date":"2026-05-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Detetização","type":"Despesa","category":"Manutenção e Reparos","value":400,"date":"2025-11-14","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Mister Mix:","type":"Despesa","category":"Custos (CMV/CMV)","value":2011.83,"date":"2025-02-04","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pic Pay Fatura","type":"Despesa","category":"Custos (CMV/CMV)","value":4406,"date":"2025-10-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Nubank Léo - 2/12","type":"Despesa","category":"Emprestimo","value":1112.35,"date":"2025-04-07","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (21/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-05-27","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pró Labore Léo (5/12)","type":"Despesa","category":"Pró-Labore (Sócios)","value":2000,"date":"2026-05-26","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Entregas Léo","type":"Despesa","category":"Pessoal e Salários","value":2010,"date":"2025-12-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":3130.92,"date":"2025-06-25","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto LF Neto","type":"Despesa","category":"Custos (CMV/CMV)","value":301.89,"date":"2025-07-21","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Contador Burguer (3/13)","type":"Despesa","category":"Contabilidade e outros serviços","value":450,"date":"2026-02-16","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Licença","type":"Despesa","category":"Impostos e Taxas","value":549.53,"date":"2025-12-12","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto - Açaí  (12/12)","type":"Despesa","category":"Impostos e Taxas","value":1000,"date":"2026-12-20","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Aluguel","type":"Despesa","category":"Aluguel e Condomínio","value":2700,"date":"2025-07-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Burguer (5/13)","type":"Despesa","category":"Contabilidade e outros serviços","value":450,"date":"2026-04-16","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":1518.18,"date":"2025-09-24","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Físico","type":"Receita","category":"Venda de Mercadorias","value":33,"date":"2025-09-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Açaí (3/12)","type":"Despesa","category":"Contabilidade e outros serviços","value":370,"date":"2026-03-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (45/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-11-11","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (20/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-05-20","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","items":{},"category":"Venda de Mercadorias","value":3942.96,"date":"2025-12-24","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Aluguel (5/12)","type":"Despesa","category":"Aluguel e Condomínio","value":2700,"date":"2026-05-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pic Pay","type":"Despesa","category":"Custos (CMV/CMV)","value":2950.94,"date":"2025-03-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Andim Kraft","type":"Despesa","category":"Custos (CMV/CMV)","value":124.45,"date":"2025-11-15","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Adesivo Print Lab Xpress","type":"Despesa","category":"Custos (CMV/CMV)","value":15,"date":"2025-10-20","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Contador Burguer","type":"Despesa","category":"Contabilidade e outros serviços","value":459.15,"date":"2025-06-14","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Provisionamento (12/12)","type":"Despesa","category":"Água, Luz e Internet","value":120,"date":"2026-12-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS Julio (4/12)","type":"Despesa","category":"Impostos e Taxas","value":167,"date":"2026-04-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Santader Conta","type":"Despesa","category":"Despesas Financeiras","value":150,"date":"2025-08-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS Julio (7/12)","type":"Despesa","category":"Impostos e Taxas","value":167,"date":"2026-07-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Pró Labore Léo (8/12)","type":"Despesa","category":"Pró-Labore (Sócios)","value":2000,"date":"2026-08-26","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto - burguer  (5/12)","type":"Despesa","category":"Aluguel e Condomínio","value":1000,"date":"2026-05-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"ALF Neto","type":"Despesa","category":"Custos (CMV/CMV)","value":284.58,"date":"2025-10-13","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Compra Rio Quality Stdr Léo 3/6","type":"Despesa","category":"Custos (CMV/CMV)","value":98.63,"date":"2025-10-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (14/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-04-08","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Luz Corredor (1/12)","type":"Despesa","category":"Água, Luz e Internet","value":50,"date":"2026-01-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Daniel","type":"Despesa","category":"Emprestimo","value":150,"date":"2025-05-14","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Condominio (3/12)","type":"Despesa","category":"Aluguel e Condomínio","value":40,"date":"2026-03-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Taxa Vigilancia 2/4","type":"Despesa","category":"Impostos e Taxas","value":108,"date":"2025-08-02","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":3082.83,"date":"2025-02-12","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (50/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-12-16","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Luz Corredor (6/12)","type":"Despesa","category":"Água, Luz e Internet","value":50,"date":"2026-06-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (5/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-02-04","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Sthek Limpeza da Caixa D\u0027água","type":"Despesa","category":"Manutenção e Reparos","value":240,"date":"2025-11-13","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Condominio (1/12)","type":"Despesa","category":"Aluguel e Condomínio","value":40,"date":"2026-01-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Luz Corredor","type":"Despesa","category":"Água, Luz e Internet","value":40,"date":"2025-07-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (38/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-09-23","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"neon fatura adiantamento","type":"Despesa","category":"Custos (CMV/CMV)","value":525.64,"date":"2025-12-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Taxa Alvara de Funcionamento","type":"Despesa","category":"Impostos e Taxas","value":117.91,"date":"2025-12-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Plano de Saúde Amil (9/12)","type":"Despesa","category":"Outros","value":1210.86,"date":"2026-09-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo","type":"Receita","category":"Venda de Mercadorias","value":368,"date":"2025-11-24","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Aluguel","type":"Despesa","category":"Aluguel e Condomínio","value":2700,"date":"2025-08-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pago","type":"Receita","category":"Emprestimo","value":10000,"date":"2025-11-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (9/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-03-04","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boletos Nestlé","type":"Despesa","category":"Custos (CMV/CMV)","value":648.69,"date":"2025-11-07","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Embalagens Café","type":"Despesa","category":"Investimentos","value":274,"date":"2025-12-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Atacadão","type":"Despesa","category":"Custos (CMV/CMV)","value":128.55,"date":"2025-01-12","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Aluguel Sala Antiga","type":"Despesa","category":"Aluguel e Condomínio","value":560,"date":"2025-03-11","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS - Léo","type":"Despesa","category":"Impostos e Taxas","value":247.28,"date":"2025-06-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":1300.93,"date":"2025-01-22","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Burguer (13/13)","type":"Despesa","category":"Contabilidade e outros serviços","value":450,"date":"2026-12-16","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Boleto Nestlé","type":"Despesa","category":"Custos (CMV/CMV)","value":64.8,"date":"2025-04-16","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":1003.12,"date":"2025-07-29","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":2597.28,"date":"2025-08-06","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":2371.54,"date":"2025-06-18","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (49/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-12-09","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Fatura Santander","type":"Despesa","category":"Custos (CMV/CMV)","value":504.83,"date":"2025-02-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Mister Mix:","type":"Despesa","category":"Custos (CMV/CMV)","value":1191.36,"date":"2025-01-15","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto M.Mix 2/2","type":"Despesa","category":"Custos (CMV/CMV)","value":3901.68,"date":"2025-07-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Nubank Giro  (8/20)","type":"Despesa","category":"Emprestimo","value":2691.84,"date":"2026-08-03","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pró Labore - Léo","type":"Despesa","category":"Pró-Labore (Sócios)","value":1200,"date":"2025-08-27","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto","type":"Despesa","category":"Impostos e Taxas","value":816.01,"date":"2025-03-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":2633.78,"date":"2025-05-14","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (43/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-10-28","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Água (9/12)","type":"Despesa","category":"Água, Luz e Internet","value":200,"date":"2026-09-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Luz Corredor (9/12)","type":"Despesa","category":"Água, Luz e Internet","value":50,"date":"2026-09-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Luz","type":"Despesa","category":"Água, Luz e Internet","value":400,"date":"2025-10-15","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Arrecadação Leo","type":"Despesa","category":"Emprestimo","value":247.28,"date":"2025-03-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Nubank Giro  (5/20)","type":"Despesa","category":"Emprestimo","value":2691.84,"date":"2026-05-03","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Aluguel (9/12)","type":"Despesa","category":"Aluguel e Condomínio","value":2700,"date":"2026-09-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto LF Neto","type":"Despesa","category":"Custos (CMV/CMV)","value":473.87,"date":"2025-07-10","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood (17/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-04-29","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Organisys Sistema:","type":"Despesa","category":"Outros","value":160,"date":"2025-01-14","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Nubank Léo 1/12","type":"Despesa","category":"Emprestimo","value":1109.05,"date":"2025-03-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":248.09,"date":"2025-05-14","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Iphone Daniel","type":"Receita","category":"Emprestimo","value":335.2,"date":"2025-12-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto Açaí","type":"Despesa","category":"Impostos e Taxas","value":512.61,"date":"2025-08-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pix 6 Corridas Jonas","type":"Despesa","category":"Outros","value":50,"date":"2025-03-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Nubank Léo R. Quality Açaís (6/6)","type":"Despesa","category":"Custos (CMV/CMV)","value":444.11,"date":"2026-06-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (16/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-04-22","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto - burguer  (3/12)","type":"Despesa","category":"Aluguel e Condomínio","value":1000,"date":"2026-03-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Emprestimo Isa","type":"Despesa","category":"Emprestimo","value":170,"date":"2025-08-29","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Açaí (12/12)","type":"Despesa","items":{},"category":"Contabilidade e outros serviços","value":370,"date":"2026-12-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Nubank Léo Prime 3/10","type":"Despesa","category":"Custos (CMV/CMV)","value":147.29,"date":"2025-08-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Limpeza Escada","type":"Despesa","category":"Aluguel e Condomínio","value":70,"date":"2025-12-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Fatura Nubank","type":"Despesa","category":"Custos (CMV/CMV)","value":3067.24,"date":"2025-01-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pró Labore Léo (9/12)","type":"Despesa","category":"Pró-Labore (Sócios)","value":2000,"date":"2026-09-26","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Nubank Fatura PJ","type":"Despesa","category":"Custos (CMV/CMV)","value":4952.77,"date":"2025-10-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pic Pay Fatura","type":"Despesa","category":"Custos (CMV/CMV)","value":3100,"date":"2025-08-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Vendas Pix","type":"Receita","category":"Venda de Mercadorias","value":482.61,"date":"2025-07-29","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Luz Corredor (10/12)","type":"Despesa","category":"Água, Luz e Internet","value":50,"date":"2026-10-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto Nestlé","type":"Despesa","category":"Custos (CMV/CMV)","value":356.52,"date":"2025-08-13","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS Julio (3/12)","type":"Despesa","category":"Impostos e Taxas","value":167,"date":"2026-03-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Contador Açaí (11/13)","type":"Despesa","category":"Contabilidade e outros serviços","value":370,"date":"2026-10-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Condominio (7/12)","type":"Despesa","category":"Aluguel e Condomínio","value":40,"date":"2026-07-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Provisionamento (4/12)","type":"Despesa","category":"Água, Luz e Internet","value":120,"date":"2026-04-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"banana ","type":"Despesa","category":"Custos (CMV/CMV)","value":80,"date":"2025-12-26","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Caixa Léo Fatura","type":"Despesa","items":[{"description":"Americanas","value":70.93,"category":"Custos (CMV/CMV)"},{"description":"Atacadão","value":130,"category":"Custos (CMV/CMV)"}],"category":"Fatura Detalhada","value":200.93,"date":"2026-01-28","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Organisys Sistema:","type":"Despesa","category":"Outros","value":160,"date":"2025-03-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":2770,"date":"2025-07-23","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (12/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-03-25","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Aluguel (10/12)","type":"Despesa","category":"Aluguel e Condomínio","value":2700,"date":"2026-10-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ton:","type":"Receita","category":"Emprestimo","value":6224,"date":"2025-07-29","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":1816.69,"date":"2025-07-16","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":722.16,"date":"2025-05-21","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Aluguel (3/12)","type":"Despesa","category":"Aluguel e Condomínio","value":2700,"date":"2026-03-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":513.56,"date":"2025-05-28","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Contador Açaí (12/13)","type":"Despesa","category":"Contabilidade e outros serviços","value":370,"date":"2026-11-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Bling (5/12)","type":"Despesa","category":"Outros","value":55,"date":"2026-05-10","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Empréstimo 99 Leo 3/6","type":"Despesa","category":"Emprestimo","value":1050.62,"date":"2025-07-07","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto M. Mix 2/3","type":"Despesa","category":"Custos (CMV/CMV)","value":2605.58,"date":"2025-11-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":1095.15,"date":"2025-11-12","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"CNH Daniel Emprestimo (1/4)","type":"Receita","category":"Emprestimo","value":454,"date":"2025-12-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Empréstimo 99 Daniel 2/9","type":"Despesa","category":"Emprestimo","value":1197.36,"date":"2025-05-07","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Internet","type":"Despesa","category":"Água, Luz e Internet","value":100,"date":"2025-09-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Internet","type":"Despesa","category":"Água, Luz e Internet","value":110,"date":"2025-01-13","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Nubank Léo","type":"Despesa","items":[{"description":"Rio Quality 1/6","value":444.11,"category":"Custos (CMV/CMV)"},{"category":"Custos (CMV/CMV)","description":"Atacadão","value":165},{"description":"Prime 8/10","value":147.3,"category":"Custos (CMV/CMV)"},{"description":"Nova Mix","value":66,"category":"Custos (CMV/CMV)"},{"description":"Novamix","value":106.64,"category":"Custos (CMV/CMV)"},{"description":"Açougue Maravilha","value":174,"category":"Custos (CMV/CMV)"},{"description":"Lojas Americanas","value":73.95,"category":"Custos (CMV/CMV)"},{"description":"Horti Fruti","value":35.94,"category":"Custos (CMV/CMV)"},{"description":"Horti Frut","value":71.88,"category":"Custos (CMV/CMV)"}],"category":"Fatura Detalhada","value":1284.82,"date":"2026-01-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":1701.09,"date":"2025-06-18","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Giz Móveis Daniel (5/10)","type":"Receita","category":"Emprestimo","value":223.3,"date":"2026-04-16","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS - Léo (9/12)","type":"Despesa","category":"Impostos e Taxas","value":248,"date":"2026-09-20","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Compra Rio Quality Stdr Léo 1/6","type":"Despesa","category":"Custos (CMV/CMV)","value":98.63,"date":"2025-09-27","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Licença e Alavará 2024","type":"Despesa","category":"Impostos e Taxas","value":695.29,"date":"2025-12-12","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pix Andinho Kraft","type":"Despesa","category":"Custos (CMV/CMV)","value":66.5,"date":"2025-10-04","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"INSS Leo","type":"Despesa","category":"Impostos e Taxas","value":248.09,"date":"2025-04-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (15/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-04-15","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Emprestimo Nubank Giro (3/6)","type":"Despesa","category":"Emprestimo","value":1812.66,"date":"2026-02-03","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Cartão Caixa Atacadão","type":"Despesa","category":"Custos (CMV/CMV)","value":76.21,"date":"2025-10-28","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS - Léo (6/12)","type":"Despesa","category":"Impostos e Taxas","value":248,"date":"2026-06-20","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Cartão Caixa Rei do Descartável","type":"Despesa","category":"Custos (CMV/CMV)","value":32,"date":"2025-10-28","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Aluguel (2/12)","type":"Despesa","category":"Aluguel e Condomínio","value":2700,"date":"2026-02-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":1181.39,"date":"2025-09-03","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Imposto - burguer  (10/12)","type":"Despesa","category":"Aluguel e Condomínio","value":1000,"date":"2026-10-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Nestlé","type":"Despesa","category":"Custos (CMV/CMV)","value":354.1,"date":"2025-03-28","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emp. Daniel","type":"Receita","category":"Emprestimo","value":570,"date":"2025-07-29","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":1914.56,"date":"2025-01-15","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Nubank Giro  (1/20)","type":"Despesa","category":"Emprestimo","value":2691.84,"date":"2026-01-03","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Anota ai Burguer - 01/12 a 18/12 ","type":"Receita","category":"Venda de Mercadorias","value":184.76,"date":"2025-12-18","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Emp. Daniel","type":"Receita","category":"Emprestimo","value":1690,"date":"2025-07-29","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Condominio","type":"Despesa","category":"Aluguel e Condomínio","value":70,"date":"2025-05-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":1608.11,"date":"2025-09-10","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Pago","type":"Receita","category":"Venda de Mercadorias","value":1513.47,"date":"2025-10-28","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Contador Açaí (7/13)","type":"Despesa","category":"Contabilidade e outros serviços","value":370,"date":"2026-06-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":4143.82,"date":"2025-11-19","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Plano de Saúde","type":"Despesa","category":"Pessoal e Salários","value":1879.2,"date":"2025-12-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Nestlé","type":"Despesa","category":"Custos (CMV/CMV)","value":50.13,"date":"2025-01-12","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (39/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-09-30","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"INSS - Julio (7/12)","type":"Despesa","items":{},"category":"Impostos e Taxas","value":167,"date":"2026-07-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Provisionamento","type":"Despesa","category":"Aluguel e Condomínio","value":120,"date":"2025-12-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Agua","type":"Despesa","category":"Água, Luz e Internet","value":200,"date":"2025-08-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS Julio (2/12)","type":"Despesa","category":"Impostos e Taxas","value":167,"date":"2026-02-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Guia do FGTS","type":"Despesa","category":"Aluguel e Condomínio","value":5.72,"date":"2025-12-18","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (20/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-05-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":3174.76,"date":"2025-04-16","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (21/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-05-27","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Água (2/12)","type":"Despesa","category":"Água, Luz e Internet","value":200,"date":"2026-02-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (7/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-02-18","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto - burguer  (1/12)","type":"Despesa","items":{},"category":"Aluguel e Condomínio","value":262.28,"date":"2026-01-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Provisionamento","type":"Despesa","category":"Aluguel e Condomínio","value":120,"date":"2025-05-07","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pedido M. Mix 2/3","type":"Despesa","category":"Custos (CMV/CMV)","value":2566.35,"date":"2025-09-15","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (52/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-12-30","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Santander","type":"Despesa","category":"Custos (CMV/CMV)","value":1109,"date":"2025-04-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Plano de Saúde Amil (7/12)","type":"Despesa","category":"Outros","value":1210.86,"date":"2026-07-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Vendas por fora","type":"Receita","items":[{"description":"Anota ai ","value":33.61,"category":"Venda de Mercadorias"},{"description":"Anota ai ","value":230.85,"category":"Venda de Mercadorias"},{"description":"Pedido Thalia","value":47.56,"category":"Venda de Mercadorias"},{"description":"Pedido Thalia","value":78.32,"category":"Venda de Mercadorias"}],"category":"Fatura Detalhada","value":390.34,"date":"2025-12-22","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Internet Loja Sumicity (8/12)","type":"Despesa","category":"Água, Luz e Internet","value":129,"date":"2026-08-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Empréstimo Léo","type":"Despesa","category":"Emprestimo","value":260.6,"date":"2025-09-28","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto","type":"Despesa","category":"Impostos e Taxas","value":448.87,"date":"2025-01-16","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (11/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-03-18","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Anota ai","type":"Receita","category":"Venda de Mercadorias","value":326.55,"date":"2025-08-20","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood (37/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-09-16","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Provisionamento (7/12)","type":"Despesa","category":"Água, Luz e Internet","value":120,"date":"2026-07-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Empréstimo 99 Leo 2/3","type":"Despesa","category":"Emprestimo","value":530.31,"date":"2025-08-06","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Luz Corredor","type":"Despesa","category":"Água, Luz e Internet","value":50,"date":"2025-09-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (46/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-11-18","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Nubank Giro  (10/20)","type":"Despesa","category":"Emprestimo","value":2691.84,"date":"2026-10-03","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":3216.32,"date":"2025-03-19","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emp. Dani","type":"Despesa","category":"Emprestimo","value":500,"date":"2025-09-24","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (52/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-12-30","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Contador Açaí (3/13)","type":"Despesa","category":"Contabilidade e outros serviços","value":370,"date":"2026-02-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pago","type":"Receita","category":"Venda de Mercadorias","value":271.33,"date":"2025-11-17","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Boleto LF Neto","type":"Despesa","category":"Custos (CMV/CMV)","value":279.2,"date":"2025-08-11","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Contador Açaí (1/12)","type":"Despesa","items":{},"category":"Contabilidade e outros serviços","value":422,"date":"2026-01-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto M. Mix 3/3","type":"Despesa","category":"Custos (CMV/CMV)","value":2605.58,"date":"2025-11-15","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":6378.59,"date":"2025-12-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Diárias Isabela Boleto Estácio","type":"Despesa","category":"Pessoal e Salários","value":753.66,"date":"2026-01-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto Nestlé","type":"Despesa","category":"Custos (CMV/CMV)","value":394.59,"date":"2025-12-26","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Aluguel (8/12)","type":"Despesa","category":"Aluguel e Condomínio","value":2700,"date":"2026-08-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Iphone Daniel (3/10)","type":"Receita","category":"Emprestimo","value":335.2,"date":"2026-02-16","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (11/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-03-18","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Emprestimo","type":"Receita","category":"Emprestimo","value":120,"date":"2025-08-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS - Léo (4/12)","type":"Despesa","category":"Impostos e Taxas","value":248,"date":"2026-04-20","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Luz Corredor (4/12)","type":"Despesa","category":"Água, Luz e Internet","value":50,"date":"2026-04-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto Açaí","type":"Despesa","category":"Impostos e Taxas","value":457.99,"date":"2025-06-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Açaí (9/13)","type":"Despesa","category":"Contabilidade e outros serviços","value":370,"date":"2026-08-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":3999.09,"date":"2025-09-17","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Empréstimo Ton Leo Neon 2/3","type":"Despesa","category":"Emprestimo","value":604,"date":"2025-09-15","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Empréstimo Leo","type":"Despesa","category":"Emprestimo","value":668,"date":"2025-09-27","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (25/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-06-24","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Condominio","type":"Despesa","category":"Aluguel e Condomínio","value":70,"date":"2025-09-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":3392.94,"date":"2025-01-01","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pró Labore - Léo","type":"Despesa","category":"Pró-Labore (Sócios)","value":2248,"date":"2025-02-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (48/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-12-02","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Empréstimo Leo","type":"Despesa","category":"Emprestimo","value":450,"date":"2025-08-15","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (36/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-09-09","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":1108,"date":"2025-12-03","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":5085.34,"date":"2025-11-26","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (4/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-01-28","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Nubank Léo R. Quality Açaís (4/6)","type":"Despesa","category":"Custos (CMV/CMV)","value":444.11,"date":"2026-04-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Burguer (7/13)","type":"Despesa","category":"Contabilidade e outros serviços","value":450,"date":"2026-06-16","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Cartão Caixa Léo","type":"Despesa","category":"Custos (CMV/CMV)","value":156.2,"date":"2025-12-28","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto Açaí","type":"Despesa","category":"Impostos e Taxas","value":631.35,"date":"2025-10-22","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood ","type":"Receita","items":{},"category":"Venda de Mercadorias","value":5058.59,"date":"2025-12-03","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Diarias Isa","type":"Despesa","category":"Pessoal e Salários","value":800,"date":"2025-02-27","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo","type":"Receita","category":"Emprestimo","value":294,"date":"2025-08-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS Julio","type":"Despesa","category":"Impostos e Taxas","value":167,"date":"2025-12-20","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Provisionamento (11/12)","type":"Despesa","category":"Água, Luz e Internet","value":120,"date":"2026-11-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pagar 08/09","type":"Receita","category":"Emprestimo","value":4000,"date":"2025-09-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":4022.33,"date":"2025-11-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (32/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-08-12","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":1445,"date":"2025-08-27","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood (24/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-06-17","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"vigilância ","type":"Despesa","category":"Impostos e Taxas","value":205.15,"date":"2025-12-12","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Bling (11/12)","type":"Despesa","category":"Outros","value":55,"date":"2026-11-10","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Nubank Léo Prime 4/10","type":"Despesa","category":"Custos (CMV/CMV)","value":147.29,"date":"2025-09-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS - Léo","type":"Despesa","category":"Impostos e Taxas","value":247.28,"date":"2025-10-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emp Daniel","type":"Despesa","category":"Emprestimo","value":94,"date":"2025-11-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (40/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-10-07","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Serviços da Conta","type":"Despesa","category":"Despesas Financeiras","value":150,"date":"2025-03-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (1/52)","type":"Receita","items":{},"category":"Venda de Mercadorias","value":645.38,"date":"2026-01-07","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Emprestimo","type":"Receita","category":"Emprestimo","value":1710,"date":"2025-08-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":2900.55,"date":"2025-05-07","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (51/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-12-23","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Nubank Fatura PJ","type":"Despesa","category":"Custos (CMV/CMV)","value":4657.82,"date":"2025-11-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Provisionamento","type":"Despesa","category":"Aluguel e Condomínio","value":120,"date":"2025-04-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":2537.09,"date":"2025-07-16","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto Nestlé","type":"Despesa","category":"Custos (CMV/CMV)","value":375.88,"date":"2025-04-16","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":1465.27,"date":"2025-07-23","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":6873.31,"date":"2025-12-30","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Provisionamento","type":"Despesa","category":"Aluguel e Condomínio","value":120,"date":"2025-06-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS - Julio","type":"Despesa","category":"Impostos e Taxas","value":167,"date":"2025-08-20","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Luz","type":"Despesa","category":"Água, Luz e Internet","value":294.85,"date":"2025-06-19","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Fatura Santander Atrasada","type":"Despesa","category":"Custos (CMV/CMV)","value":255.4,"date":"2025-12-04","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto Nestlé","type":"Despesa","category":"Custos (CMV/CMV)","value":276.72,"date":"2025-06-16","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Nubank Fatura PJ","type":"Despesa","items":[{"description":"Açougue","value":86.83,"category":"Custos (CMV/CMV)"},{"description":"Novamix 1/3","value":56,"category":"Custos (CMV/CMV)"},{"description":"Hortifruti","value":19.11,"category":"Custos (CMV/CMV)"},{"description":"Posto estrela","value":29,"category":"Combustível"},{"description":"DC ","value":37.99,"category":"Custos (CMV/CMV)"},{"description":"Super pao ","value":4.49,"category":"Custos (CMV/CMV)"},{"description":"Super pao ","value":22,"category":"Custos (CMV/CMV)"},{"description":"Hortifruti","value":17.04,"category":"Custos (CMV/CMV)"},{"description":"Comercial Friburguense","value":90.57,"category":"Manutenção e Reparos"},{"description":"Ferragens Machado","value":127,"category":"Manutenção e Reparos"},{"description":"HMMC materiais ","value":47.5,"category":"Manutenção e Reparos"},{"description":"Facebook ","value":99.97,"category":"Marketing e Publicidade"},{"description":"Canva ","value":35,"category":"Marketing e Publicidade"},{"description":"JM comercio e industria  1/12","value":99,"category":"Ativo Imobilizado"},{"description":"Nova Mix 1/3","value":78.27,"category":"Custos (CMV/CMV)"},{"description":"Cereais Bramil 1/3","value":49.3,"category":"Custos (CMV/CMV)"},{"description":"Hortifruti","value":23.96,"category":"Custos (CMV/CMV)"},{"description":"Jose Luix de carvalho - Mercado","value":171.11,"category":"Custos (CMV/CMV)"},{"description":"Hortifruti","value":28.94,"category":"Custos (CMV/CMV)"},{"description":"Limpex","value":26.96,"category":"Uso e Consumo"},{"description":"Superpao","value":24.35,"category":"Custos (CMV/CMV)"},{"description":"Açougue","value":83.69,"category":"Custos (CMV/CMV)"},{"description":"Superpao","value":25.98,"category":"Custos (CMV/CMV)"},{"description":"NOVA mIX","value":62.3,"category":"Custos (CMV/CMV)"},{"description":"Hortifruti","value":57.04,"category":"Custos (CMV/CMV)"},{"description":"Rio quality","value":166.81,"category":"Custos (CMV/CMV)"},{"description":"Lojas americanas","value":36.97,"category":"Custos (CMV/CMV)"},{"description":"Hortifruti","value":22.92,"category":"Custos (CMV/CMV)"},{"description":"Armazem canto leve","value":95,"category":"Custos (CMV/CMV)"},{"description":"Hortifruti","value":9.99,"category":"Custos (CMV/CMV)"},{"description":"Hortifruti","value":48.08,"category":"Custos (CMV/CMV)"},{"description":"Açougue","value":81.81,"category":"Custos (CMV/CMV)"},{"description":"Hortifruti","value":5.98,"category":"Custos (CMV/CMV)"},{"description":"Rio quality 2/6","value":153.59,"category":"Custos (CMV/CMV)"},{"description":"Rio quality 5/6","value":142.59,"category":"Custos (CMV/CMV)"},{"description":"Mercado livre  10/10","value":141.68,"category":"Ativo Imobilizado"},{"description":"Rio quality 3/6","value":73.8,"category":"Custos (CMV/CMV)"},{"description":"Grafica 3/4","value":60.49,"category":"Custos (CMV/CMV)"},{"description":"Mercado Livre","value":78.62,"category":"Ativo Imobilizado"},{"description":"Atacadao 2/2","value":117.39,"category":"Custos (CMV/CMV)"},{"description":"Mercado livre (copos)","value":54.75,"category":"Custos (CMV/CMV)"},{"description":"Rio qualiti 4/6","value":210.32,"category":"Custos (CMV/CMV)"},{"description":"Chilli Beans","value":241.16,"category":"Pró-Labore (Sócios)"},{"description":"Mercado Livre 10/10","value":90.35,"category":"Ativo Imobilizado"},{"description":"Rio quality 3/6","value":171.15,"category":"Custos (CMV/CMV)"},{"description":"Rio quality 6/6","value":49.7,"category":"Custos (CMV/CMV)"},{"description":"Shopee 2/10","value":69.7,"category":"Ativo Imobilizado"},{"description":"Consumer","value":52.39,"category":"Outros"},{"description":"99","value":7.22,"category":"Combustível"},{"description":"Cereais Bramil","value":74.14,"category":"Custos (CMV/CMV)"}],"category":"Fatura Detalhada","value":3660,"date":"2025-12-09","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Firjan","type":"Despesa","category":"Outros","value":50,"date":"2025-06-21","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":2622.95,"date":"2025-09-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto M.Mix 1/2","type":"Despesa","category":"Custos (CMV/CMV)","value":3900.18,"date":"2025-07-02","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Agua","type":"Despesa","category":"Água, Luz e Internet","value":200,"date":"2025-04-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emp. Léo","type":"Receita","category":"Emprestimo","value":769,"date":"2025-07-29","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS - Julio","type":"Despesa","category":"Impostos e Taxas","value":166.98,"date":"2025-05-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pedido FrigoCenter","type":"Despesa","category":"Custos (CMV/CMV)","value":365.19,"date":"2025-02-18","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Açaí (4/13)","type":"Despesa","category":"Contabilidade e outros serviços","value":370,"date":"2026-03-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Internet","type":"Despesa","category":"Água, Luz e Internet","value":100,"date":"2025-11-09","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (35/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-09-02","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto - burguer  (7/12)","type":"Despesa","category":"Aluguel e Condomínio","value":1000,"date":"2026-07-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Empréstimo Julio","type":"Despesa","category":"Emprestimo","value":4000,"date":"2025-09-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Provisionamento (10/12)","type":"Despesa","category":"Água, Luz e Internet","value":120,"date":"2026-10-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Empréstimo Ton Leo Neon 3/3","type":"Despesa","category":"Emprestimo","value":604,"date":"2025-10-15","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Luz Corredor (7/12)","type":"Despesa","category":"Água, Luz e Internet","value":50,"date":"2026-07-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Açaí (8/13)","type":"Despesa","category":"Contabilidade e outros serviços","value":370,"date":"2026-07-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emp. Julio","type":"Receita","category":"Emprestimo","value":2700,"date":"2025-07-29","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Plano de Saúde Amil (6/12)","type":"Despesa","category":"Outros","value":1210.86,"date":"2026-06-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pró Labore Léo (1/12)","type":"Despesa","category":"Pró-Labore (Sócios)","value":2000,"date":"2026-01-26","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (5/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-02-04","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Bling (4/12)","type":"Despesa","category":"Outros","value":55,"date":"2026-04-10","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Fatura Pic Pay","type":"Despesa","category":"Custos (CMV/CMV)","value":2062.89,"date":"2025-01-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Cartão Caixa Banana","type":"Despesa","category":"Custos (CMV/CMV)","value":95,"date":"2025-10-28","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Burguer (12/13)","type":"Despesa","category":"Contabilidade e outros serviços","value":450,"date":"2026-11-16","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":2492.06,"date":"2025-07-29","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Agua","type":"Despesa","category":"Água, Luz e Internet","value":200,"date":"2025-05-07","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (33/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-08-19","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Taxas","type":"Despesa","category":"Aluguel e Condomínio","value":280,"date":"2025-01-11","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Burguer (6/13)","type":"Despesa","category":"Contabilidade e outros serviços","value":450,"date":"2026-05-16","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Nubank Léo R. Quality Açaís (2/6)","type":"Despesa","category":"Custos (CMV/CMV)","value":444.11,"date":"2026-02-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo","type":"Receita","category":"Emprestimo","value":585,"date":"2025-08-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Seguro Imóvel 3/3","type":"Despesa","category":"Aluguel e Condomínio","value":130.3,"date":"2025-05-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pedido M. Mix 1/3","type":"Despesa","category":"Custos (CMV/CMV)","value":2425.95,"date":"2025-09-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS - Julio (10/12)","type":"Despesa","items":{},"category":"Impostos e Taxas","value":167,"date":"2026-10-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"P. Lábore Léo","type":"Despesa","category":"Pró-Labore (Sócios)","value":800,"date":"2025-09-29","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","items":{},"category":"Venda de Mercadorias","value":1130.16,"date":"2025-12-24","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Aluguel","type":"Despesa","category":"Aluguel e Condomínio","value":2700,"date":"2025-04-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Água (5/12)","type":"Despesa","category":"Água, Luz e Internet","value":200,"date":"2026-05-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":1676.74,"date":"2025-06-11","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Imposto Açaí","type":"Despesa","category":"Impostos e Taxas","value":754.05,"date":"2025-07-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":2123.94,"date":"2025-06-04","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Giz Móveis Daniel (10/10)","type":"Receita","category":"Emprestimo","value":223.3,"date":"2026-09-16","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Luz Corredor (3/12)","type":"Despesa","category":"Água, Luz e Internet","value":50,"date":"2026-03-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (6/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-02-11","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Nubank","type":"Despesa","category":"Custos (CMV/CMV)","value":4290.39,"date":"2025-02-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pró Labore - Léo","type":"Despesa","category":"Pró-Labore (Sócios)","value":986,"date":"2025-10-24","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Aluguel (1/12)","type":"Despesa","category":"Aluguel e Condomínio","value":2700,"date":"2026-01-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":4192.77,"date":"2025-03-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Taxas","type":"Despesa","category":"Aluguel e Condomínio","value":270,"date":"2025-02-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pic Pay Fatura","type":"Despesa","category":"Custos (CMV/CMV)","value":4427,"date":"2025-09-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Nubank Giro (4/6)","type":"Despesa","category":"Emprestimo","value":1812.66,"date":"2026-03-03","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Serviço Caio","type":"Despesa","category":"Manutenção e Reparos","value":500,"date":"2025-02-27","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Embalagens Café 1/2","type":"Despesa","category":"Custos (CMV/CMV)","value":273.99,"date":"2025-11-13","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Nubank Léo - 5/12","type":"Despesa","category":"Emprestimo","value":1112.35,"date":"2025-07-07","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":3466.69,"date":"2025-04-23","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Nubank Fatura PJ","type":"Despesa","category":"Custos (CMV/CMV)","value":4285,"date":"2025-09-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Anota ai Açaí","type":"Receita","category":"Venda de Mercadorias","value":125,"date":"2025-09-04","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Freezer + Frete","type":"Despesa","category":"Ativo Imobilizado","value":2000,"date":"2025-06-21","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS - Leo","type":"Despesa","category":"Impostos e Taxas","value":247.28,"date":"2025-05-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Aluguel","type":"Despesa","category":"Aluguel e Condomínio","value":2700,"date":"2025-10-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pago","type":"Receita","category":"Venda de Mercadorias","value":758.66,"date":"2025-11-17","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pró Labore - Léo","type":"Despesa","category":"Pró-Labore (Sócios)","value":2000,"date":"2025-05-30","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Compra Rio Quality Stdr Léo 4/6","type":"Despesa","category":"Custos (CMV/CMV)","value":98.63,"date":"2025-11-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":995.5,"date":"2025-11-26","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"INSS - Léo (10/12)","type":"Despesa","category":"Impostos e Taxas","value":248,"date":"2026-10-20","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo","type":"Receita","category":"Emprestimo","value":8000,"date":"2025-03-03","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Luz Corredor","type":"Despesa","category":"Água, Luz e Internet","value":40,"date":"2025-10-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo","type":"Receita","category":"Emprestimo","value":1133.32,"date":"2025-08-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":1245.21,"date":"2025-08-06","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Imposto - Açaí  (9/12)","type":"Despesa","category":"Impostos e Taxas","value":1000,"date":"2026-09-20","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Firjan","type":"Despesa","category":"Outros","value":50,"date":"2025-02-26","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (31/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-08-05","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Bombeiro","type":"Despesa","category":"Impostos e Taxas","value":330,"date":"2025-03-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Plano de Saúde Amil (10/12)","type":"Despesa","category":"Outros","value":1210.86,"date":"2026-10-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Internet Loja Sumicity (2/12)","type":"Despesa","category":"Água, Luz e Internet","value":129,"date":"2026-02-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Firjan","type":"Despesa","category":"Outros","value":50,"date":"2025-03-26","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Santander","type":"Despesa","category":"Custos (CMV/CMV)","value":265,"date":"2025-10-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto Nestlé","type":"Despesa","category":"Custos (CMV/CMV)","value":115.19,"date":"2025-05-19","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Nubank Léo Prime 5/10","type":"Despesa","category":"Custos (CMV/CMV)","value":147.29,"date":"2025-10-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Empréstimo Ton Pic Pay 2/6","type":"Despesa","category":"Emprestimo","value":836.83,"date":"2025-09-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Água","type":"Despesa","category":"Água, Luz e Internet","value":200,"date":"2025-03-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (44/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-11-04","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Provisionamento","type":"Despesa","category":"Aluguel e Condomínio","value":120,"date":"2025-11-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"CNH Daniel","type":"Receita","category":"Emprestimo","value":454,"date":"2025-10-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emp. Tainá","type":"Receita","category":"Emprestimo","value":1200,"date":"2025-07-29","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Certificado Digital","type":"Despesa","category":"Aluguel e Condomínio","value":193.86,"date":"2025-12-24","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pic Pay Fatura","type":"Despesa","category":"Custos (CMV/CMV)","value":4708.39,"date":"2025-07-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emp. Léo","type":"Receita","category":"Emprestimo","value":1076,"date":"2025-07-29","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Plano de Saúde Amil (5/12)","type":"Despesa","category":"Outros","value":1210.86,"date":"2026-05-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emp Daniel","type":"Despesa","category":"Emprestimo","value":1568.73,"date":"2025-11-01","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (36/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-09-09","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Internet Loja Sumicity (10/12)","type":"Despesa","category":"Água, Luz e Internet","value":129,"date":"2026-10-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Condominio (2/12)","type":"Despesa","category":"Aluguel e Condomínio","value":40,"date":"2026-02-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Santander","type":"Despesa","category":"Custos (CMV/CMV)","value":975.75,"date":"2025-03-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Fatura Neon","type":"Despesa","items":{},"category":"Custos (CMV/CMV)","value":1142,"date":"2026-01-15","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Fatura Neon","type":"Despesa","category":"Custos (CMV/CMV)","value":975.76,"date":"2026-02-15","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Taxas Sala Antiga","type":"Despesa","category":"Aluguel e Condomínio","value":326.07,"date":"2025-03-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Água (8/12)","type":"Despesa","category":"Água, Luz e Internet","value":200,"date":"2026-08-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Instalação Eletrica + Coifa","type":"Despesa","category":"Manutenção e Reparos","value":1070,"date":"2025-02-21","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (9/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-03-04","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood (33/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-08-19","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Plano de Saúde Amil (4/12)","type":"Despesa","category":"Outros","value":1210.86,"date":"2026-04-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contabilidade Burguer","type":"Despesa","category":"Contabilidade e outros serviços","value":450,"date":"2025-07-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Bling (10/12)","type":"Despesa","category":"Outros","value":55,"date":"2026-10-10","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Imposto - Açaí  (8/12)","type":"Despesa","category":"Impostos e Taxas","value":1000,"date":"2026-08-20","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pago","type":"Receita","category":"Venda de Mercadorias","value":4109.38,"date":"2025-10-28","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Taxa Alvara","type":"Despesa","category":"Impostos e Taxas","value":242.29,"date":"2025-07-02","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood (26/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-07-01","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Certificado Digital","type":"Despesa","category":"Outros","value":180,"date":"2025-03-25","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Limpeza Caixa Dágua","type":"Despesa","category":"Manutenção e Reparos","value":120,"date":"2025-04-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":1437.8,"date":"2025-11-19","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":1242.59,"date":"2025-09-17","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Pró Labore - Léo Outubro","type":"Despesa","category":"Pró-Labore (Sócios)","value":586,"date":"2025-11-29","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo","type":"Receita","category":"Emprestimo","value":94,"date":"2025-11-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto Burguer","type":"Despesa","category":"Impostos e Taxas","value":415.49,"date":"2025-11-20","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Imposto Burguer","type":"Despesa","category":"Impostos e Taxas","value":302.57,"date":"2025-09-22","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Agua","type":"Despesa","category":"Água, Luz e Internet","value":200,"date":"2025-09-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Empréstimo 99 Leo 3/3","type":"Despesa","category":"Emprestimo","value":877.95,"date":"2025-11-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Cartão Caixa Léo Colher M.L","type":"Despesa","category":"Custos (CMV/CMV)","value":138,"date":"2025-10-28","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Açaí (11/12)","type":"Despesa","category":"Contabilidade e outros serviços","value":370,"date":"2026-11-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (28/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-07-15","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Santander","type":"Despesa","category":"Custos (CMV/CMV)","value":861.36,"date":"2025-05-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto LF Neto","type":"Despesa","category":"Custos (CMV/CMV)","value":290.5,"date":"2025-12-01","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Pró Labore Léo (12/12)","type":"Despesa","category":"Pró-Labore (Sócios)","value":2000,"date":"2026-12-26","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Nubank Giro","type":"Despesa","category":"Emprestimo","value":2760,"date":"2025-11-03","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto Burguer","type":"Despesa","category":"Impostos e Taxas","value":142.08,"date":"2025-10-20","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":1544.26,"date":"2025-06-25","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood (19/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-05-13","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Provisionamento","type":"Despesa","category":"Aluguel e Condomínio","value":120,"date":"2025-08-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto  Burguer","type":"Despesa","category":"Impostos e Taxas","value":158.19,"date":"2025-06-20","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Condominio (12/12)","type":"Despesa","category":"Aluguel e Condomínio","value":40,"date":"2026-12-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Iphone Daniel (6/10)","type":"Receita","category":"Emprestimo","value":335.2,"date":"2026-05-16","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Nubank Giro  (16/20)","type":"Despesa","items":{"description":"Açaí (5/9)","value":500,"category":"Custos (CMV/CMV)"},"category":"Fatura Detalhada","value":3191.84,"date":"2027-04-03","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pago","type":"Receita","category":"Venda de Mercadorias","value":1495.4,"date":"2025-10-22","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Nubank Fatura PJ","type":"Despesa","category":"Custos (CMV/CMV)","value":4170,"date":"2025-08-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Foro","type":"Despesa","category":"Aluguel e Condomínio","value":205,"date":"2025-03-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Aluguel","type":"Despesa","category":"Aluguel e Condomínio","value":2700,"date":"2025-05-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Léo | Mister Mix 1ª","type":"Despesa","category":"Emprestimo","value":2000,"date":"2025-03-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Aluguel","type":"Despesa","category":"Aluguel e Condomínio","value":560,"date":"2025-02-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Valorizzi","type":"Despesa","category":"Contabilidade e outros serviços","value":950,"date":"2025-03-07","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emp.  Léo","type":"Despesa","category":"Emprestimo","value":2000,"date":"2025-10-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto Açaí","type":"Despesa","items":{},"category":"Impostos e Taxas","value":609.81,"date":"2025-12-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Água","type":"Despesa","category":"Água, Luz e Internet","value":200,"date":"2025-06-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Taxa Bombeiros","type":"Despesa","category":"Impostos e Taxas","value":210.28,"date":"2025-03-07","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto Açaí","type":"Despesa","category":"Impostos e Taxas","value":620.59,"date":"2025-09-22","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pago","type":"Receita","category":"Venda de Mercadorias","value":1018.76,"date":"2025-10-08","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Nubank Léo Prime  (1/3)","type":"Despesa","items":{},"category":"Ativo Imobilizado","value":147.29,"date":"2025-12-09","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":3093.85,"date":"2025-03-26","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto Nestlé","type":"Despesa","category":"Custos (CMV/CMV)","value":151.45,"date":"2025-04-14","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (19/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-05-13","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Frigodario (Mc Cain)","type":"Despesa","category":"Custos (CMV/CMV)","value":254.25,"date":"2025-02-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Agua","type":"Despesa","category":"Água, Luz e Internet","value":200,"date":"2025-07-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Neon Léo","type":"Despesa","category":"Custos (CMV/CMV)","value":326.23,"date":"2025-05-15","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Will Daniel (Contador + Geladeira + Copos)","type":"Despesa","category":"Custos (CMV/CMV)","value":627,"date":"2025-02-19","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Iphone Daniel (7/10)","type":"Receita","category":"Emprestimo","value":335.2,"date":"2026-06-16","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto Burguer","type":"Despesa","category":"Impostos e Taxas","value":264.67,"date":"2025-07-21","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Boleto M. Mix","type":"Despesa","category":"Custos (CMV/CMV)","value":1171.69,"date":"2025-04-09","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Anota ai Burguer","type":"Receita","category":"Venda de Mercadorias","value":35.92,"date":"2025-09-03","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Anota ai Burguer","type":"Receita","category":"Venda de Mercadorias","value":22.86,"date":"2025-09-12","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Diarias Isa Julho","type":"Despesa","category":"Pessoal e Salários","value":428.17,"date":"2025-09-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto M. Mix","type":"Despesa","category":"Custos (CMV/CMV)","value":1336.6,"date":"2025-04-02","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo","type":"Receita","category":"Emprestimo","value":347.98,"date":"2025-08-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Condominio","type":"Despesa","category":"Aluguel e Condomínio","value":70,"date":"2025-06-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Giz Móveis Daniel (1/10)","type":"Receita","items":{},"category":"Emprestimo","value":223.3,"date":"2025-12-16","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Bling","type":"Despesa","category":"Outros","value":55,"date":"2025-10-10","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Atacadão","type":"Despesa","category":"Custos (CMV/CMV)","value":218.15,"date":"2025-03-12","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Provisionamento","type":"Despesa","category":"Aluguel e Condomínio","value":120,"date":"2025-10-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto LF Neto","type":"Despesa","category":"Custos (CMV/CMV)","value":487.41,"date":"2025-12-29","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Empréstimo 99 Leo 1/3","type":"Despesa","category":"Emprestimo","value":442.35,"date":"2025-08-06","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emp. Julio","type":"Despesa","category":"Emprestimo","value":1200,"date":"2025-10-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto - Açaí  (6/12)","type":"Despesa","category":"Impostos e Taxas","value":1000,"date":"2026-06-20","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Diarias Isa","type":"Despesa","category":"Pessoal e Salários","value":350,"date":"2025-07-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Kraft Andim","type":"Despesa","category":"Custos (CMV/CMV)","value":91,"date":"2025-11-28","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Nestle","type":"Despesa","category":"Custos (CMV/CMV)","value":175.15,"date":"2025-03-17","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (4/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-01-28","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Nubank Léo Prime 2/10","type":"Despesa","category":"Custos (CMV/CMV)","value":147.29,"date":"2025-07-08","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Emp. Daniel","type":"Despesa","category":"Emprestimo","value":341,"date":"2025-07-09","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Nubank Giro  (18/20)","type":"Despesa","items":{"description":"Açaí (7/9)","value":500,"category":"Custos (CMV/CMV)"},"category":"Fatura Detalhada","value":3191.84,"date":"2027-06-03","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto Burguer","type":"Despesa","items":{},"category":"Impostos e Taxas","value":114.43,"date":"2025-12-20","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Boleto Nestlé","type":"Despesa","category":"Custos (CMV/CMV)","value":354.56,"date":"2025-09-10","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Organisys Sistema:","type":"Despesa","category":"Outros","value":185,"date":"2025-04-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Mister Mix","type":"Despesa","category":"Custos (CMV/CMV)","value":6099,"date":"2025-02-25","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS - Léo (2/12)","type":"Despesa","category":"Impostos e Taxas","value":248,"date":"2026-02-20","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Santander","type":"Despesa","category":"Custos (CMV/CMV)","value":2063.1,"date":"2025-08-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Anota ai Burguer","type":"Receita","category":"Venda de Mercadorias","value":52.86,"date":"2025-09-09","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Condominio","type":"Despesa","category":"Aluguel e Condomínio","value":70,"date":"2025-07-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Aluguel (1/12)","type":"Despesa","category":"Aluguel e Condomínio","value":2700,"date":"2025-12-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Luz","type":"Despesa","category":"Água, Luz e Internet","value":239.78,"date":"2025-05-16","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Burguer (4/13)","type":"Despesa","category":"Contabilidade e outros serviços","value":450,"date":"2026-03-16","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Aluguel (4/12)","type":"Despesa","category":"Aluguel e Condomínio","value":2700,"date":"2026-04-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto M. Mix","type":"Despesa","category":"Custos (CMV/CMV)","value":1173.18,"date":"2025-04-09","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Açaí (13/13)","type":"Despesa","category":"Contabilidade e outros serviços","value":370,"date":"2026-12-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":1069.5,"date":"2025-08-13","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood (12/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-03-25","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (24/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-06-17","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Condominio","type":"Despesa","category":"Aluguel e Condomínio","value":70,"date":"2025-10-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Internet","type":"Despesa","category":"Água, Luz e Internet","value":100,"date":"2025-03-24","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Nubank Giro  (20/20)","type":"Despesa","items":{"description":"Açaí (9/9)","value":500,"category":"Custos (CMV/CMV)"},"category":"Fatura Detalhada","value":3191.84,"date":"2027-08-03","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Iphone Daniel (9/10)","type":"Receita","category":"Emprestimo","value":335.2,"date":"2026-08-16","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Atacadão","type":"Despesa","category":"Custos (CMV/CMV)","value":287.83,"date":"2025-02-12","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":1017.55,"date":"2025-07-02","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Luz Corredor","type":"Despesa","category":"Água, Luz e Internet","value":40,"date":"2025-05-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Bling (9/12)","type":"Despesa","category":"Outros","value":55,"date":"2026-09-10","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Empréstimo Julio 1/1","type":"Despesa","category":"Emprestimo","value":2000,"date":"2025-06-14","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Diarias Isa","type":"Despesa","category":"Pessoal e Salários","value":300,"date":"2025-04-29","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Condominio","type":"Despesa","category":"Aluguel e Condomínio","value":70,"date":"2025-04-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS Julio (12/12)","type":"Despesa","category":"Impostos e Taxas","value":167,"date":"2026-12-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood (18/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-05-06","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":4442.18,"date":"2025-04-02","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (16/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-04-22","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Sábado Nu Léo -","type":"Despesa","category":"Custos (CMV/CMV)","value":174.86,"date":"2025-10-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":2446.35,"date":"2025-06-04","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pagamento Ifood","type":"Receita","category":"Venda de Mercadorias","value":605.18,"date":"2025-12-30","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood (6/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-02-11","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pic Pay","type":"Despesa","category":"Custos (CMV/CMV)","value":1131.14,"date":"2025-02-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Santander","type":"Despesa","category":"Custos (CMV/CMV)","value":265.9,"date":"2025-09-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Bling (3/12)","type":"Despesa","category":"Outros","value":55,"date":"2026-03-10","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Pró Labore Léo (7/12)","type":"Despesa","category":"Pró-Labore (Sócios)","value":2000,"date":"2026-07-26","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":1621.63,"date":"2025-12-10","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Empréstimo 99 Leo 1/3","type":"Despesa","category":"Emprestimo","value":440.63,"date":"2025-07-07","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS - Léo","type":"Despesa","category":"Impostos e Taxas","value":247.28,"date":"2025-07-18","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Nestlé:","type":"Despesa","category":"Custos (CMV/CMV)","value":622.74,"date":"2025-02-07","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Entregas - Léo ","type":"Despesa","category":"Pessoal e Salários","value":833.71,"date":"2025-12-02","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Empréstimo 99 Leo","type":"Despesa","category":"Emprestimo","value":2385,"date":"2025-10-06","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pró Labore - Léo","type":"Despesa","category":"Pró-Labore (Sócios)","value":2000,"date":"2025-03-30","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pago","type":"Receita","category":"Venda de Mercadorias","value":4278.04,"date":"2025-10-22","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Sacos Kraft Andim","type":"Despesa","category":"Custos (CMV/CMV)","value":89,"date":"2025-12-07","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":3870.9,"date":"2025-02-19","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Açaí (8/12)","type":"Despesa","category":"Contabilidade e outros serviços","value":370,"date":"2026-08-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Aluguel","type":"Despesa","category":"Aluguel e Condomínio","value":560,"date":"2025-01-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Luz Corredor (8/12)","type":"Despesa","category":"Água, Luz e Internet","value":50,"date":"2026-08-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Burguer","type":"Despesa","category":"contabilidade e outros serviços","value":450,"date":"2025-10-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto - burguer  (6/12)","type":"Despesa","category":"Aluguel e Condomínio","value":1000,"date":"2026-06-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":2913.38,"date":"2025-04-29","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Água (7/12)","type":"Despesa","category":"Água, Luz e Internet","value":200,"date":"2026-07-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":5841.69,"date":"2025-12-17","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Diarias Isa Julho","type":"Despesa","category":"Pessoal e Salários","value":428.17,"date":"2025-11-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Isabela","type":"Receita","category":"Emprestimo","value":200,"date":"2025-12-24","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto - Açaí  (4/12)","type":"Despesa","category":"Impostos e Taxas","value":1000,"date":"2026-04-20","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Morango","type":"Despesa","items":{},"category":"Custos (CMV/CMV)","value":144,"date":"2025-12-24","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Água (1/12)","type":"Despesa","category":"Água, Luz e Internet","value":200,"date":"2026-01-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pix Andrey Maia","type":"Despesa","category":"Marketing e Publicidade","value":240,"date":"2025-04-09","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Nubank Giro (5/6)","type":"Despesa","category":"Emprestimo","value":1812.66,"date":"2026-04-03","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pagamento 13° Isabela","type":"Despesa","category":"Pessoal e Salários","value":71.54,"date":"2025-12-18","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (26/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-07-01","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Cartão Caixa Léo Promos Bramil","type":"Despesa","category":"Custos (CMV/CMV)","value":214.7,"date":"2025-10-28","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (23/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-06-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Empréstimo Leo","type":"Despesa","category":"Emprestimo","value":3152.95,"date":"2025-08-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (15/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-04-15","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto M. Mix","type":"Despesa","category":"Custos (CMV/CMV)","value":1173.18,"date":"2025-04-02","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Fatura Santander","type":"Despesa","category":"Custos (CMV/CMV)","value":92.16,"date":"2025-12-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Andinho Saco Kraft","type":"Despesa","category":"Custos (CMV/CMV)","value":45,"date":"2025-09-13","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Pró Labore - Léo Novembro","type":"Despesa","category":"Pró-Labore (Sócios)","value":2000,"date":"2025-11-29","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Diarias Isa","type":"Despesa","category":"Pessoal e Salários","value":800,"date":"2025-03-29","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Empréstimo Leo","type":"Despesa","category":"Emprestimo","value":352,"date":"2025-08-15","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Internet","type":"Despesa","category":"Água, Luz e Internet","value":99.9,"date":"2025-06-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Luz","type":"Despesa","category":"Água, Luz e Internet","value":672.81,"date":"2025-09-16","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":3123,"date":"2025-05-28","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Empréstimo Ton Pic Pay 3/6","type":"Despesa","category":"Emprestimo","value":836.83,"date":"2025-10-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":3712.71,"date":"2025-09-24","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Empréstimo Tainá 1/1","type":"Despesa","category":"Emprestimo","value":250,"date":"2025-08-27","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto","type":"Despesa","category":"Impostos e Taxas","value":414.61,"date":"2025-05-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (10/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-03-11","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Imposto - Açaí  (5/12)","type":"Despesa","category":"Impostos e Taxas","value":1000,"date":"2026-05-20","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Empréstimo 99 Daniel 1/9","type":"Despesa","category":"Emprestimo","value":1197.36,"date":"2025-04-07","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS - Léo","type":"Despesa","category":"Impostos e Taxas","value":247.28,"date":"2025-11-17","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":3693.49,"date":"2025-03-12","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Exame Isabela","type":"Despesa","category":"Pessoal e Salários","value":50,"date":"2025-11-27","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pago","type":"Receita","category":"Venda de Mercadorias","value":1183,"date":"2025-10-01","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Emprestimo Nubank Giro (2/6)","type":"Despesa","category":"Emprestimo","value":1812.66,"date":"2026-01-03","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Nubank Giro 1/6 (1/6)","type":"Despesa","category":"Emprestimo","value":1812.66,"date":"2025-12-03","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Nubank Léo - 6/12","type":"Despesa","category":"Emprestimo","value":1084.33,"date":"2025-08-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pic Pay Fatura","type":"Despesa","category":"Custos (CMV/CMV)","value":2791.64,"date":"2025-04-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Empréstimo Ton Leo Neon 1/3","type":"Despesa","category":"Emprestimo","value":604,"date":"2025-08-15","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Internet","type":"Despesa","category":"Água, Luz e Internet","value":102.31,"date":"2025-04-24","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pedido M. Mix 3/3","type":"Despesa","category":"Custos (CMV/CMV)","value":2566.35,"date":"2025-09-22","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto","type":"Despesa","category":"Impostos e Taxas","value":798.21,"date":"2025-04-22","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Nubank Léo - 3/12","type":"Despesa","category":"Emprestimo","value":1107.73,"date":"2025-05-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Nubank Giro  (15/20)","type":"Despesa","items":{"description":"Açaí (4/9)","value":500,"category":"Custos (CMV/CMV)"},"category":"Fatura Detalhada","value":3191.84,"date":"2027-03-03","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pago","type":"Receita","category":"Venda de Mercadorias","value":1364.79,"date":"2025-10-15","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Luz Corredor (2/12)","type":"Despesa","category":"Água, Luz e Internet","value":50,"date":"2026-02-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Provisionamento","type":"Despesa","category":"Aluguel e Condomínio","value":120,"date":"2025-09-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pró Labore Léo (11/12)","type":"Despesa","category":"Pró-Labore (Sócios)","value":2000,"date":"2026-11-26","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo 99","type":"Receita","category":"Emprestimo","value":1400,"date":"2025-06-06","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"neon fatura","type":"Despesa","category":"Custos (CMV/CMV)","value":1026,"date":"2025-12-11","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto M. Mix","type":"Despesa","category":"Custos (CMV/CMV)","value":2725,"date":"2025-06-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Fatura Pic Pay","type":"Despesa","category":"Custos (CMV/CMV)","value":6303.03,"date":"2026-01-20","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pix Emprestado Santander","type":"Despesa","category":"Emprestimo","value":1517.62,"date":"2025-03-12","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Anota ai - Açaí 01/12 a 18/12","type":"Receita","items":{},"category":"Venda de Mercadorias","value":531.62,"date":"2025-12-18","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS - Julio","type":"Despesa","category":"Impostos e Taxas","value":166.98,"date":"2025-10-20","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Bling (8/12)","type":"Despesa","category":"Outros","value":55,"date":"2026-08-10","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Imposto - burguer  (12/12)","type":"Despesa","category":"Aluguel e Condomínio","value":1000,"date":"2026-12-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Pró Labore - Léo","type":"Despesa","category":"Pró-Labore (Sócios)","value":350,"date":"2025-10-27","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Internet Loja Sumicity (1/12)","type":"Despesa","category":"Água, Luz e Internet","value":129,"date":"2026-01-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto - burguer  (11/12)","type":"Despesa","category":"Aluguel e Condomínio","value":1000,"date":"2026-11-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Agua","type":"Despesa","category":"Água, Luz e Internet","value":340,"date":"2025-10-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Açaí (4/12)","type":"Despesa","category":"Contabilidade e outros serviços","value":370,"date":"2026-04-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Organisys Sistema:","type":"Despesa","category":"Outros","value":160,"date":"2025-02-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Bling (6/12)","type":"Despesa","category":"Outros","value":55,"date":"2026-06-10","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"INSS Julio (8/12)","type":"Despesa","category":"Impostos e Taxas","value":167,"date":"2026-08-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood (37/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-09-16","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS - Julio (8/12)","type":"Despesa","items":{},"category":"Impostos e Taxas","value":167,"date":"2026-08-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Boleto LF Neto","type":"Despesa","category":"Custos (CMV/CMV)","value":424.61,"date":"2025-05-20","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Contador Burguer","type":"Despesa","category":"Contabilidade e outros serviços","value":450,"date":"2025-09-10","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Bling","type":"Despesa","category":"Outros","value":55,"date":"2025-08-17","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Empréstimo 99 Leo 2/6","type":"Despesa","category":"Emprestimo","value":1050.62,"date":"2025-06-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":3015.92,"date":"2025-04-09","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto - burguer  (8/12)","type":"Despesa","category":"Aluguel e Condomínio","value":1000,"date":"2026-08-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Importado via Planilha","type":"Receita","category":"Emprestimo","value":40000,"date":"2025-09-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Aluguel (11/12)","type":"Despesa","category":"Aluguel e Condomínio","value":2700,"date":"2026-11-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Atacadão Cartão Fatura","type":"Despesa","category":"Custos (CMV/CMV)","value":198.05,"date":"2025-04-12","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Sacos Kraft Andim","type":"Despesa","items":{},"category":"Custos (CMV/CMV)","value":78.85,"date":"2025-12-13","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood (22/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-06-03","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood (3/52)","type":"Receita","items":{},"category":"Venda de Mercadorias","value":6181,"date":"2026-01-21","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Nubank Giro (6/6)","type":"Despesa","category":"Emprestimo","value":1812.66,"date":"2026-05-03","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Compra Rio Quality Stdr Léo 2/6","type":"Despesa","category":"Custos (CMV/CMV)","value":98.63,"date":"2025-09-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Bônus Isabela (2/2)","type":"Despesa","category":"Aluguel e Condomínio","value":500,"date":"2026-02-20","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Açaí (5/12)","type":"Despesa","category":"Contabilidade e outros serviços","value":370,"date":"2026-05-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS - Léo (8/12)","type":"Despesa","category":"Impostos e Taxas","value":248,"date":"2026-08-20","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Saldo Junho","type":"Receita","category":"Emprestimo","value":3591,"date":"2025-07-29","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (1/52)","type":"Receita","items":{},"category":"Venda de Mercadorias","value":2353.27,"date":"2026-01-07","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Anota ai Burguer","type":"Receita","category":"Venda de Mercadorias","value":77.01,"date":"2025-09-07","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS - Léo (12/12)","type":"Despesa","category":"Impostos e Taxas","value":248,"date":"2026-12-20","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Anota ai Açaí","type":"Receita","category":"Venda de Mercadorias","value":65.27,"date":"2025-09-07","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS Julio (9/12)","type":"Despesa","category":"Impostos e Taxas","value":167,"date":"2026-09-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Boleto LF Neto","type":"Despesa","category":"Custos (CMV/CMV)","value":339.68,"date":"2025-11-03","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (8/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-02-25","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Condominio (10/12)","type":"Despesa","category":"Aluguel e Condomínio","value":40,"date":"2026-10-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pró Labore Léo (3/12)","type":"Despesa","category":"Pró-Labore (Sócios)","value":2000,"date":"2026-03-26","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pró Labore - Léo","type":"Despesa","category":"Pró-Labore (Sócios)","value":2000,"date":"2025-07-29","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS - Julio (4/12)","type":"Despesa","items":{},"category":"Impostos e Taxas","value":167,"date":"2026-04-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Provisionamento (6/12)","type":"Despesa","category":"Água, Luz e Internet","value":120,"date":"2026-06-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":1542.23,"date":"2025-01-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"2/6 CNH Daniel Empréstimo","type":"Receita","category":"Emprestimo","value":454,"date":"2025-11-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto - Açaí  (3/12)","type":"Despesa","category":"Impostos e Taxas","value":1000,"date":"2026-03-20","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pix Galera","type":"Despesa","category":"Custos (CMV/CMV)","value":109.27,"date":"2025-04-29","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Provisionamento (3/12)","type":"Despesa","category":"Água, Luz e Internet","value":120,"date":"2026-03-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (50/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-12-16","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Ifood (27/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-07-08","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Aluguel","type":"Despesa","category":"Aluguel e Condomínio","value":2700,"date":"2025-11-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Internet","type":"Despesa","category":"Água, Luz e Internet","value":99.9,"date":"2025-07-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS - Julio (2/12)","type":"Despesa","items":{},"category":"Impostos e Taxas","value":167,"date":"2026-02-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Imposto burguer","type":"Despesa","category":"Impostos e Taxas","value":103.74,"date":"2025-05-20","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Contador Burguer (11/13)","type":"Despesa","category":"Contabilidade e outros serviços","value":450,"date":"2026-10-16","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Pró Labore Léo (6/12)","type":"Despesa","category":"Pró-Labore (Sócios)","value":2000,"date":"2026-06-26","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Nubank Garantia 1","type":"Despesa","category":"Despesa","value":608,"date":"2025-11-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS - Julio","type":"Despesa","category":"Impostos e Taxas","value":167,"date":"2025-07-18","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Boleto LF Neto","type":"Despesa","category":"Custos (CMV/CMV)","value":246.56,"date":"2025-04-16","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Empréstimo Daniel","type":"Despesa","category":"Emprestimo","value":1690,"date":"2025-07-23","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (41/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-10-14","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"INSS - Léo (1/12)","type":"Despesa","category":"Impostos e Taxas","value":248,"date":"2026-01-20","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Plano de Saúde Amil (2/12)","type":"Despesa","category":"Outros","value":1210.86,"date":"2026-02-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto M. Mix","type":"Despesa","category":"Custos (CMV/CMV)","value":1336.6,"date":"2025-04-16","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Água (4/12)","type":"Despesa","category":"Água, Luz e Internet","value":200,"date":"2026-04-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"IPTU","type":"Despesa","category":"Aluguel e Condomínio","value":1130,"date":"2025-03-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Nubank Léo Prime 6/10","type":"Despesa","category":"Custos (CMV/CMV)","value":147.29,"date":"2025-11-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS Julio (5/12)","type":"Despesa","category":"Impostos e Taxas","value":167,"date":"2026-05-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Pró Labore - Léo ","type":"Despesa","category":"Pró-Labore (Sócios)","value":1331.66,"date":"2025-12-02","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Aluguel (6/12)","type":"Despesa","category":"Aluguel e Condomínio","value":2700,"date":"2026-06-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Empréstimo 99 Leo 5/6","type":"Despesa","category":"Emprestimo","value":1050.62,"date":"2025-09-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Nubank","type":"Despesa","category":"Custos (CMV/CMV)","value":3974.48,"date":"2025-03-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Açaí (6/13)","type":"Despesa","category":"Contabilidade e outros serviços","value":370,"date":"2026-05-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"CNH Daniel Empréstimo","type":"Despesa","category":"Emprestimo","value":2720,"date":"2025-09-11","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Taxa Vigilancia 1/4","type":"Despesa","category":"Impostos e Taxas","value":108.17,"date":"2025-07-02","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Empréstimo Daniel","type":"Despesa","category":"Emprestimo","value":800,"date":"2025-09-17","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pago","type":"Receita","category":"Venda de Mercadorias","value":4211.62,"date":"2025-10-15","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Luz","type":"Despesa","category":"Água, Luz e Internet","value":171.93,"date":"2025-08-15","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":4030.19,"date":"2025-11-12","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Nubank Léo R. Quality Açaís (3/6)","type":"Despesa","category":"Custos (CMV/CMV)","value":444.11,"date":"2026-03-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (47/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-11-25","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Recebidos Pix / Ton","type":"Receita","category":"Venda de Mercadorias","value":345.61,"date":"2025-09-12","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Júlio","type":"Receita","category":"Emprestimo","value":2000,"date":"2025-06-09","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Luz Corredor","type":"Despesa","category":"Água, Luz e Internet","value":59.3,"date":"2025-08-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Rozilma- Morango","type":"Despesa","category":"Custos (CMV/CMV)","value":125,"date":"2025-03-06","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"INSS - Léo","type":"Despesa","category":"Impostos e Taxas","value":248,"date":"2025-08-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Giz Móveis Daniel (2/10)","type":"Receita","category":"Emprestimo","value":223.3,"date":"2026-01-16","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (40/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-10-07","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Nubank PJ","type":"Despesa","items":[{"description":"Hortifruti J J ","value":8.99,"category":"Custos (CMV/CMV)"},{"description":"Atacadao 1/3","value":130.22,"category":"Custos (CMV/CMV)"},{"description":"Atacadao 1/3","value":150.38,"category":"Custos (CMV/CMV)"},{"description":"Hortifruti J J ","value":62.96,"category":"Custos (CMV/CMV)"},{"description":"Canva ","value":35,"category":"Marketing e Publicidade"},{"description":"Hortifruti J J ","value":31.92,"category":"Custos (CMV/CMV)"},{"description":"Distribuidora de horti","value":9.92,"category":"Custos (CMV/CMV)"},{"description":"Hortifruti J J ","value":50.14,"category":"Custos (CMV/CMV)"},{"description":"DC","value":92.97,"category":"Custos (CMV/CMV)"},{"description":"Dogaria H7 - leite em pó","value":101.94,"category":"Custos (CMV/CMV)"},{"description":"Açougue Maravilha","value":100,"category":"Custos (CMV/CMV)"},{"description":"jim.com ","value":8,"category":"Custos (CMV/CMV)"},{"description":"Mv Plast","value":57.78,"category":"Custos (CMV/CMV)"},{"description":"Novamix ","value":26.99,"category":"Custos (CMV/CMV)"},{"description":"Casa do grao","value":4.94,"category":"Custos (CMV/CMV)"},{"description":"Estação saúde","value":95.94,"category":"Custos (CMV/CMV)"},{"description":"Atacada 1/2","value":49.39,"category":"Custos (CMV/CMV)"},{"description":"Açougue Maravilha","value":82.9,"category":"Custos (CMV/CMV)"},{"description":"Atacadao ","value":186.66,"category":"Custos (CMV/CMV)"},{"description":"Horti fruti","value":34.19,"category":"Custos (CMV/CMV)"},{"description":"DC","value":50.98,"category":"Custos (CMV/CMV)"},{"description":"Mercado livre - Cremes","value":464.98,"category":"Custos (CMV/CMV)"},{"description":"Rio quality 1/6","value":49.44,"category":"Custos (CMV/CMV)"},{"description":"Açougue","value":84.97,"category":"Custos (CMV/CMV)"},{"description":"Parada Pet","value":36.8,"category":"Custos (CMV/CMV)"},{"description":"Açougue","value":75,"category":"Custos (CMV/CMV)"},{"description":"Nova Mix","value":26.99,"category":"Custos (CMV/CMV)"},{"description":"Pic Pay Julio","value":418.21,"category":"Emprestimo"},{"description":"Rio quality 2/6","value":166.81,"category":"Custos (CMV/CMV)"},{"description":"Rio quality 3/6","value":153.59,"category":"Custos (CMV/CMV)"},{"description":"Nova mix 2/3","value":78.26,"category":"Custos (CMV/CMV)"},{"description":"Rio quality 6/6","value":142.59,"category":"Custos (CMV/CMV)"},{"description":"Rio quality 4/6","value":73.8,"category":"Custos (CMV/CMV)"},{"description":"Novamix 2/3","value":55.99,"category":"Custos (CMV/CMV)"},{"description":"Grafica  4/4","value":60.49,"category":"Marketing e Publicidade"},{"description":"Mercado Livre 3/12","value":78.62,"category":"Ativo Imobilizado"},{"description":"Super pao","value":15.8,"category":"Custos (CMV/CMV)"},{"description":"Rio quality 4/6","value":171.15,"category":"Custos (CMV/CMV)"},{"description":"Rio quality 5/6","value":210.32,"category":"Custos (CMV/CMV)"},{"description":"Jm comercio e industria","value":98.92,"category":"Ativo Imobilizado"},{"description":"Chilli beans","value":241.16,"category":"Emprestimo"},{"description":"Shopee","value":69.7,"category":"Ativo Imobilizado"},{"description":"Bramil 2/3","value":49.3,"category":"Custos (CMV/CMV)"},{"description":"Consumer ","value":50,"category":"Outros"},{"description":"Bramil 2/3","value":74.14,"category":"Custos (CMV/CMV)"}],"category":"Fatura Detalhada","value":4319.24,"date":"2026-01-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto Bling - Burguer do zé","type":"Despesa","category":"Outros","value":55,"date":"2025-07-10","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Empréstimo Tainá 1/1","type":"Despesa","category":"Emprestimo","value":1200,"date":"2025-08-01","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Atacadão Nu Léo -","type":"Despesa","category":"Custos (CMV/CMV)","value":328,"date":"2025-10-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (14/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-04-08","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Internet Loja Sumicity (9/12)","type":"Despesa","category":"Água, Luz e Internet","value":129,"date":"2026-09-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Burguer","type":"Despesa","category":"contabilidade e outros serviços","value":450,"date":"2025-11-10","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Emp. Léo","type":"Despesa","category":"Emprestimo","value":170,"date":"2025-09-24","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (49/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-12-09","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Pagar 10/09 ( - Rocks)","type":"Receita","category":"Emprestimo","value":560,"date":"2025-09-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":2840.52,"date":"2025-01-29","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (34/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-08-26","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Nubank Fatura PJ","type":"Despesa","category":"Custos (CMV/CMV)","value":3588.39,"date":"2025-06-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Bling (7/12)","type":"Despesa","category":"Outros","value":55,"date":"2026-07-10","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Empréstimo 99 Leo 2/3","type":"Despesa","category":"Emprestimo","value":442.35,"date":"2025-09-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Nubank Giro  (3/20)","type":"Despesa","category":"Emprestimo","value":2691.84,"date":"2026-03-03","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Luz Corredor","type":"Despesa","category":"Água, Luz e Internet","value":45,"date":"2025-12-06","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Boleto Frigodário","type":"Despesa","category":"Custos (CMV/CMV)","value":223.62,"date":"2025-10-15","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Boleto Nestlé","type":"Despesa","category":"Custos (CMV/CMV)","value":602.89,"date":"2025-07-14","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Daniel","type":"Despesa","category":"Emprestimo","value":800,"date":"2025-08-27","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":3797.21,"date":"2025-06-11","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Burguer (8/13)","type":"Despesa","category":"Contabilidade e outros serviços","value":450,"date":"2026-07-16","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Emprestimo Nubank Giro  (12/20)","type":"Despesa","category":"Emprestimo","value":2691.84,"date":"2026-12-03","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Luz","type":"Despesa","category":"Água, Luz e Internet","value":462.44,"date":"2025-11-16","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (10/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-03-11","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (23/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-06-10","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"CNH Daniel Emprestimo (3/4)","type":"Receita","category":"Emprestimo","value":454,"date":"2026-02-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood","type":"Receita","category":"Venda de Mercadorias","value":3324.73,"date":"2025-02-26","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Bling","type":"Despesa","category":"Outros","value":55,"date":"2025-09-10","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"INSS - Julio","type":"Despesa","category":"Impostos e Taxas","value":167,"date":"2025-11-19","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Giz Móveis Daniel (4/10)","type":"Receita","category":"Emprestimo","value":223.3,"date":"2026-03-16","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Nubank Léo - 12/12","type":"Despesa","category":"Emprestimo","value":4910.79,"date":"2025-09-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (30/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-07-29","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Açaí (5/13)","type":"Despesa","category":"Contabilidade e outros serviços","value":370,"date":"2026-04-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emp. Leo","type":"Despesa","category":"Emprestimo","value":465,"date":"2025-12-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Imposto - burguer  (4/12)","type":"Despesa","category":"Aluguel e Condomínio","value":1000,"date":"2026-04-20","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Emprestimo Nubank Giro  (4/20)","type":"Despesa","category":"Emprestimo","value":2691.84,"date":"2026-04-03","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Agua","type":"Despesa","category":"Água, Luz e Internet","value":200,"date":"2025-11-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Provisionamento (2/12)","type":"Despesa","category":"Água, Luz e Internet","value":120,"date":"2026-02-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Internet Loja Sumicity (5/12)","type":"Despesa","category":"Água, Luz e Internet","value":129,"date":"2026-05-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pic Pay Fatura","type":"Despesa","category":"Custos (CMV/CMV)","value":5038.57,"date":"2025-12-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Santander","type":"Despesa","category":"Custos (CMV/CMV)","value":1486,"date":"2025-07-20","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Empréstimo 99 Daniel 3/9","type":"Despesa","category":"Emprestimo","value":1186.13,"date":"2025-06-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (31/52)","type":"Receita","category":"Venda de Mercadorias","value":2500,"date":"2026-08-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Ifood (7/52)","type":"Receita","category":"Venda de Mercadorias","value":1200,"date":"2026-02-18","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Andinho Saco Kraft","type":"Despesa","category":"Custos (CMV/CMV)","value":133,"date":"2025-09-06","isPaid":true,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Emprestimo Nubank Giro  (14/20)","type":"Despesa","items":{"description":"Açaí (3/9)","value":500,"category":"Custos (CMV/CMV)"},"category":"Fatura Detalhada","value":3191.84,"date":"2027-02-03","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Empréstimo Tainá","type":"Despesa","category":"Emprestimo","value":600,"date":"2025-09-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Internet Loja Sumicity (4/12)","type":"Despesa","category":"Água, Luz e Internet","value":129,"date":"2026-04-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Açaí (6/12)","type":"Despesa","category":"Contabilidade e outros serviços","value":370,"date":"2026-06-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Iphone Daniel (5/10)","type":"Receita","category":"Emprestimo","value":335.2,"date":"2026-04-16","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo","type":"Receita","category":"Emprestimo","value":170,"date":"2025-08-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Internet Loja Sumicity (11/12)","type":"Despesa","category":"Água, Luz e Internet","value":129,"date":"2026-11-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Pró Labore Léo (4/12)","type":"Despesa","category":"Pró-Labore (Sócios)","value":2000,"date":"2026-04-26","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"99 Leo","type":"Receita","category":"Emprestimo","value":1200,"date":"2025-07-29","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Luz Corredor (12/12)","type":"Despesa","category":"Água, Luz e Internet","value":50,"date":"2026-12-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emp. Léo","type":"Receita","category":"Emprestimo","value":603,"date":"2025-07-29","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"CNH Daniel Emprestimo (2/4)","type":"Receita","category":"Emprestimo","value":454,"date":"2026-01-05","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Nubank Giro  (11/20)","type":"Despesa","category":"Emprestimo","value":2691.84,"date":"2026-11-03","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo Nubank Giro 1/24","type":"Despesa","category":"Emprestimo","value":2771.42,"date":"2025-10-02","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emprestimo","type":"Receita","category":"Emprestimo","value":700,"date":"2025-11-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Cofrinho Pic Pay","type":"Receita","category":"Venda de Mercadorias","value":298,"date":"2025-09-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emp. Dani","type":"Receita","category":"Emprestimo","value":500,"date":"2025-09-22","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Bling (12/12)","type":"Despesa","category":"Outros","value":55,"date":"2026-12-10","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Condominio (6/12)","type":"Despesa","category":"Aluguel e Condomínio","value":40,"date":"2026-06-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Taxa Vigilancia 3/3","type":"Despesa","category":"Impostos e Taxas","value":242.29,"date":"2025-09-02","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Contador Burguer (10/13)","type":"Despesa","category":"Contabilidade e outros serviços","value":450,"date":"2026-09-16","isPaid":false,"storeId":"W8THHIbYwyJWfknkWtly"}
+{"description":"Firjan","type":"Despesa","category":"Outros","value":50,"date":"2025-05-26","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Santander Léo - (Aberta Verificar)","type":"Despesa","items":[{"description":"Rio Quality 6/6","value":98.63,"category":"Custos (CMV/CMV)"},{"category":"Custos (CMV/CMV)","description":"Super Market 1/1","value":61.52},{"category":"Custos (CMV/CMV)","description":"Nova Mix","value":46.99},{"description":"Nova Mix","value":68.96,"category":"Custos (CMV/CMV)"},{"category":"Custos (CMV/CMV)","description":"Açougue Maravilha","value":91.8},{"description":"Teclado","value":42,"category":"Uso e Consumo"}],"category":"Fatura Detalhada","value":409.9,"date":"2026-01-10","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Provisionamento (9/12)","type":"Despesa","category":"Água, Luz e Internet","value":120,"date":"2026-09-05","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Nubank Fatura PJ","type":"Despesa","category":"Custos (CMV/CMV)","value":3511.15,"date":"2025-07-08","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emp Léo","type":"Despesa","category":"Emprestimo","value":710,"date":"2025-11-26","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Internet Loja Sumicity (12/12)","type":"Despesa","category":"Água, Luz e Internet","value":129,"date":"2026-12-10","isPaid":false,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Empréstimo Ton Pic Pay 1/6","type":"Despesa","category":"Emprestimo","value":836.83,"date":"2025-08-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Santander","type":"Despesa","category":"Custos (CMV/CMV)","value":1347.13,"date":"2025-06-20","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Emp. Dani","type":"Receita","category":"Emprestimo","value":800,"date":"2025-09-16","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}
+{"description":"Entregas Léo","type":"Despesa","category":"Prestação de Serviços","value":249.77,"date":"2025-12-09","isPaid":true,"storeId":"VhYM0uSasOXQneuURJS1"}

@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
+import { quickPeriods, type PeriodKey } from '../services/dateFilters';
+import { usePersistentFilter } from '../hooks/usePersistentFilter';
 
 type FinTransaction = {
   id: string;
@@ -10,71 +12,25 @@ type FinTransaction = {
   store_id?: string | null;
 };
 
-type PeriodKey = 'mes_atual' | 'mes_anterior' | 'proximo_mes' | 'ano_atual' | 'geral';
-
 const formatCurrency = (value: number) =>
   new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value || 0);
-
-const quickPeriods: Record<
-  PeriodKey,
-  { label: string; range: () => { start: Date | null; end: Date | null } }
-> = {
-  mes_atual: {
-    label: 'Este mes',
-    range: () => {
-      const now = new Date();
-      const start = new Date(now.getFullYear(), now.getMonth(), 1);
-      const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-      return { start, end };
-    },
-  },
-  mes_anterior: {
-    label: 'Mes anterior',
-    range: () => {
-      const now = new Date();
-      const start = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-      const end = new Date(now.getFullYear(), now.getMonth(), 0);
-      return { start, end };
-    },
-  },
-  proximo_mes: {
-    label: 'Proximo mes',
-    range: () => {
-      const now = new Date();
-      const start = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-      const end = new Date(now.getFullYear(), now.getMonth() + 2, 0);
-      return { start, end };
-    },
-  },
-  ano_atual: {
-    label: 'Ano',
-    range: () => {
-      const now = new Date();
-      const start = new Date(now.getFullYear(), 0, 1);
-      const end = new Date(now.getFullYear(), 11, 31);
-      return { start, end };
-    },
-  },
-  geral: {
-    label: 'Geral',
-    range: () => ({ start: null, end: null }),
-  },
-};
 
 export function Dre() {
   const [transactions, setTransactions] = useState<FinTransaction[]>([]);
   const [stores, setStores] = useState<{ id: string; name: string | null }[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [storeFilter, setStoreFilter] = useState<string>('todas');
-  const [period, setPeriod] = useState<PeriodKey>('mes_atual');
+  const [storeFilter, setStoreFilter] = usePersistentFilter<string>('filter.dre.store', 'todas');
+  const [period, setPeriod] = usePersistentFilter<PeriodKey>('filter.dre.period', 'mes_atual');
+  const [customStart, setCustomStart] = usePersistentFilter<string>('filter.dre.customStart', '');
+  const [customEnd, setCustomEnd] = usePersistentFilter<string>('filter.dre.customEnd', '');
 
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
       setError(null);
       const [{ data, error: fetchError }, { data: storeData, error: storeError }] = await Promise.all([
-        supabase.from('fin_transactions').select('id,type,category,value,date,store_id').order('date', { ascending: false }),
+        supabase.from('v_transactions_for_reports').select('id,type,category,value,date,store_id').order('date', { ascending: false }),
         supabase.from('stores').select('id,name').order('name', { ascending: true }),
       ]);
 
@@ -90,16 +46,19 @@ export function Dre() {
     loadData();
   }, []);
 
+  const { start, end } = quickPeriods[period].range();
+  const startDate = period === 'custom' && customStart ? new Date(customStart) : start;
+  const endDate = period === 'custom' && customEnd ? new Date(customEnd) : end;
+
   const filtered = useMemo(() => {
-    const { start, end } = quickPeriods[period].range();
     return transactions.filter((tx) => {
       const byStore = storeFilter === 'todas' ? true : tx.store_id === storeFilter;
-      const txDate = new Date(tx.date);
-      const byStart = start ? txDate >= start : true;
-      const byEnd = end ? txDate <= end : true;
+      const d = new Date(tx.date);
+      const byStart = startDate ? d >= startDate : true;
+      const byEnd = endDate ? d <= endDate : true;
       return byStore && byStart && byEnd;
     });
-  }, [transactions, storeFilter, period]);
+  }, [transactions, storeFilter, startDate, endDate]);
 
   const summary = useMemo(() => {
     const receitas = filtered.filter((tx) => tx.type === 'Receita');
@@ -140,13 +99,12 @@ export function Dre() {
     if (storeFilter === 'todas') return 'Todas as lojas';
     return stores.find((s) => s.id === storeFilter)?.name || 'Loja';
   }, [storeFilter, stores]);
-  const periodLabel = useMemo(() => quickPeriods[period].label, [period]);
 
   return (
     <section className="space-y-6">
       <div>
         <h2 className="text-2xl font-black text-navy">DRE</h2>
-        <p className="text-slate-600 text-sm">Demonstrativo mes a mes, filtrando por loja ou consolidado.</p>
+        <p className="text-slate-600 text-sm">Demonstrativo mês a mês, filtrando por loja ou consolidado.</p>
       </div>
 
       <div className="grid md:grid-cols-3 gap-3">
@@ -167,7 +125,7 @@ export function Dre() {
         </div>
 
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-semibold text-slate-600">Periodo</label>
+          <label className="text-xs font-semibold text-slate-600">Período</label>
           <select
             value={period}
             onChange={(event) => setPeriod(event.target.value as PeriodKey)}
@@ -181,9 +139,24 @@ export function Dre() {
           </select>
         </div>
 
-        <div className="flex flex-col justify-end text-sm text-slate-500">
-          <span>Exibindo: {storeName}</span>
-          <span>Periodo: {periodLabel}</span>
+        <div className="flex flex-col gap-1">
+          <label className="text-xs font-semibold text-slate-600">Datas personalizadas</label>
+          <div className="grid grid-cols-2 gap-2">
+            <input
+              type="date"
+              value={customStart}
+              onChange={(event) => setCustomStart(event.target.value)}
+              disabled={period !== 'custom'}
+              className="rounded-xl border border-slate-200 px-3 py-2 text-sm disabled:bg-slate-50"
+            />
+            <input
+              type="date"
+              value={customEnd}
+              onChange={(event) => setCustomEnd(event.target.value)}
+              disabled={period !== 'custom'}
+              className="rounded-xl border border-slate-200 px-3 py-2 text-sm disabled:bg-slate-50"
+            />
+          </div>
         </div>
       </div>
 
@@ -244,9 +217,9 @@ export function Dre() {
 
       <div className="rounded-2xl bg-white border border-slate-100 shadow-soft overflow-hidden">
         <div className="p-5 border-b border-slate-100">
-          <h3 className="text-lg font-bold text-navy">Mes a mes</h3>
+          <h3 className="text-lg font-bold text-navy">Mês a mês</h3>
           <p className="text-sm text-slate-500">
-            Consolidado por mes {storeFilter === 'todas' ? '(todas as lojas)' : '(loja filtrada)'}
+            Consolidado por mês {storeFilter === 'todas' ? '(todas as lojas)' : '(loja filtrada)'}
           </p>
         </div>
         <div className="divide-y divide-slate-100">
@@ -266,7 +239,7 @@ export function Dre() {
               );
             })}
           {!loading && Object.keys(summary.porMes).length === 0 && (
-            <div className="p-6 text-sm text-slate-500">Sem movimentacoes para exibir.</div>
+            <div className="p-6 text-sm text-slate-500">Sem movimentações para exibir.</div>
           )}
         </div>
       </div>
