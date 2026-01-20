@@ -64,13 +64,13 @@ export function Dre() {
     const receitas = filtered.filter((tx) => tx.type === 'Receita');
     const despesas = filtered.filter((tx) => tx.type === 'Despesa');
     const totalReceitas = receitas.reduce((sum, tx) => sum + (tx.value || 0), 0);
-    const totalDespesas = despesas.reduce((sum, tx) => sum + (tx.value || 0), 0);
-    const resultado = totalReceitas - totalDespesas;
+    const totalDespesas = despesas.reduce((sum, tx) => sum - (tx.value || 0), 0); // despesas negativas
+    const resultado = totalReceitas + totalDespesas;
 
-    const groupByCategory = (items: FinTransaction[]) =>
+    const groupByCategory = (items: FinTransaction[], sign = 1) =>
       items.reduce<Record<string, number>>((acc, item) => {
         const key = item.category || 'Sem categoria';
-        acc[key] = (acc[key] || 0) + (item.value || 0);
+        acc[key] = (acc[key] || 0) + sign * (item.value || 0);
         return acc;
       }, {});
 
@@ -80,7 +80,7 @@ export function Dre() {
         const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
         const current = acc[key] || { receitas: 0, despesas: 0 };
         if (item.type === 'Receita') current.receitas += item.value || 0;
-        if (item.type === 'Despesa') current.despesas += item.value || 0;
+        if (item.type === 'Despesa') current.despesas -= item.value || 0; // armazenar negativo
         acc[key] = current;
         return acc;
       }, {});
@@ -89,8 +89,8 @@ export function Dre() {
       totalReceitas,
       totalDespesas,
       resultado,
-      receitasPorCategoria: groupByCategory(receitas),
-      despesasPorCategoria: groupByCategory(despesas),
+      receitasPorCategoria: groupByCategory(receitas, 1),
+      despesasPorCategoria: groupByCategory(despesas, -1), // mostrar negativas
       porMes: groupByMonth(filtered),
     };
   }, [filtered]);
@@ -104,7 +104,7 @@ export function Dre() {
     <section className="space-y-6">
       <div>
         <h2 className="text-2xl font-black text-navy">DRE</h2>
-        <p className="text-slate-600 text-sm">Demonstrativo mês a mês, filtrando por loja ou consolidado.</p>
+        <p className="text-slate-600 text-sm">Demonstrativo mes a mes, filtrando por loja ou consolidado.</p>
       </div>
 
       <div className="grid md:grid-cols-3 gap-3">
@@ -125,7 +125,7 @@ export function Dre() {
         </div>
 
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-semibold text-slate-600">Período</label>
+          <label className="text-xs font-semibold text-slate-600">Periodo</label>
           <select
             value={period}
             onChange={(event) => setPeriod(event.target.value as PeriodKey)}
@@ -169,7 +169,7 @@ export function Dre() {
         </div>
         <div className="rounded-2xl bg-white border border-slate-100 p-5 shadow-soft">
           <p className="text-xs uppercase text-slate-500 font-semibold">Despesas</p>
-          <p className="text-2xl font-black text-navy">{formatCurrency(summary.totalDespesas)}</p>
+          <p className="text-2xl font-black text-red-600">{formatCurrency(summary.totalDespesas)}</p>
         </div>
         <div className="rounded-2xl bg-white border border-slate-100 p-5 shadow-soft">
           <p className="text-xs uppercase text-slate-500 font-semibold">Resultado</p>
@@ -205,7 +205,7 @@ export function Dre() {
             {Object.entries(summary.despesasPorCategoria).map(([category, value]) => (
               <div key={category} className="flex items-center justify-between p-4 text-sm">
                 <span className="text-slate-600">{category}</span>
-                <span className="font-semibold text-navy">{formatCurrency(Number(value))}</span>
+                <span className="font-semibold text-red-600">{formatCurrency(Number(value))}</span>
               </div>
             ))}
             {!loading && Object.keys(summary.despesasPorCategoria).length === 0 && (
@@ -217,21 +217,21 @@ export function Dre() {
 
       <div className="rounded-2xl bg-white border border-slate-100 shadow-soft overflow-hidden">
         <div className="p-5 border-b border-slate-100">
-          <h3 className="text-lg font-bold text-navy">Mês a mês</h3>
+          <h3 className="text-lg font-bold text-navy">Mes a mes</h3>
           <p className="text-sm text-slate-500">
-            Consolidado por mês {storeFilter === 'todas' ? '(todas as lojas)' : '(loja filtrada)'}
+            Consolidado por mes {storeFilter === 'todas' ? '(todas as lojas)' : '(loja filtrada)'} • {storeName}
           </p>
         </div>
         <div className="divide-y divide-slate-100">
           {Object.entries(summary.porMes)
             .sort(([a], [b]) => (a > b ? -1 : 1))
             .map(([month, values]) => {
-              const resultado = values.receitas - values.despesas;
+              const resultado = values.receitas + values.despesas;
               return (
                 <div key={month} className="grid grid-cols-4 gap-3 p-4 text-sm items-center">
                   <div className="font-semibold text-navy">{month}</div>
                   <div className="text-primary font-semibold">{formatCurrency(values.receitas)}</div>
-                  <div className="text-navy font-semibold">{formatCurrency(values.despesas)}</div>
+                  <div className="text-red-600 font-semibold">{formatCurrency(values.despesas)}</div>
                   <div className={`font-bold ${resultado >= 0 ? 'text-primary' : 'text-red-500'}`}>
                     {formatCurrency(resultado)}
                   </div>
@@ -239,7 +239,7 @@ export function Dre() {
               );
             })}
           {!loading && Object.keys(summary.porMes).length === 0 && (
-            <div className="p-6 text-sm text-slate-500">Sem movimentações para exibir.</div>
+            <div className="p-6 text-sm text-slate-500">Sem movimentacoes para exibir.</div>
           )}
         </div>
       </div>

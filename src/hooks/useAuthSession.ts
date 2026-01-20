@@ -23,6 +23,7 @@ export function useAuthSession() {
 
   const logout = async () => {
     await supabase.auth.signOut();
+    setSession(null); // Clear session after logout
   };
 
   const userId = session?.user?.id || null;
