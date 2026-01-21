@@ -191,50 +191,63 @@ export function IntegracaoIFood() {
     }
   }, [connectionStatus, merchant]);
 
-  // Inicia o fluxo OAuth - redireciona para o iFood
-  const handleConnect = () => {
-    if (!userId) {
-      setConnectionStatus('error');
-      setConnectionMessage('Você precisa estar logado para conectar ao iFood.');
-      return;
-    }
 
-    if (localStores.length > 0 && !selectedStoreId) {
-      setConnectionStatus('error');
-      setConnectionMessage('Por favor, selecione uma loja antes de conectar.');
-      return;
-    }
-
+  const checkConnection = async () => {
     setConnectionStatus('connecting');
-    setConnectionMessage('Redirecionando para o iFood...');
+    setConnectionMessage('Verificando conexão com iFood...');
 
-    // Redireciona para o backend (Serverless Function) iniciar o fluxo OAuth
-    const query = new URLSearchParams({
-      userId,
-      storeId: selectedStoreId || ''
-    });
+    try {
+      const response = await fetch('/api/ifood/token');
+      const data = await response.json();
 
-    window.location.href = `/api/ifood/authorize?${query.toString()}`;
+      if (data.ok && data.hasToken) {
+        setConnectionStatus('connected');
+        setConnectionMessage('Conexão ativa (Token válido).');
+
+        // Load merchants for confirmation if possible, or just set dummy active state
+        // In centralized app, merchant ID usually comes from env or a different config, 
+        // but for now we assume success means we are good.
+        // We can call smoke test to get more info.
+
+        const smoke = await fetch('/api/ifood/smoke');
+        const smokeData = await smoke.json();
+
+        if (smokeData.ok && smokeData.merchants?.[0]) {
+          setMerchant(smokeData.merchants[0]);
+        } else {
+          // If smoke failed but token ok, still technically connected but maybe no merchants
+          setConnectionMessage('Token OK, mas falha ao listar lojas.');
+        }
+
+      } else {
+        setConnectionStatus('error');
+        setConnectionMessage('Não foi possível obter token. Verifique as credenciais no servidor.');
+      }
+    } catch (error) {
+      setConnectionStatus('error');
+      setConnectionMessage('Erro ao contactar servidor.');
+    }
+  };
+
+  // Inicia o fluxo - agora apenas verifica o backend
+  const handleConnect = () => {
+    checkConnection();
   };
 
   const handleDisconnect = async () => {
-    if (userId) {
-      await supabase
-        .from('ifood_connections')
-        .delete()
-        .eq('profile_id', userId);
-    }
-
+    // In centralized mode, "disconnect" mostly means clearing local UI state, 
+    // since the server still has the env vars. 
+    // We could optionally call an endpoint to clear cache, but for UI:
     setMerchant(null);
     setAccessToken(null);
     setConnectionStatus('idle');
-    setConnectionMessage('');
+    setConnectionMessage('Desconectado da visualização.');
     setCategories([]);
     setProducts([]);
     setOrders([]);
     setOrdersSummary(null);
-    setConnectedStoreName('');
   };
+
 
   // Funções para produtos salvos (aba Produtos)
   const loadSavedProducts = async () => {
@@ -373,13 +386,37 @@ export function IntegracaoIFood() {
     }
   }, [activeTab, merchant]);
 
+  // Polling Real-time (Persistência)
+  useEffect(() => {
+    if (connectionStatus === 'connected' && merchant) {
+      const interval = setInterval(() => {
+        loadOrders(); // Atualiza a lista de pedidos a cada 5 minutos
+      }, 5 * 60 * 1000);
+      return () => clearInterval(interval);
+    }
+  }, [connectionStatus, merchant]);
+
+
+  // Sincronização Automática (Persistência)
+  useEffect(() => {
+    if (connectionStatus === 'connected' && orders.length > 0) {
+      const timer = setTimeout(() => {
+        handleImportOrders(true); // Sincroniza silenciosamente em background
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [orders, connectionStatus]);
+
+
   const handleImportProducts = async () => {
     if (!userId || products.length === 0) return;
 
     setImportingProducts(true);
     setImportMessage('Importando produtos para o sistema...');
 
+
     try {
+      // 1. Salvar no mirror do iFood (menu_items)
       const menuItems = products.map(p => ({
         profile_id: userId,
         name: p.name,
@@ -393,29 +430,101 @@ export function IntegracaoIFood() {
         ifood_id: p.id,
       }));
 
-      const { error } = await supabase.from('menu_items').upsert(menuItems, {
+      const { error: menuError } = await supabase.from('menu_items').upsert(menuItems, {
         onConflict: 'profile_id,ifood_id',
       });
 
-      if (error) throw error;
+      if (menuError) throw menuError;
 
-      setImportMessage(`${products.length} produtos importados com sucesso!`);
-      setTimeout(() => setImportMessage(''), 3000);
-    } catch (error) {
+      // 2. Sincronizar com a tabela global de produtos para cálculos de CMV/Margem
+      // Se o produto já existe no global (pelo ifood_id ou nome), atualiza o preço.
+      const globalProducts = products.map(p => ({
+        profile_id: userId,
+        name: p.name,
+        category: categories.find(c => c.id === p.categoryId)?.name || 'iFood',
+        price: p.price.value,
+        ifood_id: p.id,
+      }));
+
+      // Nota: o upsert aqui assume que a tabela products tem profile_id e ifood_id como constraint única opcional
+      // ou que podemos vincular pelo nome se preferir. Usaremos ifood_id.
+      const { error: prodError } = await supabase.from('products').upsert(globalProducts, {
+        onConflict: 'profile_id,ifood_id',
+      });
+
+      if (prodError) console.error('Aviso: Erro ao sincronizar com tabela global de produtos:', prodError);
+
+      setImportMessage(`${products.length} produtos sincronizados! Vá para "Engenharia de Cardápio" para definir os custos.`);
+      setTimeout(() => setImportMessage(''), 5000);
+    } catch (error: any) {
       console.error('Erro ao importar:', error);
-      setImportMessage('Erro ao importar produtos.');
+      setImportMessage(error.message || 'Erro ao importar produtos.');
     } finally {
       setImportingProducts(false);
     }
   };
 
-  const handleImportOrders = async () => {
+
+  const handleImportOrders = async (silent = false) => {
     if (!userId || orders.length === 0) return;
 
-    setImportingProducts(true);
-    setImportMessage('Importando pedidos para o financeiro...');
+    if (!silent) {
+      setImportingProducts(true);
+      setImportMessage('Sincronizando pedidos com o banco de dados...');
+    }
 
     try {
+      // 1. Preparar pedidos para a tabela ifood_orders
+      // Filtrar apenas concluídos para o financeiro, mas salvar todos no log se desejar
+      const ordersToSave = orders.map(order => ({
+        profile_id: userId,
+        ifood_order_id: order.id,
+        short_code: order.shortCode,
+        order_type: order.type,
+        order_status: order.status,
+        customer_name: order.customer.name,
+        delivery_fee: order.total.deliveryFee,
+        total_amount: order.total.order,
+        items_amount: order.total.items,
+        discounts: order.total.discount,
+        order_timestamp: order.createdAt,
+      }));
+
+      // Upsert orders
+      const { data: savedOrders, error: orderError } = await supabase
+        .from('ifood_orders')
+        .upsert(ordersToSave, { onConflict: 'profile_id,ifood_order_id' })
+        .select();
+
+      if (orderError) throw orderError;
+
+      // 2. Preparar itens dos pedidos
+      const orderItemsToSave: any[] = [];
+      orders.forEach(order => {
+        const savedOrder = savedOrders?.find(so => so.ifood_order_id === order.id);
+        if (savedOrder && order.items) {
+          order.items.forEach(item => {
+            orderItemsToSave.push({
+              order_id: savedOrder.id,
+              ifood_product_id: item.id,
+              name: item.name,
+              quantity: item.quantity,
+              unit_price: item.unitPrice,
+              total_price: item.totalPrice,
+              observations: item.observations,
+            });
+          });
+        }
+      });
+
+      if (orderItemsToSave.length > 0) {
+        const { error: itemsError } = await supabase
+          .from('ifood_order_items')
+          .upsert(orderItemsToSave); // No conflict specified, we might just insert or use a logic to avoid duplicates
+        if (itemsError) console.error('Aviso: Erro ao salvar itens específicos:', itemsError);
+      }
+
+      // 3. Gerar transações financeiras (apenas para concluídos)
       const transactions = orders
         .filter(o => o.status === 'CONCLUDED')
         .map(order => ({
@@ -430,21 +539,32 @@ export function IntegracaoIFood() {
           ifood_order_id: order.id,
         }));
 
-      const { error } = await supabase.from('fin_transactions').upsert(transactions, {
-        onConflict: 'profile_id,ifood_order_id',
-      });
+      if (transactions.length > 0) {
+        const { error: transError } = await supabase
+          .from('fin_transactions')
+          .upsert(transactions, { onConflict: 'profile_id,ifood_order_id' });
 
-      if (error) throw error;
+        if (transError) {
+          // Se falhar por coluna não existente, avisar que precisa rodar a migração
+          if (transError.message.includes('ifood_order_id')) {
+            throw new Error('Erro de Schema: A coluna ifood_order_id não existe em fin_transactions. Por favor, aplique a migração SQL mais recente.');
+          }
+          throw transError;
+        }
+      }
 
-      setImportMessage(`${transactions.length} pedidos importados!`);
-      setTimeout(() => setImportMessage(''), 3000);
-    } catch (error) {
+      if (!silent) {
+        setImportMessage(`${transactions.length} pedidos sincronizados com sucesso!`);
+        setTimeout(() => setImportMessage(''), 3000);
+      }
+    } catch (error: any) {
       console.error('Erro ao importar pedidos:', error);
-      setImportMessage('Erro ao importar pedidos.');
+      if (!silent) setImportMessage(error.message || 'Erro ao sincronizar pedidos.');
     } finally {
-      setImportingProducts(false);
+      if (!silent) setImportingProducts(false);
     }
   };
+
 
   const filteredProducts = selectedCategory === 'all'
     ? products

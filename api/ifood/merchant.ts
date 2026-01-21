@@ -1,9 +1,6 @@
+
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-
-// Simula a API do iFood para desenvolvimento
-// Em produção, substituir por chamadas reais à API do iFood
-
-const IFOOD_API_URL = 'https://merchant-api.ifood.com.br';
+import { ifoodFetch } from '../_lib/ifood/client.ts';
 
 // Mock de merchants para desenvolvimento
 const mockMerchants: Record<string, any> = {
@@ -38,23 +35,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const cleanCnpj = cnpj.replace(/\D/g, '');
 
-  if (cleanCnpj.length !== 14) {
-    return res.status(400).json({ error: 'CNPJ inválido' });
-  }
-
   try {
-    // Em produção, fazer chamada real à API do iFood:
-    // const response = await fetch(`${IFOOD_API_URL}/merchant/v1.0/merchants?document=${cleanCnpj}`, {
-    //   headers: {
-    //     'Authorization': `Bearer ${accessToken}`,
-    //   },
-    // });
-    
-    // Para desenvolvimento, usar mock
     const merchant = mockMerchants[cleanCnpj];
-    
+
     if (!merchant) {
-      // Cria merchant dinâmico para qualquer CNPJ válido
       const dynamicMerchant = {
         id: `merchant-${cleanCnpj.slice(0, 8)}`,
         name: 'Restaurante Conectado',
