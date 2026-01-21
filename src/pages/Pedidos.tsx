@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { useAuthSession } from '../hooks/useAuthSession';
 import {
@@ -32,6 +32,10 @@ export function Pedidos() {
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
+    const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+    const [orderItems, setOrderItems] = useState<any[]>([]);
+    const [loadingItems, setLoadingItems] = useState(false);
+    const [storeName, setStoreName] = useState('');
 
     // Carrega profileId
     useEffect(() => {
@@ -46,6 +50,20 @@ export function Pedidos() {
         };
         fetchProfile();
     }, [userId]);
+
+    // Carrega nome da loja
+    useEffect(() => {
+        const fetchStore = async () => {
+            if (!profileId) return;
+            const { data } = await supabase
+                .from('ifood_connections')
+                .select('merchant_name')
+                .eq('profile_id', profileId)
+                .single();
+            if (data) setStoreName(data.merchant_name || 'Loja iFood');
+        };
+        fetchStore();
+    }, [profileId]);
 
     const loadOrders = async () => {
         if (!profileId) return;
@@ -69,6 +87,44 @@ export function Pedidos() {
     useEffect(() => {
         loadOrders();
     }, [profileId]);
+
+    const fetchOrderItems = async (orderId: string) => {
+        setLoadingItems(true);
+        try {
+            const { data } = await supabase
+                .from('ifood_order_items')
+                .select('*')
+                .eq('order_id', orderId);
+            setOrderItems(data || []);
+        } catch (error) {
+            console.error('Erro ao buscar itens:', error);
+        } finally {
+            setLoadingItems(false);
+        }
+    };
+
+    const handleOrderClick = (order: Order) => {
+        setSelectedOrder(order);
+        fetchOrderItems(order.id);
+    };
+
+    const handleDeleteOrder = async (orderId: string, e: React.MouseEvent) => {
+        e.stopPropagation(); // Evita abrir o modal
+        if (!confirm('Tem certeza que deseja excluir este pedido? Esta ação é irreversível.')) return;
+
+        try {
+            const { error } = await supabase
+                .from('ifood_orders')
+                .delete()
+                .eq('id', orderId);
+
+            if (error) throw error;
+            setOrders(prev => prev.filter(o => o.id !== orderId));
+        } catch (error) {
+            console.error('Erro ao excluir pedido:', error);
+            alert('Erro ao excluir pedido.');
+        }
+    };
 
     const filteredOrders = orders.filter(o => {
         const matchesSearch = o.customer_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -123,10 +179,10 @@ export function Pedidos() {
                     <table className="w-full text-sm text-left">
                         <thead className="bg-slate-50 border-b border-slate-100">
                             <tr>
+                                <th className="px-6 py-4 font-bold text-navy">Loja</th>
                                 <th className="px-6 py-4 font-bold text-navy">Código</th>
                                 <th className="px-6 py-4 font-bold text-navy">Data/Hora</th>
                                 <th className="px-6 py-4 font-bold text-navy">Cliente</th>
-                                <th className="px-6 py-4 font-bold text-navy">Tipo</th>
                                 <th className="px-6 py-4 font-bold text-navy">Valor</th>
                                 <th className="px-6 py-4 font-bold text-navy">Status</th>
                                 <th className="px-6 py-4 font-bold text-navy text-right">Ação</th>
@@ -135,30 +191,29 @@ export function Pedidos() {
                         <tbody className="divide-y divide-slate-100">
                             {loading ? (
                                 <tr>
-                                    <td colSpan={7} className="px-6 py-12 text-center text-slate-500">
+                                    <td colSpan={8} className="px-6 py-12 text-center text-slate-500">
                                         <RefreshCw className="size-6 animate-spin mx-auto mb-2 text-primary/40" />
                                         Carregando histórico...
                                     </td>
                                 </tr>
                             ) : filteredOrders.length === 0 ? (
                                 <tr>
-                                    <td colSpan={7} className="px-6 py-12 text-center text-slate-500">
+                                    <td colSpan={8} className="px-6 py-12 text-center text-slate-500">
                                         Nenhum pedido encontrado.
                                     </td>
                                 </tr>
                             ) : filteredOrders.map((order) => (
-                                <tr key={order.id} className="hover:bg-slate-50 transition">
+                                <tr
+                                    key={order.id}
+                                    className="hover:bg-slate-50 cursor-pointer transition"
+                                    onClick={() => handleOrderClick(order)}
+                                >
+                                    <td className="px-6 py-4 text-slate-600 font-medium">{storeName || '-'}</td>
                                     <td className="px-6 py-4 font-bold text-navy">#{order.short_code}</td>
                                     <td className="px-6 py-4 text-slate-600">
                                         {new Date(order.order_timestamp).toLocaleString('pt-BR')}
                                     </td>
                                     <td className="px-6 py-4 font-medium text-navy">{order.customer_name}</td>
-                                    <td className="px-6 py-4">
-                                        <span className={`px-2 py-1 rounded-lg text-[10px] font-bold uppercase ${order.order_type === 'DELIVERY' ? 'bg-blue-100 text-blue-700' : 'bg-orange-100 text-orange-700'
-                                            }`}>
-                                            {order.order_type}
-                                        </span>
-                                    </td>
                                     <td className="px-6 py-4 font-bold text-navy">{currencyFormatter.format(order.total_amount)}</td>
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-1.5">
@@ -167,8 +222,12 @@ export function Pedidos() {
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 text-right">
-                                        <button className="p-2 hover:bg-slate-100 rounded-lg text-slate-400 hover:text-navy transition">
-                                            <ChevronRight size={20} />
+                                        <button
+                                            onClick={(e) => handleDeleteOrder(order.id, e)}
+                                            className="p-2 hover:bg-red-50 rounded-lg text-slate-400 hover:text-red-600 transition"
+                                            title="Excluir Pedido"
+                                        >
+                                            <X size={18} />
                                         </button>
                                     </td>
                                 </tr>
@@ -177,6 +236,78 @@ export function Pedidos() {
                     </table>
                 </div>
             </div>
+
+            {/* Modal de Detalhes */}
+            {selectedOrder && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setSelectedOrder(null)}>
+                    <div className="bg-white rounded-2xl shadow-xl max-w-lg w-full max-h-[90vh] overflow-hidden" onClick={e => e.stopPropagation()}>
+                        <div className="p-5 border-b border-slate-100 flex items-center justify-between">
+                            <div>
+                                <h3 className="font-bold text-navy text-lg">Pedido #{selectedOrder.short_code}</h3>
+                                <p className="text-sm text-slate-500">{storeName} • {new Date(selectedOrder.order_timestamp).toLocaleString('pt-BR')}</p>
+                            </div>
+                            <button onClick={() => setSelectedOrder(null)} className="p-2 hover:bg-slate-100 rounded-lg">
+                                <X size={20} />
+                            </button>
+                        </div>
+
+                        <div className="p-5 overflow-y-auto max-h-[70vh] space-y-6">
+                            {/* Status */}
+                            <div className="flex gap-2">
+                                <span className={`px-2 py-1 rounded-lg text-xs font-bold uppercase ${selectedOrder.order_type === 'DELIVERY' ? 'bg-blue-100 text-blue-700' : 'bg-orange-100 text-orange-700'}`}>
+                                    {selectedOrder.order_type}
+                                </span>
+                                <span className={`px-2 py-1 rounded-lg text-xs font-bold uppercase ${selectedOrder.order_status === 'CONCLUDED' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                                    {selectedOrder.order_status === 'CONCLUDED' ? 'Concluído' : 'Cancelado'}
+                                </span>
+                            </div>
+
+                            {/* Itens */}
+                            <div>
+                                <h4 className="font-bold text-navy mb-3">Itens do Pedido</h4>
+                                {loadingItems ? (
+                                    <p className="text-sm text-slate-500">Carregando itens...</p>
+                                ) : (
+                                    <ul className="divide-y divide-slate-100">
+                                        {orderItems.map((item: any) => (
+                                            <li key={item.id} className="py-3 flex justify-between">
+                                                <div>
+                                                    <p className="font-medium text-navy">{item.quantity}x {item.name}</p>
+                                                    {item.observations && <p className="text-xs text-slate-500">Obs: {item.observations}</p>}
+                                                </div>
+                                                <p className="font-medium text-slate-700">{currencyFormatter.format(item.total_price)}</p>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </div>
+
+                            {/* Valores */}
+                            <div className="bg-slate-50 rounded-xl p-4 space-y-2 text-sm">
+                                <div className="flex justify-between text-slate-600">
+                                    <span>Taxa de Entrega</span>
+                                    <span>{currencyFormatter.format(selectedOrder.delivery_fee || 0)}</span>
+                                </div>
+                                <div className="flex justify-between text-slate-600">
+                                    <span>Itens</span>
+                                    <span>{currencyFormatter.format(selectedOrder.items_amount || 0)}</span>
+                                </div>
+                                {selectedOrder.discounts > 0 && (
+                                    <div className="flex justify-between text-green-600">
+                                        <span>Descontos</span>
+                                        <span>- {currencyFormatter.format(selectedOrder.discounts)}</span>
+                                    </div>
+                                )}
+                                <div className="pt-2 border-t border-slate-200 flex justify-between font-bold text-navy text-lg">
+                                    <span>Total</span>
+                                    <span>{currencyFormatter.format(selectedOrder.total_amount)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </section>
     );
 }
+

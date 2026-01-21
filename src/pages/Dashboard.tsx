@@ -1,4 +1,23 @@
-import { useEffect, useState, useMemo } from 'react';
+import { GrossProfitWidget } from '../components/dashboard/GrossProfitWidget';
+
+// ... (existing imports)
+
+export function Dashboard() {
+  // ... (existing component logic)
+
+  return (
+    <section className="flex flex-col gap-6">
+      {/* ... (existing jsx) */}
+      
+      {/* Cards principais */}
+      {/* ... */}
+      
+      {/* Inserir widget aqui ou junto com o grid principal */}
+      <GrossProfitWidget userId={userId} />
+
+      {/* Alertas de contas e Grid Principal */}
+      <div className="grid lg:grid-cols-3 gap-6">
+
 import { Link } from 'react-router-dom';
 import {
   AlertTriangle,
