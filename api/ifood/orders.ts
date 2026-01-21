@@ -69,6 +69,8 @@ function generateMockOrders(merchantId: string, startDate: string, endDate: stri
     const orderDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
     const total = 50 + Math.random() * 200;
 
+    const itemsAmount = Number((total * 0.8).toFixed(2));
+
     orders.push({
       id: `order-ifood-${i}`,
       shortCode: Math.random().toString(36).substring(2, 6).toUpperCase(),
@@ -77,16 +79,26 @@ function generateMockOrders(merchantId: string, startDate: string, endDate: stri
       status: 'CONCLUDED',
       total: {
         order: Number(total.toFixed(2)),
-        items: Number((total * 0.8).toFixed(2)),
+        items: itemsAmount,
         deliveryFee: Number((total * 0.1).toFixed(2)),
         discount: 0,
         additionalFees: 0
       },
       customer: {
         name: `Cliente iFood ${i}`,
-      }
+      },
+      items: [
+        {
+          id: `product-${i % 5}`,
+          name: i % 2 === 0 ? 'Hambúrguer Gourmet' : 'Pizza Calabresa',
+          quantity: 1,
+          unitPrice: itemsAmount,
+          totalPrice: itemsAmount,
+        }
+      ]
     });
   }
   return orders.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 }
+
 

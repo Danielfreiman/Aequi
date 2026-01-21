@@ -450,7 +450,18 @@ export function IntegracaoIFood() {
   }, [connectionStatus, merchant]);
 
 
-  // Sincronização Automática (Persistência)
+  // Sincronização Automática de Produtos (Persistência)
+  useEffect(() => {
+    if (connectionStatus === 'connected' && products.length > 0) {
+      // Pequeno delay para garantir que categorias também carregaram
+      const timer = setTimeout(() => {
+        handleImportProducts(true); // Sincroniza em background
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [products, connectionStatus]);
+
+  // Sincronização Automática de Pedidos (Persistência)
   useEffect(() => {
     if (connectionStatus === 'connected' && orders.length > 0) {
       const timer = setTimeout(() => {
@@ -461,11 +472,14 @@ export function IntegracaoIFood() {
   }, [orders, connectionStatus]);
 
 
-  const handleImportProducts = async () => {
+
+  const handleImportProducts = async (silent = false) => {
     if (!profileId || products.length === 0) return;
 
-    setImportingProducts(true);
-    setImportMessage('Importando produtos para o sistema...');
+    if (!silent) {
+      setImportingProducts(true);
+      setImportMessage('Importando produtos para o sistema...');
+    }
 
     try {
       // 1. Salvar no mirror do iFood (menu_items)
@@ -489,33 +503,36 @@ export function IntegracaoIFood() {
       if (menuError) throw menuError;
 
       // 2. Sincronizar com a tabela global de produtos para cálculos de CMV/Margem
-      // Se o produto já existe no global (pelo ifood_id ou nome), atualiza o preço.
       const globalProducts = products.map(p => ({
         profile_id: profileId,
+        product_type: 'final',
         name: p.name,
+        description: p.description,
         category: categories.find(c => c.id === p.categoryId)?.name || 'iFood',
         price: p.price.value,
         ifood_id: p.id,
+        ifood_code: p.externalCode || p.id,
+        is_active: p.status === 'AVAILABLE',
       }));
 
-
-      // Nota: o upsert aqui assume que a tabela products tem profile_id e ifood_id como constraint única opcional
-      // ou que podemos vincular pelo nome se preferir. Usaremos ifood_id.
       const { error: prodError } = await supabase.from('products').upsert(globalProducts, {
         onConflict: 'profile_id,ifood_id',
       });
 
       if (prodError) console.error('Aviso: Erro ao sincronizar com tabela global de produtos:', prodError);
 
-      setImportMessage(`${products.length} produtos sincronizados! Vá para "Engenharia de Cardápio" para definir os custos.`);
-      setTimeout(() => setImportMessage(''), 5000);
+      if (!silent) {
+        setImportMessage(`${products.length} produtos sincronizados! Vá para "Produtos" ou "Engenharia de Cardápio" para ver o resultado.`);
+        setTimeout(() => setImportMessage(''), 5000);
+      }
     } catch (error: any) {
       console.error('Erro ao importar:', error);
-      setImportMessage(error.message || 'Erro ao importar produtos.');
+      if (!silent) setImportMessage(error.message || 'Erro ao importar produtos.');
     } finally {
-      setImportingProducts(false);
+      if (!silent) setImportingProducts(false);
     }
   };
+
 
 
   const handleImportOrders = async (silent = false) => {

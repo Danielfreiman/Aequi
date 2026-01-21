@@ -15,7 +15,9 @@ import {
   Store,
   PlusCircle,
   X,
+  ShoppingBag,
 } from 'lucide-react';
+
 import { NavLink } from 'react-router-dom';
 
 const itemClass =
@@ -117,6 +119,17 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
             <Store size={18} className="shrink-0" />
             <span>Integração iFood</span>
           </NavLink>
+          <NavLink
+            to="/app/pedidos"
+            onClick={onClose}
+            className={({ isActive }) =>
+              `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
+            }
+          >
+            <ShoppingBag size={18} className="shrink-0" />
+            <span>Pedidos</span>
+          </NavLink>
+
           <NavLink
             to="/app/produtos"
             onClick={onClose}
