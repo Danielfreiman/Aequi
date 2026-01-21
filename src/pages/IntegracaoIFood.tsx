@@ -62,7 +62,9 @@ const currencyFormatter = new Intl.NumberFormat('pt-BR', { style: 'currency', cu
 
 export function IntegracaoIFood() {
   const { userId } = useAuthSession();
+  const [profileId, setProfileId] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
+
 
   // Estado da conexão
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>('idle');
@@ -104,14 +106,28 @@ export function IntegracaoIFood() {
   const [savedProductFilter, setSavedProductFilter] = useState<string>('all');
   const [editingProduct, setEditingProduct] = useState<SavedProduct | null>(null);
 
+  // Carrega o profile_id correspondente ao userId
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (!userId) return;
+      const { data } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('owner_id', userId)
+        .single();
+      if (data) setProfileId(data.id);
+    };
+    fetchProfile();
+  }, [userId]);
+
   // Carrega lojas locais do usuário
   const loadLocalStores = async () => {
-    if (!userId) return;
+    if (!profileId) return;
 
     const { data } = await supabase
       .from('stores')
       .select('id, name, external_id')
-      .eq('profile_id', userId)
+      .eq('profile_id', profileId)
       .order('name');
 
     if (data && data.length > 0) {
@@ -122,7 +138,8 @@ export function IntegracaoIFood() {
 
   useEffect(() => {
     loadLocalStores();
-  }, [userId]);
+  }, [profileId]);
+
 
   // Processa parâmetros da URL (retorno do OAuth)
   useEffect(() => {
@@ -150,13 +167,14 @@ export function IntegracaoIFood() {
 
   // Carrega conexão salva
   const loadSavedConnection = async () => {
-    if (!userId) return;
+    if (!profileId) return;
 
     const { data } = await supabase
       .from('ifood_connections')
       .select('*, stores(name)')
-      .eq('profile_id', userId)
+      .eq('profile_id', profileId)
       .single();
+
 
     if (data?.merchant_id && data?.status === 'active') {
       setMerchant({
@@ -182,7 +200,8 @@ export function IntegracaoIFood() {
 
   useEffect(() => {
     loadSavedConnection();
-  }, [userId]);
+  }, [profileId]);
+
 
   // Busca cardápio quando conectado
   useEffect(() => {
@@ -218,9 +237,9 @@ export function IntegracaoIFood() {
           setMerchant(m);
 
           // PERSISTÊNCIA: Salva a conexão ativa no banco de dados para o usuário
-          if (userId) {
+          if (profileId) {
             await supabase.from('ifood_connections').upsert({
-              profile_id: userId,
+              profile_id: profileId,
               merchant_id: m.id,
               merchant_name: m.name,
               corporate_name: m.corporateName,
@@ -230,6 +249,7 @@ export function IntegracaoIFood() {
               updated_at: new Date().toISOString()
             }, { onConflict: 'profile_id' });
           }
+
 
         } else {
           // If smoke failed but token ok, still technically connected but maybe no merchants
@@ -255,12 +275,13 @@ export function IntegracaoIFood() {
 
   const handleDisconnect = async () => {
     try {
-      if (userId) {
+      if (profileId) {
         await supabase
           .from('ifood_connections')
           .update({ status: 'inactive', updated_at: new Date().toISOString() })
-          .eq('profile_id', userId);
+          .eq('profile_id', profileId);
       }
+
 
       setMerchant(null);
       setAccessToken(null);
@@ -279,16 +300,17 @@ export function IntegracaoIFood() {
 
   // Funções para produtos salvos (aba Produtos)
   const loadSavedProducts = async () => {
-    if (!userId) return;
+    if (!profileId) return;
 
     setLoadingSavedProducts(true);
     try {
       const { data, error } = await supabase
         .from('menu_items')
         .select('*')
-        .eq('profile_id', userId)
+        .eq('profile_id', profileId)
         .order('category', { ascending: true })
         .order('name', { ascending: true });
+
 
       if (error) throw error;
       setSavedProducts(data || []);
@@ -300,7 +322,7 @@ export function IntegracaoIFood() {
   };
 
   const handleUpdateProduct = async (product: SavedProduct) => {
-    if (!userId) return;
+    if (!profileId) return;
 
     try {
       const { error } = await supabase
@@ -314,7 +336,8 @@ export function IntegracaoIFood() {
           updated_at: new Date().toISOString(),
         })
         .eq('id', product.id)
-        .eq('profile_id', userId);
+        .eq('profile_id', profileId);
+
 
       if (error) throw error;
 
@@ -329,14 +352,15 @@ export function IntegracaoIFood() {
   };
 
   const handleDeleteProduct = async (productId: string) => {
-    if (!userId || !confirm('Tem certeza que deseja excluir este produto?')) return;
+    if (!profileId || !confirm('Tem certeza que deseja excluir este produto?')) return;
 
     try {
       const { error } = await supabase
         .from('menu_items')
         .delete()
         .eq('id', productId)
-        .eq('profile_id', userId);
+        .eq('profile_id', profileId);
+
 
       if (error) throw error;
 
@@ -351,10 +375,11 @@ export function IntegracaoIFood() {
 
   // Carrega produtos salvos quando a aba é ativada
   useEffect(() => {
-    if (activeTab === 'produtos' && userId) {
+    if (activeTab === 'produtos' && profileId) {
       loadSavedProducts();
     }
-  }, [activeTab, userId]);
+  }, [activeTab, profileId]);
+
 
   const loadMenu = async () => {
     if (!merchant) return;
@@ -437,16 +462,15 @@ export function IntegracaoIFood() {
 
 
   const handleImportProducts = async () => {
-    if (!userId || products.length === 0) return;
+    if (!profileId || products.length === 0) return;
 
     setImportingProducts(true);
     setImportMessage('Importando produtos para o sistema...');
 
-
     try {
       // 1. Salvar no mirror do iFood (menu_items)
       const menuItems = products.map(p => ({
-        profile_id: userId,
+        profile_id: profileId,
         name: p.name,
         description: p.description,
         price: p.price.value,
@@ -467,12 +491,13 @@ export function IntegracaoIFood() {
       // 2. Sincronizar com a tabela global de produtos para cálculos de CMV/Margem
       // Se o produto já existe no global (pelo ifood_id ou nome), atualiza o preço.
       const globalProducts = products.map(p => ({
-        profile_id: userId,
+        profile_id: profileId,
         name: p.name,
         category: categories.find(c => c.id === p.categoryId)?.name || 'iFood',
         price: p.price.value,
         ifood_id: p.id,
       }));
+
 
       // Nota: o upsert aqui assume que a tabela products tem profile_id e ifood_id como constraint única opcional
       // ou que podemos vincular pelo nome se preferir. Usaremos ifood_id.
@@ -494,7 +519,7 @@ export function IntegracaoIFood() {
 
 
   const handleImportOrders = async (silent = false) => {
-    if (!userId || orders.length === 0) return;
+    if (!profileId || orders.length === 0) return;
 
     if (!silent) {
       setImportingProducts(true);
@@ -505,7 +530,7 @@ export function IntegracaoIFood() {
       // 1. Preparar pedidos para a tabela ifood_orders
       // Filtrar apenas concluídos para o financeiro, mas salvar todos no log se desejar
       const ordersToSave = orders.map(order => ({
-        profile_id: userId,
+        profile_id: profileId,
         ifood_order_id: order.id,
         short_code: order.shortCode,
         order_type: order.type,
@@ -517,6 +542,7 @@ export function IntegracaoIFood() {
         discounts: order.total.discount,
         order_timestamp: order.createdAt,
       }));
+
 
       // Upsert orders
       const { data: savedOrders, error: orderError } = await supabase
@@ -556,7 +582,7 @@ export function IntegracaoIFood() {
       const transactions = orders
         .filter(o => o.status === 'CONCLUDED')
         .map(order => ({
-          profile_id: userId,
+          profile_id: profileId,
           date: order.createdAt.split('T')[0],
           description: `Pedido iFood #${order.shortCode}`,
           value: order.total.order,
@@ -566,6 +592,7 @@ export function IntegracaoIFood() {
           source: 'ifood',
           ifood_order_id: order.id,
         }));
+
 
       if (transactions.length > 0) {
         const { error: transError } = await supabase
