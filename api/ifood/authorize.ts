@@ -1,7 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 // URL de autorização do iFood
-const IFOOD_AUTH_URL = 'https://merchant-api.ifood.com.br/authentication/v1.0/oauth/authorize';
+// URL de autorização do iFood (Endpoint correto para User Authorization Code Flow)
+const IFOOD_AUTH_URL = 'https://merchant-api.ifood.com.br/authentication/v1.0/oauth/user/auth';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'GET') {
@@ -9,18 +10,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const clientId = process.env.IFOOD_CLIENT_ID;
-  
+
   if (!clientId) {
     return res.status(500).json({ error: 'Credenciais do iFood não configuradas no servidor' });
   }
 
   // URL de callback - onde o iFood vai redirecionar após autorização
-  const baseUrl = process.env.VERCEL_URL 
-    ? `https://${process.env.VERCEL_URL}` 
+  const baseUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
     : process.env.APP_URL || 'http://localhost:5173';
-  
+
   const redirectUri = `${baseUrl}/api/ifood/callback`;
-  
+
   // State para segurança (prevenir CSRF) - inclui o userId e storeId se fornecidos
   const { userId, storeId } = req.query;
   const state = Buffer.from(JSON.stringify({
