@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useAuthSession } from '../hooks/useAuthSession';
+import { Menu, X } from 'lucide-react';
+import { useState } from 'react';
 
 const plans = [
   {
@@ -45,8 +47,53 @@ const plans = [
 
 export function Home() {
   const { session } = useAuthSession();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-[#f7f4ec] text-[#0f1720]">
+      {/* Mobile Menu Overlay */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 z-50 bg-[#f7f4ec] lg:hidden flex flex-col p-6 animate-in slide-in-from-top-10 fade-in duration-200">
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-3">
+              <div className="size-10 rounded-xl bg-[#103826] text-white font-black text-lg flex items-center justify-center">
+                A
+              </div>
+              <p className="text-lg font-black tracking-tight">Aequi</p>
+            </div>
+            <button
+              onClick={() => setIsMenuOpen(false)}
+              className="p-2 text-[#0f2c1f] hover:bg-[#103826]/5 rounded-lg transition"
+            >
+              <X size={24} />
+            </button>
+          </div>
+
+          <nav className="flex flex-col gap-4 text-lg font-semibold text-[#0f2c1f]">
+            <a href="#beneficios" onClick={() => setIsMenuOpen(false)} className="py-2 border-b border-[#d9d1c3]/50">Benefícios</a>
+            <a href="#planos" onClick={() => setIsMenuOpen(false)} className="py-2 border-b border-[#d9d1c3]/50">Planos</a>
+            <a href="#resultados" onClick={() => setIsMenuOpen(false)} className="py-2 border-b border-[#d9d1c3]/50">Resultados</a>
+          </nav>
+
+          <div className="mt-auto flex flex-col gap-3">
+            <Link
+              to={session ? "/app" : "/login"}
+              onClick={() => setIsMenuOpen(false)}
+              className="w-full px-4 py-3 rounded-xl border border-[#103826]/30 text-[#103826] text-center font-semibold hover:bg-[#103826]/5 transition"
+            >
+              {session ? "Minha Conta" : "Entrar"}
+            </Link>
+            <Link
+              to="/assinar"
+              onClick={() => setIsMenuOpen(false)}
+              className="w-full px-4 py-3 rounded-xl bg-[#0f2c1f] text-[#e7f6eb] text-center font-semibold shadow-lg hover:translate-y-[-1px] transition"
+            >
+              Teste grátis
+            </Link>
+          </div>
+        </div>
+      )}
+
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.55]" aria-hidden>
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(46,204,113,0.14),transparent_28%),radial-gradient(circle_at_80%_10%,rgba(12,54,36,0.18),transparent_32%),radial-gradient(circle_at_15%_70%,rgba(255,255,255,0.8),transparent_40%)]" />
@@ -67,6 +114,7 @@ export function Home() {
                 </div>
               </div>
             </div>
+
             <nav className="hidden md:flex items-center gap-6 text-sm font-semibold text-[#3c4a42]">
               <a href="#beneficios" className="hover:text-[#103826]">Benefícios</a>
               <a href="#planos" className="hover:text-[#103826]">Planos</a>
@@ -75,16 +123,25 @@ export function Home() {
             <div className="flex items-center gap-3">
               <Link
                 to={session ? "/app" : "/login"}
-                className="hidden sm:inline-flex px-4 py-2 rounded-xl border border-[#103826]/30 text-[#103826] text-sm font-semibold hover:bg-[#103826]/5 transition"
+                className="hidden md:inline-flex px-4 py-2 rounded-xl border border-[#103826]/30 text-[#103826] text-sm font-semibold hover:bg-[#103826]/5 transition"
               >
                 {session ? "Minha Conta" : "Entrar"}
               </Link>
               <Link
                 to="/assinar"
-                className="px-4 py-2 rounded-xl bg-[#0f2c1f] text-[#e7f6eb] text-sm font-semibold shadow-[0_10px_35px_rgba(13,38,28,0.28)] hover:translate-y-[-1px] transition"
+                className="hidden md:inline-flex px-4 py-2 rounded-xl bg-[#0f2c1f] text-[#e7f6eb] text-sm font-semibold shadow-[0_10px_35px_rgba(13,38,28,0.28)] hover:translate-y-[-1px] transition"
               >
                 Teste grátis
               </Link>
+
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setIsMenuOpen(true)}
+                className="md:hidden p-2 text-[#0f2c1f] hover:bg-[#103826]/5 rounded-lg transition"
+                aria-label="Abrir menu"
+              >
+                <Menu size={24} />
+              </button>
             </div>
           </div>
         </header>
@@ -291,8 +348,8 @@ export function Home() {
                   <Link
                     to="/assinar"
                     className={`w-full mt-auto px-4 py-3 rounded-xl font-semibold text-center transition ${plan.highlight
-                        ? 'bg-[#0f2c1f] text-[#e7f6eb] hover:translate-y-[-1px]'
-                        : 'border border-[#103826]/25 text-[#0f2c1f] hover:bg-[#103826]/5'
+                      ? 'bg-[#0f2c1f] text-[#e7f6eb] hover:translate-y-[-1px]'
+                      : 'border border-[#103826]/25 text-[#0f2c1f] hover:bg-[#103826]/5'
                       }`}
                   >
                     {plan.cta}
