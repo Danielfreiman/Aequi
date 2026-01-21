@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabaseClient';
+import { supabase } from '../../lib/supabaseClient';
+
 import { TrendingUp, AlertTriangle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 

@@ -1,23 +1,4 @@
-import { GrossProfitWidget } from '../components/dashboard/GrossProfitWidget';
-
-// ... (existing imports)
-
-export function Dashboard() {
-  // ... (existing component logic)
-
-  return (
-    <section className="flex flex-col gap-6">
-      {/* ... (existing jsx) */}
-      
-      {/* Cards principais */}
-      {/* ... */}
-      
-      {/* Inserir widget aqui ou junto com o grid principal */}
-      <GrossProfitWidget userId={userId} />
-
-      {/* Alertas de contas e Grid Principal */}
-      <div className="grid lg:grid-cols-3 gap-6">
-
+import { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import {
   AlertTriangle,
@@ -40,6 +21,7 @@ import {
 import { supabase } from '../lib/supabaseClient';
 import { useAuthSession } from '../hooks/useAuthSession';
 import { usePersistentFilter } from '../hooks/usePersistentFilter';
+import { GrossProfitWidget } from '../components/dashboard/GrossProfitWidget';
 
 type Transaction = {
   id: string;
@@ -76,11 +58,6 @@ const formatCurrency = (value: number) =>
 const formatDate = (dateStr: string) => {
   const date = new Date(dateStr);
   return date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
-};
-
-const formatDateFull = (dateStr: string) => {
-  const date = new Date(dateStr);
-  return date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
 };
 
 const getPeriodDates = (period: PeriodType): { start: Date; end: Date } => {
@@ -139,7 +116,6 @@ export function Dashboard() {
     const loadData = async () => {
       setLoading(true);
 
-      // Fetch all data in parallel
       const [{ data: txData, error: txError }, { data: productsData, error: prodError }, { data: profileData }] = await Promise.all([
         supabase
           .from('fin_transactions')
@@ -169,14 +145,13 @@ export function Dashboard() {
       setLoading(false);
     };
 
-    if (session) { // Load if session exists
+    if (session) {
       loadData();
     }
-  }, [userId]);
+  }, [userId, session]);
 
   const { start, end } = getPeriodDates(period);
 
-  // Contas a pagar nos próximos 7 dias
   const upcomingBills = useMemo(() => {
     const now = new Date();
     const nextWeek = new Date(now.getTime() + 7 * 86400000);
@@ -190,7 +165,6 @@ export function Dashboard() {
       .slice(0, 5);
   }, [transactions]);
 
-  // Contas vencidas
   const overdueBills = useMemo(() => {
     const now = new Date();
     return transactions.filter(t => {
@@ -199,7 +173,6 @@ export function Dashboard() {
     });
   }, [transactions]);
 
-  // Estatísticas do período
   const stats = useMemo(() => {
     const periodTx = transactions.filter(t => {
       const txDate = new Date(t.date);
@@ -230,11 +203,9 @@ export function Dashboard() {
       .filter(t => t.type === 'Despesa' && !t.is_paid)
       .reduce((sum, t) => sum + (t.value || 0), 0);
 
-    // Despesas por categoria
     const despesasPorCategoria = periodTx
       .filter(t => t.type === 'Despesa')
       .reduce((acc, t) => {
-        // Se for Fatura Detalhada, quebra nos itens
         if (t.category === 'Fatura Detalhada' && t.items && Array.isArray(t.items)) {
           t.items.forEach((item: any) => {
             const itemCat = item.category || 'Outros';
@@ -262,7 +233,6 @@ export function Dashboard() {
     };
   }, [transactions, start, end]);
 
-  // CMV dos produtos
   const cmvStats = useMemo(() => {
     const finalProducts = products.filter(p => p.product_type === 'final' && p.price > 0);
 
@@ -281,12 +251,10 @@ export function Dashboard() {
       ? productsWithMargin.reduce((sum, p) => sum + p.margin, 0) / productsWithMargin.length
       : 0;
 
-    // Top 5 com melhor margem
     const topMargin = [...productsWithMargin]
       .sort((a, b) => b.margin - a.margin)
       .slice(0, 5);
 
-    // Top 5 com pior margem (maior CMV)
     const worstMargin = [...productsWithMargin]
       .sort((a, b) => a.margin - b.margin)
       .slice(0, 5);
@@ -294,10 +262,9 @@ export function Dashboard() {
     return { avgCmv, avgMargin, topMargin, worstMargin, total: finalProducts.length };
   }, [products]);
 
-  // Despesas por categoria (top 5)
   const topExpenseCategories = useMemo(() => {
     return Object.entries(stats.despesasPorCategoria)
-      .sort(([, a], [, b]) => b - a)
+      .sort(([, a], [, b]) => (b as number) - (a as number))
       .slice(0, 5);
   }, [stats.despesasPorCategoria]);
 
@@ -316,7 +283,6 @@ export function Dashboard() {
 
   return (
     <section className="flex flex-col gap-6">
-      {/* Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div className="flex flex-col gap-1">
           <h2 className="text-2xl md:text-3xl font-black text-navy tracking-tight">
@@ -325,7 +291,6 @@ export function Dashboard() {
           <p className="text-gray-500 text-sm">Olá, {userName}! Acompanhe a saúde financeira do seu negócio.</p>
         </div>
 
-        {/* Filtro de período */}
         <div className="flex items-center gap-2 bg-white p-1 rounded-xl border border-slate-200 shadow-sm">
           {(['hoje', 'semana', 'mes', 'trimestre'] as PeriodType[]).map((p) => (
             <button
@@ -342,9 +307,7 @@ export function Dashboard() {
         </div>
       </div>
 
-      {/* Cards principais */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {/* Receitas */}
         <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-soft">
           <div className="flex items-center justify-between mb-3">
             <div className="p-2 bg-green-50 rounded-lg text-green-600">
@@ -361,7 +324,6 @@ export function Dashboard() {
           </p>
         </div>
 
-        {/* Despesas */}
         <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-soft">
           <div className="flex items-center justify-between mb-3">
             <div className="p-2 bg-red-50 rounded-lg text-red-500">
@@ -378,7 +340,6 @@ export function Dashboard() {
           </p>
         </div>
 
-        {/* Saldo */}
         <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-soft">
           <div className="flex items-center justify-between mb-3">
             <div className={`p-2 rounded-lg ${stats.saldo >= 0 ? 'bg-primary/10 text-primary' : 'bg-red-50 text-red-500'}`}>
@@ -394,7 +355,6 @@ export function Dashboard() {
           </p>
         </div>
 
-        {/* CMV Médio */}
         <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-soft">
           <div className="flex items-center justify-between mb-3">
             <div className="p-2 bg-purple-50 rounded-lg text-purple-600">
@@ -412,10 +372,10 @@ export function Dashboard() {
         </div>
       </div>
 
-      {/* Alertas de contas */}
+      <GrossProfitWidget userId={userId} />
+
       {(overdueBills.length > 0 || upcomingBills.length > 0) && (
         <div className="grid md:grid-cols-2 gap-4">
-          {/* Contas vencidas */}
           {overdueBills.length > 0 && (
             <div className="bg-red-50 border border-red-200 rounded-2xl p-5">
               <div className="flex items-center gap-3 mb-4">
@@ -440,7 +400,6 @@ export function Dashboard() {
             </div>
           )}
 
-          {/* Próximas contas */}
           {upcomingBills.length > 0 && (
             <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5">
               <div className="flex items-center gap-3 mb-3">
@@ -475,9 +434,7 @@ export function Dashboard() {
         </div>
       )}
 
-      {/* Grid principal */}
       <div className="grid lg:grid-cols-3 gap-6">
-        {/* Despesas por categoria */}
         <div className="bg-white rounded-2xl border border-slate-100 shadow-soft p-5">
           <div className="flex items-center justify-between mb-4">
             <div>
@@ -513,7 +470,6 @@ export function Dashboard() {
           )}
         </div>
 
-        {/* CMV dos produtos */}
         <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-100 shadow-soft p-5">
           <div className="flex items-center justify-between mb-4">
             <div>
@@ -530,7 +486,6 @@ export function Dashboard() {
 
           {cmvStats.total > 0 ? (
             <div className="grid md:grid-cols-2 gap-4">
-              {/* Melhores margens */}
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <CheckCircle2 size={16} className="text-green-500" />
@@ -552,7 +507,6 @@ export function Dashboard() {
                 </div>
               </div>
 
-              {/* Piores margens */}
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <AlertTriangle size={16} className="text-amber-500" />
@@ -591,7 +545,6 @@ export function Dashboard() {
         </div>
       </div>
 
-      {/* Resumo de pendências */}
       <div className="grid md:grid-cols-3 gap-4">
         <Link
           to="/app/contas-receber"
