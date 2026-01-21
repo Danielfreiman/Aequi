@@ -208,12 +208,13 @@ export function IntegracaoIFood() {
     setConnectionStatus('connecting');
     setConnectionMessage('Redirecionando para o iFood...');
 
-    // Redireciona diretamente para o iFood para evitar erro de rota local se não houver proxy
-    const clientId = 'b413abd9-eb29-4dc8-8d6c-16641d39ca6b'; // Exemplo do screenshot
-    const redirectUri = encodeURIComponent(window.location.origin + '/app/integracao-ifood');
-    const authUrl = `https://merchant-api.ifood.com.br/authentication/v1.0/oauth/user/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&state=${userId}`;
+    // Redireciona para o backend (Serverless Function) iniciar o fluxo OAuth
+    const query = new URLSearchParams({
+      userId,
+      storeId: selectedStoreId || ''
+    });
 
-    window.location.href = authUrl;
+    window.location.href = `/api/ifood/authorize?${query.toString()}`;
   };
 
   const handleDisconnect = async () => {
@@ -597,8 +598,8 @@ export function IntegracaoIFood() {
             <button
               onClick={() => setActiveTab('cardapio')}
               className={`px-4 py-2 text-sm font-semibold border-b-2 transition flex items-center gap-2 ${activeTab === 'cardapio'
-                  ? 'border-red-500 text-red-500'
-                  : 'border-transparent text-slate-500 hover:text-slate-700'
+                ? 'border-red-500 text-red-500'
+                : 'border-transparent text-slate-500 hover:text-slate-700'
                 }`}
             >
               <Package size={16} />
@@ -607,8 +608,8 @@ export function IntegracaoIFood() {
             <button
               onClick={() => setActiveTab('produtos')}
               className={`px-4 py-2 text-sm font-semibold border-b-2 transition flex items-center gap-2 ${activeTab === 'produtos'
-                  ? 'border-red-500 text-red-500'
-                  : 'border-transparent text-slate-500 hover:text-slate-700'
+                ? 'border-red-500 text-red-500'
+                : 'border-transparent text-slate-500 hover:text-slate-700'
                 }`}
             >
               <Archive size={16} />
@@ -617,8 +618,8 @@ export function IntegracaoIFood() {
             <button
               onClick={() => setActiveTab('pedidos')}
               className={`px-4 py-2 text-sm font-semibold border-b-2 transition flex items-center gap-2 ${activeTab === 'pedidos'
-                  ? 'border-red-500 text-red-500'
-                  : 'border-transparent text-slate-500 hover:text-slate-700'
+                ? 'border-red-500 text-red-500'
+                : 'border-transparent text-slate-500 hover:text-slate-700'
                 }`}
             >
               <ShoppingBag size={16} />
@@ -666,8 +667,8 @@ export function IntegracaoIFood() {
 
               {importMessage && (
                 <div className={`rounded-xl p-4 text-sm flex items-center gap-2 ${importMessage.includes('sucesso')
-                    ? 'bg-green-50 border border-green-200 text-green-700'
-                    : 'bg-red-50 border border-red-200 text-red-700'
+                  ? 'bg-green-50 border border-green-200 text-green-700'
+                  : 'bg-red-50 border border-red-200 text-red-700'
                   }`}>
                   {importMessage.includes('sucesso') ? <Check size={16} /> : <AlertCircle size={16} />}
                   {importMessage}
@@ -729,8 +730,8 @@ export function IntegracaoIFood() {
                             <div className="flex items-center gap-2">
                               <h4 className="font-semibold text-navy truncate">{product.name}</h4>
                               <span className={`text-xs px-2 py-0.5 rounded-full ${product.status === 'AVAILABLE'
-                                  ? 'bg-green-100 text-green-700'
-                                  : 'bg-amber-100 text-amber-700'
+                                ? 'bg-green-100 text-green-700'
+                                : 'bg-amber-100 text-amber-700'
                                 }`}>
                                 {product.status === 'AVAILABLE' ? 'Ativo' : 'Pausado'}
                               </span>
@@ -843,8 +844,8 @@ export function IntegracaoIFood() {
 
               {importMessage && (
                 <div className={`rounded-xl p-4 text-sm flex items-center gap-2 ${importMessage.includes('sucesso')
-                    ? 'bg-green-50 border border-green-200 text-green-700'
-                    : 'bg-red-50 border border-red-200 text-red-700'
+                  ? 'bg-green-50 border border-green-200 text-green-700'
+                  : 'bg-red-50 border border-red-200 text-red-700'
                   }`}>
                   {importMessage.includes('sucesso') ? <Check size={16} /> : <AlertCircle size={16} />}
                   {importMessage}
@@ -908,8 +909,8 @@ export function IntegracaoIFood() {
                               <div className="flex items-center gap-2">
                                 <h4 className="font-semibold text-navy truncate">{product.name}</h4>
                                 <span className={`text-xs px-2 py-0.5 rounded-full ${product.status === 'active'
-                                    ? 'bg-green-100 text-green-700'
-                                    : 'bg-amber-100 text-amber-700'
+                                  ? 'bg-green-100 text-green-700'
+                                  : 'bg-amber-100 text-amber-700'
                                   }`}>
                                   {product.status === 'active' ? 'Ativo' : 'Pausado'}
                                 </span>
@@ -1087,8 +1088,8 @@ export function IntegracaoIFood() {
 
               {importMessage && (
                 <div className={`rounded-xl p-4 text-sm flex items-center gap-2 ${importMessage.includes('sucesso') || importMessage.includes('importados')
-                    ? 'bg-green-50 border border-green-200 text-green-700'
-                    : 'bg-red-50 border border-red-200 text-red-700'
+                  ? 'bg-green-50 border border-green-200 text-green-700'
+                  : 'bg-red-50 border border-red-200 text-red-700'
                   }`}>
                   {importMessage.includes('sucesso') || importMessage.includes('importados') ? <Check size={16} /> : <AlertCircle size={16} />}
                   {importMessage}
@@ -1154,8 +1155,8 @@ export function IntegracaoIFood() {
                         <div className="flex items-center justify-between gap-4">
                           <div className="flex items-center gap-3">
                             <div className={`size-10 rounded-full flex items-center justify-center ${order.status === 'CONCLUDED'
-                                ? 'bg-green-100 text-green-600'
-                                : 'bg-red-100 text-red-600'
+                              ? 'bg-green-100 text-green-600'
+                              : 'bg-red-100 text-red-600'
                               }`}>
                               {order.status === 'CONCLUDED' ? <Check size={18} /> : <X size={18} />}
                             </div>
@@ -1168,8 +1169,8 @@ export function IntegracaoIFood() {
                           </div>
                           <div className="flex items-center gap-4">
                             <span className={`text-xs px-2 py-1 rounded-full ${order.type === 'DELIVERY'
-                                ? 'bg-blue-100 text-blue-700'
-                                : 'bg-purple-100 text-purple-700'
+                              ? 'bg-blue-100 text-blue-700'
+                              : 'bg-purple-100 text-purple-700'
                               }`}>
                               {order.type === 'DELIVERY' ? 'Delivery' : 'Retirada'}
                             </span>
@@ -1204,14 +1205,14 @@ export function IntegracaoIFood() {
                     <div className="p-5 overflow-y-auto max-h-[60vh] space-y-4">
                       <div className="flex gap-2">
                         <span className={`text-xs px-2 py-1 rounded-full ${selectedOrder.status === 'CONCLUDED'
-                            ? 'bg-green-100 text-green-700'
-                            : 'bg-red-100 text-red-700'
+                          ? 'bg-green-100 text-green-700'
+                          : 'bg-red-100 text-red-700'
                           }`}>
                           {selectedOrder.status === 'CONCLUDED' ? 'Concluído' : 'Cancelado'}
                         </span>
                         <span className={`text-xs px-2 py-1 rounded-full ${selectedOrder.type === 'DELIVERY'
-                            ? 'bg-blue-100 text-blue-700'
-                            : 'bg-purple-100 text-purple-700'
+                          ? 'bg-blue-100 text-blue-700'
+                          : 'bg-purple-100 text-purple-700'
                           }`}>
                           {selectedOrder.type === 'DELIVERY' ? 'Delivery' : 'Retirada'}
                         </span>
