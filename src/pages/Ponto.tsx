@@ -92,7 +92,7 @@ export function Ponto() {
             {Object.entries(monthTotal).map(([employeeId, total]) => (
               <div key={employeeId} className="p-4 rounded-xl border border-slate-100 bg-slate-50 text-sm">
                 <p className="font-semibold text-navy">{employeeMap[employeeId] || 'Funcionário'}</p>
-                <p className="text-slate-600">{total.toFixed(1)} horas</p>
+                <p className="text-slate-600">{total.toFixed(2)} horas</p>
               </div>
             ))}
             {!loading && Object.keys(monthTotal).length === 0 && (

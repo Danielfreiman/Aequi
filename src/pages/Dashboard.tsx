@@ -66,7 +66,7 @@ const formatDateFull = (dateStr: string) => {
 const getPeriodDates = (period: PeriodType): { start: Date; end: Date } => {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  
+
   switch (period) {
     case 'hoje':
       return { start: today, end: new Date(today.getTime() + 86400000) };
@@ -118,7 +118,7 @@ export function Dashboard() {
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
-      
+
       const [{ data: txData }, { data: profileData }, { data: productsData }] = await Promise.all([
         supabase
           .from('fin_transactions')
@@ -150,7 +150,7 @@ export function Dashboard() {
   const upcomingBills = useMemo(() => {
     const now = new Date();
     const nextWeek = new Date(now.getTime() + 7 * 86400000);
-    
+
     return transactions
       .filter(t => {
         const txDate = new Date(t.date);
@@ -204,8 +204,17 @@ export function Dashboard() {
     const despesasPorCategoria = periodTx
       .filter(t => t.type === 'Despesa')
       .reduce((acc, t) => {
-        const cat = t.category || 'Outros';
-        acc[cat] = (acc[cat] || 0) + (t.value || 0);
+        // Se for Fatura Detalhada, quebra nos itens
+        if (t.category === 'Fatura Detalhada' && t.items && Array.isArray(t.items)) {
+          t.items.forEach((item: any) => {
+            const itemCat = item.category || 'Outros';
+            const itemValue = Number(item.value) || 0;
+            acc[itemCat] = (acc[itemCat] || 0) + itemValue;
+          });
+        } else {
+          const cat = t.category || 'Outros';
+          acc[cat] = (acc[cat] || 0) + (t.value || 0);
+        }
         return acc;
       }, {} as Record<string, number>);
 
@@ -226,7 +235,7 @@ export function Dashboard() {
   // CMV dos produtos
   const cmvStats = useMemo(() => {
     const finalProducts = products.filter(p => p.product_type === 'final' && p.price > 0);
-    
+
     const productsWithMargin = finalProducts.map(p => {
       const cost = p.cost || 0;
       const margin = p.price > 0 ? ((p.price - cost) / p.price) * 100 : 0;
@@ -285,18 +294,17 @@ export function Dashboard() {
           </h2>
           <p className="text-gray-500 text-sm">Olá, {userName}! Acompanhe a saúde financeira do seu negócio.</p>
         </div>
-        
+
         {/* Filtro de período */}
         <div className="flex items-center gap-2 bg-white p-1 rounded-xl border border-slate-200 shadow-sm">
           {(['hoje', 'semana', 'mes', 'trimestre'] as PeriodType[]).map((p) => (
             <button
               key={p}
               onClick={() => setPeriod(p)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-                period === p
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${period === p
                   ? 'bg-primary text-white shadow'
                   : 'text-slate-600 hover:bg-slate-100'
-              }`}
+                }`}
             >
               {PERIOD_LABELS[p]}
             </button>
@@ -448,7 +456,7 @@ export function Dashboard() {
             </div>
             <BarChart3 size={20} className="text-slate-400" />
           </div>
-          
+
           {topExpenseCategories.length > 0 ? (
             <div className="space-y-3">
               {topExpenseCategories.map(([category, value]) => {

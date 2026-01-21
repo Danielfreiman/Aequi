@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useAuthSession } from '../hooks/useAuthSession';
 
 const plans = [
   {
@@ -43,6 +44,7 @@ const plans = [
 ];
 
 export function Home() {
+  const { session } = useAuthSession();
   return (
     <div className="min-h-screen bg-[#f7f4ec] text-[#0f1720]">
       <div className="relative overflow-hidden">
@@ -59,7 +61,10 @@ export function Home() {
               </div>
               <div>
                 <p className="text-lg font-black tracking-tight">Aequi</p>
-                <p className="text-[11px] uppercase tracking-[0.2em] text-[#4c5b52]">Parceiro do operador</p>
+                <div className="flex items-center gap-2">
+                  <p className="text-[11px] uppercase tracking-[0.2em] text-[#4c5b52]">Parceiro do operador</p>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-700 border border-amber-200">BETA</span>
+                </div>
               </div>
             </div>
             <nav className="hidden md:flex items-center gap-6 text-sm font-semibold text-[#3c4a42]">
@@ -69,10 +74,10 @@ export function Home() {
             </nav>
             <div className="flex items-center gap-3">
               <Link
-                to="/login"
+                to={session ? "/app" : "/login"}
                 className="hidden sm:inline-flex px-4 py-2 rounded-xl border border-[#103826]/30 text-[#103826] text-sm font-semibold hover:bg-[#103826]/5 transition"
               >
-                Entrar
+                {session ? "Minha Conta" : "Entrar"}
               </Link>
               <Link
                 to="/assinar"
@@ -257,9 +262,8 @@ export function Home() {
               {plans.map((plan) => (
                 <div
                   key={plan.name}
-                  className={`p-6 rounded-3xl border flex flex-col gap-4 transition shadow-[0_12px_30px_rgba(12,38,27,0.08)] bg-white/95 ${
-                    plan.highlight ? 'border-[#0f2c1f] translate-y-[-4px]' : 'border-[#d9d1c3]'
-                  }`}
+                  className={`p-6 rounded-3xl border flex flex-col gap-4 transition shadow-[0_12px_30px_rgba(12,38,27,0.08)] bg-white/95 ${plan.highlight ? 'border-[#0f2c1f] translate-y-[-4px]' : 'border-[#d9d1c3]'
+                    }`}
                 >
                   <div className="flex items-center justify-between">
                     <div>
@@ -286,11 +290,10 @@ export function Home() {
                   </ul>
                   <Link
                     to="/assinar"
-                    className={`w-full mt-auto px-4 py-3 rounded-xl font-semibold text-center transition ${
-                      plan.highlight
+                    className={`w-full mt-auto px-4 py-3 rounded-xl font-semibold text-center transition ${plan.highlight
                         ? 'bg-[#0f2c1f] text-[#e7f6eb] hover:translate-y-[-1px]'
                         : 'border border-[#103826]/25 text-[#0f2c1f] hover:bg-[#103826]/5'
-                    }`}
+                      }`}
                   >
                     {plan.cta}
                   </Link>
@@ -370,7 +373,7 @@ export function Home() {
                   Conciliação e controle financeiro para restaurantes iFood. Simplifique sua gestão e aumente sua margem.
                 </p>
               </div>
-              
+
               <div className="grid grid-cols-2 md:grid-cols-3 gap-8 text-sm">
                 <div>
                   <p className="font-semibold text-[#0f2c1f] mb-3">Produto</p>
@@ -398,7 +401,7 @@ export function Home() {
                 </div>
               </div>
             </div>
-            
+
             <div className="border-t border-[#d9d1c3] mt-8 pt-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <p className="text-xs text-[#6a756e]">© 2026 Aequi. Todos os direitos reservados.</p>
               <div className="flex items-center gap-4 text-xs text-[#6a756e]">

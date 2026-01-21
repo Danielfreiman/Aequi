@@ -75,6 +75,10 @@ export function Financeiro() {
   const startDate = period === 'custom' && customStart ? new Date(customStart) : start;
   const endDate = period === 'custom' && customEnd ? new Date(customEnd) : end;
 
+  if (endDate) {
+    endDate.setHours(23, 59, 59, 999);
+  }
+
   const filtered = useMemo(() => {
     return transactions.filter((tx) => {
       const byStatus = statusFilter === 'todos' ? true : statusFilter === 'pago' ? tx.is_paid : !tx.is_paid;
