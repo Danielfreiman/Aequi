@@ -2,6 +2,14 @@ import { useEffect, useMemo, useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { usePersistentFilter } from '../hooks/usePersistentFilter';
 import { quickPeriods, type PeriodKey } from '../services/dateFilters';
+import { ChevronDown, ChevronUp, Plus, Trash2 } from 'lucide-react';
+
+type InvoiceItem = {
+  id?: string;
+  description: string;
+  category: string;
+  value: number;
+};
 
 type FinTransaction = {
   id: string;
@@ -10,7 +18,10 @@ type FinTransaction = {
   category: string | null;
   value: number;
   is_paid: boolean;
+  items?: InvoiceItem[] | InvoiceItem | null;
 };
+
+type Category = { id: string; name: string };
 
 const formatCurrency = (value: number) =>
   new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value || 0);
@@ -31,7 +42,22 @@ export function ContasPagar() {
   const [customEnd, setCustomEnd] = usePersistentFilter<string>('filter.pagar.customEnd', '');
   const [editId, setEditId] = useState<string | null>(null);
   const [editData, setEditData] = useState<Partial<FinTransaction>>({});
+  const [editItems, setEditItems] = useState<InvoiceItem[]>([]);
   const [saving, setSaving] = useState(false);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [dbCategories, setDbCategories] = useState<Category[]>([]);
+
+  // Normaliza items para sempre ser array
+  const normalizeItems = (items: InvoiceItem[] | InvoiceItem | null | undefined): InvoiceItem[] => {
+    if (!items) return [];
+    if (Array.isArray(items)) return items;
+    return [items];
+  };
+
+  // Verifica se é fatura detalhada
+  const isDetailedInvoice = (tx: FinTransaction): boolean => {
+    return tx.category === 'Fatura detalhada' || tx.category === 'Fatura Detalhada' || normalizeItems(tx.items).length > 0;
+  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -39,7 +65,7 @@ export function ContasPagar() {
       setError(null);
       const { data, error: fetchError } = await supabase
         .from('fin_transactions')
-        .select('id,description,date,category,value,is_paid')
+        .select('id,description,date,category,value,is_paid,items')
         .eq('type', 'Despesa')
         .order('date', { ascending: false });
 
@@ -51,7 +77,13 @@ export function ContasPagar() {
       setLoading(false);
     };
 
+    const loadCategories = async () => {
+      const { data } = await supabase.from('finance_categories').select('id,name').order('name', { ascending: true });
+      setDbCategories(data || []);
+    };
+
     loadData();
+    loadCategories();
   }, []);
 
   const { start, end } = quickPeriods[period].range();
@@ -80,35 +112,79 @@ export function ContasPagar() {
   const startEdit = (tx: FinTransaction) => {
     setEditId(tx.id);
     setEditData({ ...tx });
+    setEditItems(normalizeItems(tx.items).map((item, idx) => ({
+      ...item,
+      id: item.id || `item-${idx}`,
+    })));
+    setExpandedId(tx.id);
   };
 
   const cancelEdit = () => {
     setEditId(null);
     setEditData({});
+    setEditItems([]);
   };
 
   const handleSave = async () => {
     if (!editId) return;
     setSaving(true);
+
+    // Recalcula valor total se for fatura detalhada
+    const isDetailed = isDetailedInvoice(editData as FinTransaction);
+    const totalValue = isDetailed && editItems.length > 0
+      ? editItems.reduce((sum, item) => sum + (Number(item.value) || 0), 0)
+      : editData.value;
+
     const { error: updateError } = await supabase
       .from('fin_transactions')
       .update({
         description: editData.description,
         category: editData.category,
         date: editData.date,
-        value: editData.value,
+        value: totalValue,
         is_paid: editData.is_paid,
+        items: isDetailed ? editItems : null,
       })
       .eq('id', editId);
     if (updateError) {
       setError(updateError.message);
     } else {
       setTransactions((prev) =>
-        prev.map((tx) => (tx.id === editId ? { ...tx, ...editData } as FinTransaction : tx))
+        prev.map((tx) => (tx.id === editId ? { ...tx, ...editData, value: totalValue, items: isDetailed ? editItems : null } as FinTransaction : tx))
       );
       cancelEdit();
     }
     setSaving(false);
+  };
+
+  // Funções para editar itens
+  const handleAddItem = () => {
+    setEditItems((prev) => [
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        description: '',
+        category: dbCategories[0]?.name || 'Custos (CMV/CMV)',
+        value: 0,
+      },
+    ]);
+  };
+
+  const handleUpdateItem = (itemId: string, patch: Partial<InvoiceItem>) => {
+    setEditItems((prev) => prev.map((item) => (item.id === itemId ? { ...item, ...patch } : item)));
+  };
+
+  const handleRemoveItem = (itemId: string) => {
+    setEditItems((prev) => prev.filter((item) => item.id !== itemId));
+  };
+
+  const editItemsTotal = useMemo(
+    () => editItems.reduce((sum, item) => sum + (Number(item.value) || 0), 0),
+    [editItems]
+  );
+
+  const toggleExpand = (id: string) => {
+    setExpandedId((prev) => (prev === id ? null : id));
   };
 
   const markPaid = async (tx: FinTransaction) => {
@@ -217,96 +293,199 @@ export function ContasPagar() {
           {filtered.map((tx) => {
             const isEditing = editId === tx.id;
             const data = isEditing ? editData : tx;
+            const isDetailed = isDetailedInvoice(tx);
+            const txItems = normalizeItems(tx.items);
+            const isExpanded = expandedId === tx.id;
+            
             return (
-              <div key={tx.id} className="grid grid-cols-1 md:grid-cols-5 gap-3 p-4 text-sm items-center">
-                <div className="font-semibold text-navy">
-                  {isEditing ? (
-                    <input
-                      className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
-                      value={data.description || ''}
-                      onChange={(e) => setEditData((prev) => ({ ...prev, description: e.target.value }))}
-                    />
-                  ) : (
-                    tx.description || 'Sem descrição'
-                  )}
-                </div>
-                <div className="text-slate-500">
-                  {isEditing ? (
-                    <input
-                      className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
-                      value={data.category || ''}
-                      onChange={(e) => setEditData((prev) => ({ ...prev, category: e.target.value }))}
-                    />
-                  ) : (
-                    tx.category || 'Sem categoria'
-                  )}
-                </div>
-                <div className="text-slate-500">
-                  {isEditing ? (
-                    <input
-                      type="date"
-                      className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
-                      value={(data.date || '').slice(0, 10)}
-                      onChange={(e) => setEditData((prev) => ({ ...prev, date: e.target.value }))}
-                    />
-                  ) : (
-                    formatDate(tx.date)
-                  )}
-                </div>
-                <div className="font-semibold text-navy">
-                  {isEditing ? (
-                    <input
-                      type="number"
-                      className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
-                      value={data.value ?? 0}
-                      onChange={(e) => setEditData((prev) => ({ ...prev, value: Number(e.target.value) }))}
-                    />
-                  ) : (
-                    formatCurrency(tx.value)
-                  )}
-                </div>
-                <div className="flex gap-2 justify-end">
-                  {isEditing ? (
-                    <>
+              <div key={tx.id} className="flex flex-col">
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-3 p-4 text-sm items-center">
+                  <div className="font-semibold text-navy flex items-center gap-2">
+                    {isDetailed && !isEditing && (
                       <button
-                        onClick={handleSave}
-                        disabled={saving}
-                        className="px-3 py-2 rounded-lg bg-primary text-white text-xs font-semibold disabled:opacity-60"
+                        onClick={() => toggleExpand(tx.id)}
+                        className="p-1 hover:bg-slate-100 rounded"
+                        title={isExpanded ? 'Recolher itens' : 'Expandir itens'}
                       >
-                        Salvar
+                        {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                       </button>
-                      <button
-                        onClick={cancelEdit}
-                        className="px-3 py-2 rounded-lg border border-slate-200 text-xs font-semibold"
-                      >
-                        Cancelar
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <button
-                        onClick={() => startEdit(tx)}
-                        className="px-3 py-2 rounded-lg border border-slate-200 text-xs font-semibold"
-                      >
-                        Editar
-                      </button>
-                      {!tx.is_paid && (
+                    )}
+                    {isEditing ? (
+                      <input
+                        className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                        value={data.description || ''}
+                        onChange={(e) => setEditData((prev) => ({ ...prev, description: e.target.value }))}
+                      />
+                    ) : (
+                      <span>{tx.description || 'Sem descrição'}</span>
+                    )}
+                  </div>
+                  <div className="text-slate-500">
+                    {isEditing ? (
+                      <input
+                        className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                        value={data.category || ''}
+                        onChange={(e) => setEditData((prev) => ({ ...prev, category: e.target.value }))}
+                      />
+                    ) : (
+                      <>
+                        {tx.category || 'Sem categoria'}
+                        {isDetailed && <span className="ml-1 text-xs text-primary">({txItems.length} itens)</span>}
+                      </>
+                    )}
+                  </div>
+                  <div className="text-slate-500">
+                    {isEditing ? (
+                      <input
+                        type="date"
+                        className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                        value={(data.date || '').slice(0, 10)}
+                        onChange={(e) => setEditData((prev) => ({ ...prev, date: e.target.value }))}
+                      />
+                    ) : (
+                      formatDate(tx.date)
+                    )}
+                  </div>
+                  <div className="font-semibold text-navy">
+                    {isEditing && isDetailed ? (
+                      <span className="text-sm">{formatCurrency(editItemsTotal)}</span>
+                    ) : isEditing ? (
+                      <input
+                        type="number"
+                        className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                        value={data.value ?? 0}
+                        onChange={(e) => setEditData((prev) => ({ ...prev, value: Number(e.target.value) }))}
+                      />
+                    ) : (
+                      formatCurrency(tx.value)
+                    )}
+                  </div>
+                  <div className="flex gap-2 justify-end">
+                    {isEditing ? (
+                      <>
                         <button
-                          onClick={() => markPaid(tx)}
-                          className="px-3 py-2 rounded-lg bg-primary text-white text-xs font-semibold"
+                          onClick={handleSave}
+                          disabled={saving}
+                          className="px-3 py-2 rounded-lg bg-primary text-white text-xs font-semibold disabled:opacity-60"
                         >
-                          Dar baixa
+                          Salvar
                         </button>
-                      )}
-                      <button
-                        onClick={() => handleDelete(tx)}
-                        className="px-3 py-2 rounded-lg border border-red-200 text-red-600 text-xs font-semibold hover:bg-red-50 transition"
-                      >
-                        Excluir
-                      </button>
-                    </>
-                  )}
+                        <button
+                          onClick={cancelEdit}
+                          className="px-3 py-2 rounded-lg border border-slate-200 text-xs font-semibold"
+                        >
+                          Cancelar
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          onClick={() => startEdit(tx)}
+                          className="px-3 py-2 rounded-lg border border-slate-200 text-xs font-semibold"
+                        >
+                          Editar
+                        </button>
+                        {!tx.is_paid && (
+                          <button
+                            onClick={() => markPaid(tx)}
+                            className="px-3 py-2 rounded-lg bg-primary text-white text-xs font-semibold"
+                          >
+                            Dar baixa
+                          </button>
+                        )}
+                        <button
+                          onClick={() => handleDelete(tx)}
+                          className="px-3 py-2 rounded-lg border border-red-200 text-red-600 text-xs font-semibold hover:bg-red-50 transition"
+                        >
+                          Excluir
+                        </button>
+                      </>
+                    )}
+                  </div>
                 </div>
+
+                {/* Itens da fatura (visualização expandida) */}
+                {isDetailed && isExpanded && !isEditing && txItems.length > 0 && (
+                  <div className="bg-slate-50 px-6 py-3 border-t border-slate-100">
+                    <p className="text-xs font-semibold text-slate-600 mb-2">Itens da fatura:</p>
+                    <div className="space-y-1">
+                      {txItems.map((item, idx) => (
+                        <div key={item.id || idx} className="grid grid-cols-3 gap-4 text-xs py-1 border-b border-slate-200 last:border-0">
+                          <span className="text-slate-700">{item.description || 'Sem descrição'}</span>
+                          <span className="text-slate-500">{item.category || 'Sem categoria'}</span>
+                          <span className="text-navy font-semibold text-right">{formatCurrency(item.value)}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Itens da fatura (modo edição) */}
+                {isEditing && isDetailed && (
+                  <div className="bg-slate-50 px-6 py-4 border-t border-slate-100">
+                    <div className="flex items-center justify-between mb-3">
+                      <p className="text-sm font-semibold text-navy">Itens da fatura</p>
+                      <button
+                        type="button"
+                        onClick={handleAddItem}
+                        className="flex items-center gap-1 px-2 py-1 rounded-lg bg-primary text-white text-xs font-semibold hover:brightness-110"
+                      >
+                        <Plus size={14} />
+                        Adicionar item
+                      </button>
+                    </div>
+                    
+                    {editItems.length === 0 ? (
+                      <p className="text-xs text-slate-500">Nenhum item. Clique em "Adicionar item" para começar.</p>
+                    ) : (
+                      <div className="space-y-2">
+                        {editItems.map((item) => (
+                          <div key={item.id} className="grid grid-cols-12 gap-2 items-center bg-white p-2 rounded-lg border border-slate-200">
+                            <input
+                              className="col-span-4 rounded-lg border border-slate-200 px-2 py-1.5 text-xs"
+                              placeholder="Descrição"
+                              value={item.description}
+                              onChange={(e) => handleUpdateItem(item.id!, { description: e.target.value })}
+                            />
+                            <select
+                              className="col-span-4 rounded-lg border border-slate-200 px-2 py-1.5 text-xs"
+                              value={item.category}
+                              onChange={(e) => handleUpdateItem(item.id!, { category: e.target.value })}
+                            >
+                              <option value="">Selecione...</option>
+                              {dbCategories.map((cat) => (
+                                <option key={cat.id} value={cat.name}>
+                                  {cat.name}
+                                </option>
+                              ))}
+                            </select>
+                            <input
+                              type="number"
+                              step="0.01"
+                              className="col-span-3 rounded-lg border border-slate-200 px-2 py-1.5 text-xs text-right"
+                              placeholder="Valor"
+                              value={item.value || ''}
+                              onChange={(e) => handleUpdateItem(item.id!, { value: Number(e.target.value) })}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveItem(item.id!)}
+                              className="col-span-1 flex justify-center p-1.5 rounded-lg text-red-500 hover:bg-red-50"
+                              title="Remover item"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                        ))}
+                        <div className="flex justify-end pt-2 border-t border-slate-200 mt-2">
+                          <span className="text-sm font-bold text-navy">
+                            Total: {formatCurrency(editItemsTotal)}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             );
           })}

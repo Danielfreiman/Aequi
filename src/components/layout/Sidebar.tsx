@@ -13,6 +13,7 @@ import {
   Upload,
   Package,
   Store,
+  PlusCircle,
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
@@ -21,7 +22,7 @@ const itemClass =
 
 export function Sidebar() {
   return (
-    <aside className="hidden md:flex flex-col w-72 bg-[#0f2c1f] h-full text-white shrink-0 border-r border-white/10">
+    <aside className="hidden md:flex flex-col w-72 bg-[#0f2c1f] h-full text-white shrink-0 border-r border-white/10 relative z-20">
       <div className="p-8 pb-6">
         <div className="flex items-center gap-3">
           <div className="size-10 rounded-xl bg-gradient-to-br from-[#103826] to-[#2ecc71] flex items-center justify-center shadow-lg shadow-black/10">
@@ -32,6 +33,17 @@ export function Sidebar() {
             <span className="text-xs text-[#cfe7d6] font-semibold uppercase tracking-wide">Parceiro do operador</span>
           </div>
         </div>
+      </div>
+
+      {/* Botão de novo lançamento */}
+      <div className="px-4 pb-2">
+        <NavLink
+          to="/app/operacoes"
+          className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-gradient-to-r from-[#2ecc71] to-[#27ae60] text-white text-sm font-semibold shadow-lg shadow-[#2ecc71]/25 hover:brightness-110 transition"
+        >
+          <PlusCircle size={18} />
+          <span>Novo Lançamento</span>
+        </NavLink>
       </div>
 
       <nav className="flex-1 px-4 py-4 flex flex-col gap-1 overflow-y-auto">
@@ -70,6 +82,15 @@ export function Sidebar() {
         >
           <Store size={18} className="shrink-0" />
           <span>Integração iFood</span>
+        </NavLink>
+        <NavLink
+          to="/app/produtos"
+          className={({ isActive }) =>
+            `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
+          }
+        >
+          <Package size={18} className="shrink-0" />
+          <span>Produtos</span>
         </NavLink>
         <NavLink
           to="/app/financeiro"
