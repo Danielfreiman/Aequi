@@ -63,21 +63,21 @@ const currencyFormatter = new Intl.NumberFormat('pt-BR', { style: 'currency', cu
 export function IntegracaoIFood() {
   const { userId } = useAuthSession();
   const [searchParams, setSearchParams] = useSearchParams();
-  
+
   // Estado da conexão
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>('idle');
   const [connectionMessage, setConnectionMessage] = useState('');
   const [merchant, setMerchant] = useState<IFoodMerchant | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  
+
   // Estado das lojas locais (para seleção ao conectar)
   const [localStores, setLocalStores] = useState<LocalStore[]>([]);
   const [selectedStoreId, setSelectedStoreId] = useState<string>('');
   const [connectedStoreName, setConnectedStoreName] = useState<string>('');
-  
+
   // Estado das abas
   const [activeTab, setActiveTab] = useState<TabType>('cardapio');
-  
+
   // Estado do cardápio
   const [categories, setCategories] = useState<IFoodCategory[]>([]);
   const [products, setProducts] = useState<IFoodProduct[]>([]);
@@ -87,7 +87,7 @@ export function IntegracaoIFood() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [importingProducts, setImportingProducts] = useState(false);
   const [importMessage, setImportMessage] = useState('');
-  
+
   // Estado dos pedidos
   const [orders, setOrders] = useState<IFoodOrder[]>([]);
   const [ordersSummary, setOrdersSummary] = useState<IFoodOrdersSummary | null>(null);
@@ -107,13 +107,13 @@ export function IntegracaoIFood() {
   // Carrega lojas locais do usuário
   const loadLocalStores = async () => {
     if (!userId) return;
-    
+
     const { data } = await supabase
       .from('stores')
       .select('id, name, external_id')
       .eq('profile_id', userId)
       .order('name');
-    
+
     if (data && data.length > 0) {
       setLocalStores(data);
       setSelectedStoreId(data[0].id);
@@ -151,13 +151,13 @@ export function IntegracaoIFood() {
   // Carrega conexão salva
   const loadSavedConnection = async () => {
     if (!userId) return;
-    
+
     const { data } = await supabase
       .from('ifood_connections')
       .select('*, stores(name)')
       .eq('profile_id', userId)
       .single();
-    
+
     if (data?.merchant_id && data?.status === 'active') {
       setMerchant({
         id: data.merchant_id,
@@ -208,12 +208,12 @@ export function IntegracaoIFood() {
     setConnectionStatus('connecting');
     setConnectionMessage('Redirecionando para o iFood...');
 
-    // Redireciona para o endpoint de autorização com userId e storeId
-    const params = new URLSearchParams({ userId });
-    if (selectedStoreId) {
-      params.append('storeId', selectedStoreId);
-    }
-    window.location.href = `/api/ifood/authorize?${params.toString()}`;
+    // Redireciona diretamente para o iFood para evitar erro de rota local se não houver proxy
+    const clientId = 'b413abd9-eb29-4dc8-8d6c-16641d39ca6b'; // Exemplo do screenshot
+    const redirectUri = encodeURIComponent(window.location.origin + '/app/integracao-ifood');
+    const authUrl = `https://merchant-api.ifood.com.br/authentication/v1.0/oauth/user/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&state=${userId}`;
+
+    window.location.href = authUrl;
   };
 
   const handleDisconnect = async () => {
@@ -223,7 +223,7 @@ export function IntegracaoIFood() {
         .delete()
         .eq('profile_id', userId);
     }
-    
+
     setMerchant(null);
     setAccessToken(null);
     setConnectionStatus('idle');
@@ -238,7 +238,7 @@ export function IntegracaoIFood() {
   // Funções para produtos salvos (aba Produtos)
   const loadSavedProducts = async () => {
     if (!userId) return;
-    
+
     setLoadingSavedProducts(true);
     try {
       const { data, error } = await supabase
@@ -247,7 +247,7 @@ export function IntegracaoIFood() {
         .eq('profile_id', userId)
         .order('category', { ascending: true })
         .order('name', { ascending: true });
-      
+
       if (error) throw error;
       setSavedProducts(data || []);
     } catch (error) {
@@ -259,7 +259,7 @@ export function IntegracaoIFood() {
 
   const handleUpdateProduct = async (product: SavedProduct) => {
     if (!userId) return;
-    
+
     try {
       const { error } = await supabase
         .from('menu_items')
@@ -273,9 +273,9 @@ export function IntegracaoIFood() {
         })
         .eq('id', product.id)
         .eq('profile_id', userId);
-      
+
       if (error) throw error;
-      
+
       setEditingProduct(null);
       await loadSavedProducts();
       setImportMessage('Produto atualizado com sucesso!');
@@ -288,16 +288,16 @@ export function IntegracaoIFood() {
 
   const handleDeleteProduct = async (productId: string) => {
     if (!userId || !confirm('Tem certeza que deseja excluir este produto?')) return;
-    
+
     try {
       const { error } = await supabase
         .from('menu_items')
         .delete()
         .eq('id', productId)
         .eq('profile_id', userId);
-      
+
       if (error) throw error;
-      
+
       await loadSavedProducts();
       setImportMessage('Produto excluído com sucesso!');
       setTimeout(() => setImportMessage(''), 3000);
@@ -316,14 +316,14 @@ export function IntegracaoIFood() {
 
   const loadMenu = async () => {
     if (!merchant) return;
-    
+
     setLoadingMenu(true);
     try {
       const [cats, prods] = await Promise.all([
         getMenuCategories(merchant.id),
         getMenuProducts(merchant.id),
       ]);
-      
+
       setCategories(cats);
       setProducts(prods);
     } catch (error) {
@@ -335,7 +335,7 @@ export function IntegracaoIFood() {
 
   const loadProductComplements = async (product: IFoodProduct) => {
     if (!merchant) return;
-    
+
     setSelectedProduct(product);
     try {
       const groups = await getProductComplements(merchant.id, product.id);
@@ -348,7 +348,7 @@ export function IntegracaoIFood() {
 
   const loadOrders = async () => {
     if (!merchant) return;
-    
+
     setLoadingOrders(true);
     try {
       const result = await getOrdersHistory(
@@ -356,7 +356,7 @@ export function IntegracaoIFood() {
         dateRange.start,
         dateRange.end
       );
-      
+
       setOrders(result.orders);
       setOrdersSummary(calculateOrdersSummary(result.orders));
     } catch (error) {
@@ -374,10 +374,10 @@ export function IntegracaoIFood() {
 
   const handleImportProducts = async () => {
     if (!userId || products.length === 0) return;
-    
+
     setImportingProducts(true);
     setImportMessage('Importando produtos para o sistema...');
-    
+
     try {
       const menuItems = products.map(p => ({
         profile_id: userId,
@@ -410,10 +410,10 @@ export function IntegracaoIFood() {
 
   const handleImportOrders = async () => {
     if (!userId || orders.length === 0) return;
-    
+
     setImportingProducts(true);
     setImportMessage('Importando pedidos para o financeiro...');
-    
+
     try {
       const transactions = orders
         .filter(o => o.status === 'CONCLUDED')
@@ -445,8 +445,8 @@ export function IntegracaoIFood() {
     }
   };
 
-  const filteredProducts = selectedCategory === 'all' 
-    ? products 
+  const filteredProducts = selectedCategory === 'all'
+    ? products
     : products.filter(p => p.categoryId === selectedCategory);
 
   return (
@@ -473,7 +473,7 @@ export function IntegracaoIFood() {
                 Clique no botão abaixo para autorizar o Aequi a acessar os dados da sua loja no iFood.
                 Você será redirecionado para o iFood para fazer login e autorizar o acesso.
               </p>
-              
+
               {connectionStatus === 'error' && connectionMessage && (
                 <div className="mb-4 flex items-center gap-2 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm">
                   <AlertCircle size={18} />
@@ -575,7 +575,7 @@ export function IntegracaoIFood() {
                 Desconectar
               </button>
             </div>
-            
+
             {merchant?.address && Object.keys(merchant.address).length > 0 && (
               <div className="mt-4 pt-4 border-t border-white/20 text-sm text-red-100">
                 <p>{merchant.address.street}, {merchant.address.number} - {merchant.address.neighborhood}</p>
@@ -596,33 +596,30 @@ export function IntegracaoIFood() {
           <div className="flex gap-2 border-b border-slate-200">
             <button
               onClick={() => setActiveTab('cardapio')}
-              className={`px-4 py-2 text-sm font-semibold border-b-2 transition flex items-center gap-2 ${
-                activeTab === 'cardapio'
+              className={`px-4 py-2 text-sm font-semibold border-b-2 transition flex items-center gap-2 ${activeTab === 'cardapio'
                   ? 'border-red-500 text-red-500'
                   : 'border-transparent text-slate-500 hover:text-slate-700'
-              }`}
+                }`}
             >
               <Package size={16} />
               Cardápio iFood
             </button>
             <button
               onClick={() => setActiveTab('produtos')}
-              className={`px-4 py-2 text-sm font-semibold border-b-2 transition flex items-center gap-2 ${
-                activeTab === 'produtos'
+              className={`px-4 py-2 text-sm font-semibold border-b-2 transition flex items-center gap-2 ${activeTab === 'produtos'
                   ? 'border-red-500 text-red-500'
                   : 'border-transparent text-slate-500 hover:text-slate-700'
-              }`}
+                }`}
             >
               <Archive size={16} />
               Produtos Salvos
             </button>
             <button
               onClick={() => setActiveTab('pedidos')}
-              className={`px-4 py-2 text-sm font-semibold border-b-2 transition flex items-center gap-2 ${
-                activeTab === 'pedidos'
+              className={`px-4 py-2 text-sm font-semibold border-b-2 transition flex items-center gap-2 ${activeTab === 'pedidos'
                   ? 'border-red-500 text-red-500'
                   : 'border-transparent text-slate-500 hover:text-slate-700'
-              }`}
+                }`}
             >
               <ShoppingBag size={16} />
               Histórico de Pedidos
@@ -668,11 +665,10 @@ export function IntegracaoIFood() {
               </div>
 
               {importMessage && (
-                <div className={`rounded-xl p-4 text-sm flex items-center gap-2 ${
-                  importMessage.includes('sucesso') 
+                <div className={`rounded-xl p-4 text-sm flex items-center gap-2 ${importMessage.includes('sucesso')
                     ? 'bg-green-50 border border-green-200 text-green-700'
                     : 'bg-red-50 border border-red-200 text-red-700'
-                }`}>
+                  }`}>
                   {importMessage.includes('sucesso') ? <Check size={16} /> : <AlertCircle size={16} />}
                   {importMessage}
                 </div>
@@ -710,7 +706,7 @@ export function IntegracaoIFood() {
                     {loadingMenu ? 'Carregando...' : `${filteredProducts.length} produtos`}
                   </p>
                 </div>
-                
+
                 <div className="divide-y divide-slate-100 max-h-[500px] overflow-y-auto">
                   {loadingMenu ? (
                     <div className="p-8 text-center">
@@ -732,11 +728,10 @@ export function IntegracaoIFood() {
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2">
                               <h4 className="font-semibold text-navy truncate">{product.name}</h4>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${
-                                product.status === 'AVAILABLE' 
-                                  ? 'bg-green-100 text-green-700' 
+                              <span className={`text-xs px-2 py-0.5 rounded-full ${product.status === 'AVAILABLE'
+                                  ? 'bg-green-100 text-green-700'
                                   : 'bg-amber-100 text-amber-700'
-                              }`}>
+                                }`}>
                                 {product.status === 'AVAILABLE' ? 'Ativo' : 'Pausado'}
                               </span>
                             </div>
@@ -847,11 +842,10 @@ export function IntegracaoIFood() {
               </div>
 
               {importMessage && (
-                <div className={`rounded-xl p-4 text-sm flex items-center gap-2 ${
-                  importMessage.includes('sucesso')
+                <div className={`rounded-xl p-4 text-sm flex items-center gap-2 ${importMessage.includes('sucesso')
                     ? 'bg-green-50 border border-green-200 text-green-700'
                     : 'bg-red-50 border border-red-200 text-red-700'
-                }`}>
+                  }`}>
                   {importMessage.includes('sucesso') ? <Check size={16} /> : <AlertCircle size={16} />}
                   {importMessage}
                 </div>
@@ -891,7 +885,7 @@ export function IntegracaoIFood() {
                     {loadingSavedProducts ? 'Carregando...' : `${savedProducts.filter(p => savedProductFilter === 'all' || p.category === savedProductFilter).length} produtos`}
                   </p>
                 </div>
-                
+
                 <div className="divide-y divide-slate-100 max-h-[500px] overflow-y-auto">
                   {loadingSavedProducts ? (
                     <div className="p-8 text-center">
@@ -913,11 +907,10 @@ export function IntegracaoIFood() {
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2">
                                 <h4 className="font-semibold text-navy truncate">{product.name}</h4>
-                                <span className={`text-xs px-2 py-0.5 rounded-full ${
-                                  product.status === 'active' 
-                                    ? 'bg-green-100 text-green-700' 
+                                <span className={`text-xs px-2 py-0.5 rounded-full ${product.status === 'active'
+                                    ? 'bg-green-100 text-green-700'
                                     : 'bg-amber-100 text-amber-700'
-                                }`}>
+                                  }`}>
                                   {product.status === 'active' ? 'Ativo' : 'Pausado'}
                                 </span>
                                 {product.source === 'ifood' && (
@@ -1093,11 +1086,10 @@ export function IntegracaoIFood() {
               </div>
 
               {importMessage && (
-                <div className={`rounded-xl p-4 text-sm flex items-center gap-2 ${
-                  importMessage.includes('sucesso') || importMessage.includes('importados')
+                <div className={`rounded-xl p-4 text-sm flex items-center gap-2 ${importMessage.includes('sucesso') || importMessage.includes('importados')
                     ? 'bg-green-50 border border-green-200 text-green-700'
                     : 'bg-red-50 border border-red-200 text-red-700'
-                }`}>
+                  }`}>
                   {importMessage.includes('sucesso') || importMessage.includes('importados') ? <Check size={16} /> : <AlertCircle size={16} />}
                   {importMessage}
                 </div>
@@ -1141,7 +1133,7 @@ export function IntegracaoIFood() {
                     {loadingOrders ? 'Carregando...' : `${orders.length} pedidos no período`}
                   </p>
                 </div>
-                
+
                 <div className="divide-y divide-slate-100 max-h-[500px] overflow-y-auto">
                   {loadingOrders ? (
                     <div className="p-8 text-center">
@@ -1161,11 +1153,10 @@ export function IntegracaoIFood() {
                       >
                         <div className="flex items-center justify-between gap-4">
                           <div className="flex items-center gap-3">
-                            <div className={`size-10 rounded-full flex items-center justify-center ${
-                              order.status === 'CONCLUDED' 
+                            <div className={`size-10 rounded-full flex items-center justify-center ${order.status === 'CONCLUDED'
                                 ? 'bg-green-100 text-green-600'
                                 : 'bg-red-100 text-red-600'
-                            }`}>
+                              }`}>
                               {order.status === 'CONCLUDED' ? <Check size={18} /> : <X size={18} />}
                             </div>
                             <div>
@@ -1176,11 +1167,10 @@ export function IntegracaoIFood() {
                             </div>
                           </div>
                           <div className="flex items-center gap-4">
-                            <span className={`text-xs px-2 py-1 rounded-full ${
-                              order.type === 'DELIVERY' 
+                            <span className={`text-xs px-2 py-1 rounded-full ${order.type === 'DELIVERY'
                                 ? 'bg-blue-100 text-blue-700'
                                 : 'bg-purple-100 text-purple-700'
-                            }`}>
+                              }`}>
                               {order.type === 'DELIVERY' ? 'Delivery' : 'Retirada'}
                             </span>
                             <p className="font-bold text-navy">{currencyFormatter.format(order.total.order)}</p>
@@ -1213,18 +1203,16 @@ export function IntegracaoIFood() {
                     </div>
                     <div className="p-5 overflow-y-auto max-h-[60vh] space-y-4">
                       <div className="flex gap-2">
-                        <span className={`text-xs px-2 py-1 rounded-full ${
-                          selectedOrder.status === 'CONCLUDED'
+                        <span className={`text-xs px-2 py-1 rounded-full ${selectedOrder.status === 'CONCLUDED'
                             ? 'bg-green-100 text-green-700'
                             : 'bg-red-100 text-red-700'
-                        }`}>
+                          }`}>
                           {selectedOrder.status === 'CONCLUDED' ? 'Concluído' : 'Cancelado'}
                         </span>
-                        <span className={`text-xs px-2 py-1 rounded-full ${
-                          selectedOrder.type === 'DELIVERY'
+                        <span className={`text-xs px-2 py-1 rounded-full ${selectedOrder.type === 'DELIVERY'
                             ? 'bg-blue-100 text-blue-700'
                             : 'bg-purple-100 text-purple-700'
-                        }`}>
+                          }`}>
                           {selectedOrder.type === 'DELIVERY' ? 'Delivery' : 'Retirada'}
                         </span>
                       </div>

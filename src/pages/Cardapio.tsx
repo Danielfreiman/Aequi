@@ -3,15 +3,18 @@ import { supabase } from '../lib/supabaseClient';
 
 type Product = {
   id: string;
-  nome: string;
-  preco_venda: number;
-  categoria: string | null;
-  markup: number | null;
-  custo_fixo: number | null;
+  name: string;
+  price: number;
+  category: string | null;
+  cost: number | null;
 };
 
 const formatCurrency = (value: number) =>
   new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value || 0);
+
+const IFOOD_MARKETPLACE_FEE = 0.23; // 23%
+const IFOOD_ENTREGA_PROPRIA_FEE = 0.12; // 12%
+const IFOOD_FIXED_FEE = 1.30; // Exemplo de taxa fixa transacional
 
 export function Cardapio() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -24,7 +27,7 @@ export function Cardapio() {
       setError(null);
       const { data, error: fetchError } = await supabase
         .from('products')
-        .select('id,nome,preco_venda,categoria,markup,custo_fixo')
+        .select('id,name,price,category,cost')
         .order('created_at', { ascending: false });
 
       if (fetchError) {
@@ -53,15 +56,49 @@ export function Cardapio() {
           <p className="text-sm text-slate-500">{loading ? 'Carregando...' : `${products.length} itens`}</p>
         </div>
         <div className="divide-y divide-slate-100">
-          {products.map((product) => (
-            <div key={product.id} className="grid grid-cols-1 md:grid-cols-5 gap-3 p-4 text-sm">
-              <div className="font-semibold text-navy">{product.nome}</div>
-              <div className="text-slate-500">{product.categoria || 'Sem categoria'}</div>
-              <div className="text-slate-500">Preço: {formatCurrency(product.preco_venda)}</div>
-              <div className="text-slate-500">Markup: {product.markup ? `${(product.markup * 100).toFixed(0)}%` : '--'}</div>
-              <div className="text-slate-500">Custo fixo: {product.custo_fixo ? formatCurrency(product.custo_fixo) : '--'}</div>
-            </div>
-          ))}
+          {products.map((product) => {
+            const markup = product.cost && product.cost > 0
+              ? ((product.price - product.cost) / product.cost)
+              : null;
+
+            // Simulação iFood (23%)
+            const ifoodNetPrice = product.price * (1 - IFOOD_MARKETPLACE_FEE) - IFOOD_FIXED_FEE;
+            const ifoodNetMargin = product.cost && product.cost > 0
+              ? ((ifoodNetPrice - product.cost) / product.cost)
+              : null;
+
+            return (
+              <div key={product.id} className="grid grid-cols-1 md:grid-cols-6 gap-3 p-4 text-sm items-center hover:bg-slate-50 transition">
+                <div className="font-semibold text-navy">{product.name}</div>
+                <div className="text-slate-500">{product.category || 'Sem categoria'}</div>
+                <div className="text-slate-500">
+                  <span className="block text-[10px] font-bold text-slate-400 uppercase">Preço PDV</span>
+                  {formatCurrency(product.price)}
+                </div>
+                <div className="text-slate-500">
+                  <span className="block text-[10px] font-bold text-slate-400 uppercase">Custo</span>
+                  {product.cost ? formatCurrency(product.cost) : '--'}
+                </div>
+                <div className="text-slate-500">
+                  <span className="block text-[10px] font-bold text-slate-400 uppercase">Markup Bruto</span>
+                  <span className={markup && markup < 1 ? 'text-amber-600 font-bold' : ''}>
+                    {markup ? `${(markup * 100).toFixed(0)}%` : '--'}
+                  </span>
+                </div>
+                <div className="bg-red-50 p-2 rounded-lg">
+                  <span className="block text-[10px] font-bold text-red-400 uppercase">iFood (Margem Líquida)</span>
+                  <div className="flex flex-col">
+                    <span className="font-bold text-red-700">
+                      {ifoodNetMargin ? `${(ifoodNetMargin * 100).toFixed(0)}%` : '--'}
+                    </span>
+                    <span className="text-[10px] text-red-500">
+                      Sobra: {ifoodNetPrice > 0 ? formatCurrency(ifoodNetPrice - (product.cost || 0)) : '--'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
           {!loading && products.length === 0 && (
             <div className="p-6 text-sm text-slate-500">Nenhum produto encontrado.</div>
           )}

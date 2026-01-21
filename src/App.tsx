@@ -24,7 +24,19 @@ import { Produtos } from './pages/Produtos.tsx';
 import { useAuthSession } from './hooks/useAuthSession';
 
 const DashboardLayout = () => {
-  const { logout, session } = useAuthSession();
+  const { logout, session, loading } = useAuthSession();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#f7f4ec]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#103826]"></div>
+      </div>
+    );
+  }
+
+  if (!session) {
+    return <Navigate to="/login" replace />;
+  }
 
   return (
     <div className="relative flex h-screen w-full overflow-hidden bg-[#f7f4ec] text-[#0f1720]">
@@ -48,7 +60,7 @@ const DashboardLayout = () => {
                 {session.user?.email}
               </span>
             )}
-            <button 
+            <button
               onClick={logout}
               className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50 rounded-xl transition"
             >

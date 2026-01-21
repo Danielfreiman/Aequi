@@ -146,10 +146,10 @@ export function Operacoes() {
   // Função para aplicar regras de categorização
   const applyRules = (desc: string): string => {
     const descLower = desc.toLowerCase().trim();
-    
+
     for (const rule of categoryRules) {
       const patternLower = rule.pattern.toLowerCase().trim();
-      
+
       let matches = false;
       switch (rule.matchType) {
         case 'equals':
@@ -163,34 +163,34 @@ export function Operacoes() {
           matches = descLower.includes(patternLower);
           break;
       }
-      
+
       if (matches) {
         return rule.category;
       }
     }
-    
+
     return '';
   };
 
   // Parser melhorado para decimais brasileiros
   const parseValue = (valueStr: string): number => {
     if (!valueStr) return 0;
-    
+
     // Remove espaços e caracteres não numéricos exceto vírgula, ponto e sinal
     let cleaned = valueStr.trim();
-    
+
     // Detectar formato brasileiro (1.234,56) vs americano (1,234.56)
     const hasCommaAsDecimal = /\d,\d{2}$/.test(cleaned);
     const hasDotAsThousand = /\d\.\d{3}/.test(cleaned);
-    
+
     if (hasCommaAsDecimal || hasDotAsThousand) {
       // Formato brasileiro: remove pontos de milhar e troca vírgula por ponto
       cleaned = cleaned.replace(/\./g, '').replace(',', '.');
     }
-    
+
     // Remove tudo exceto números, ponto e sinal de menos
     cleaned = cleaned.replace(/[^\d.\-]/g, '');
-    
+
     const value = parseFloat(cleaned);
     return isNaN(value) ? 0 : value;
   };
@@ -199,7 +199,7 @@ export function Operacoes() {
     const rawLines = content.split(/\r?\n/).filter((line) => line.trim());
     const parsed: ExtractLine[] = [];
     const errors: string[] = [];
-    
+
     if (rawLines.length === 0) {
       errors.push('O arquivo está vazio.');
       return { lines: [], errors };
@@ -213,10 +213,10 @@ export function Operacoes() {
     // Detectar separador
     const firstDataLine = rawLines[1] || '';
     const separator = firstDataLine.includes(';') ? ';' : ',';
-    
+
     for (let i = 1; i < rawLines.length; i++) {
       const cols = rawLines[i].split(separator).map(c => c.trim().replace(/"/g, ''));
-      
+
       if (cols.length < 3) {
         const lineError = `Linha ${i + 1}: Formato inválido - esperado pelo menos 3 colunas (data, descrição, valor), encontrado ${cols.length}.`;
         errors.push(lineError);
@@ -225,7 +225,7 @@ export function Operacoes() {
 
       const rawValueStr = cols[2] || '';
       const value = parseValue(rawValueStr);
-      
+
       // Na fatura/extrato:
       // - Valores POSITIVOS = gastos (dinheiro saiu da conta) → importar
       // - Valores NEGATIVOS = recebimentos (dinheiro entrou) → ignorar
@@ -237,7 +237,7 @@ export function Operacoes() {
       const description = cols[1] || 'Sem descrição';
       const dateValue = cols[0] || '';
       let formattedDate = format(new Date(), 'yyyy-MM-dd');
-      
+
       // Tentar parsear a data
       if (dateValue) {
         const dateParts = dateValue.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/);
@@ -250,10 +250,10 @@ export function Operacoes() {
           errors.push(`Linha ${i + 1}: Data inválida "${dateValue}" - usando data atual.`);
         }
       }
-      
+
       // Aplicar regras de categorização
       let category = applyRules(description);
-      
+
       // Se não encontrar regra, usar categoria padrão
       if (!category) {
         category = DEFAULT_CATEGORY;
@@ -270,7 +270,7 @@ export function Operacoes() {
         error: undefined,
       });
     }
-    
+
     return { lines: parsed, errors };
   };
 
@@ -300,12 +300,12 @@ export function Operacoes() {
     try {
       const content = await file.text();
       const { lines, errors } = parseCSV(content);
-      
+
       setExtractLines(lines);
       setImportErrors(errors);
-      
+
       const matchedCount = lines.filter(l => l.matched).length;
-      
+
       if (lines.length === 0) {
         setImportStatus('error');
         setImportMessage('Nenhuma saída (débito) encontrada no arquivo.');
@@ -316,7 +316,7 @@ export function Operacoes() {
         setImportStatus('success');
         setImportMessage(`${lines.length} saídas importadas. ${matchedCount} com regra aplicada, ${lines.length - matchedCount} como CMV.`);
       }
-      
+
       setShowImportModal(true);
     } catch (err) {
       setImportStatus('error');
@@ -331,8 +331,8 @@ export function Operacoes() {
   };
 
   const updateExtractCategory = (id: string, category: string) => {
-    setExtractLines(lines => 
-      lines.map(line => 
+    setExtractLines(lines =>
+      lines.map(line =>
         line.id === id ? { ...line, category, matched: true } : line
       )
     );
@@ -385,7 +385,7 @@ export function Operacoes() {
       }));
 
       setInvoiceItems(items);
-      
+
       // Calcula total
       const total = extractLines.reduce((sum, l) => sum + l.value, 0);
       setValue(total.toString());
@@ -394,7 +394,7 @@ export function Operacoes() {
 
       setImportStatus('success');
       setImportMessage(`${extractLines.length} itens adicionados à fatura. Total: ${currencyFormatter.format(total)}`);
-      
+
       setTimeout(() => {
         setShowImportModal(false);
         setExtractLines([]);
@@ -441,7 +441,9 @@ export function Operacoes() {
         value: subtotal,
         date: format(targetDate, 'yyyy-MM-dd'),
         is_paid: isPaid,
-        items: useInvoice ? invoiceItems : undefined,
+        // userId: session?.user?.id, // REMOVIDO: Usar profile_id
+        profile_id: profileId,
+        items: useInvoice ? invoiceItems : null,
       };
     });
     return rows;
@@ -471,8 +473,9 @@ export function Operacoes() {
       setValue('');
       setInvoiceItems([]);
       setUseInvoice(false);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro ao salvar operação.');
+    } catch (err: any) {
+      console.error('Erro ao salvar:', err);
+      setError(err?.message || err?.details || 'Erro ao salvar operação.');
     } finally {
       setLoading(false);
     }
@@ -489,14 +492,14 @@ export function Operacoes() {
   // Funções para gerenciar regras
   const handleAddRule = () => {
     if (!newRulePattern.trim()) return;
-    
+
     const newRule: CategoryRule = {
       id: crypto.randomUUID(),
       pattern: newRulePattern.trim(),
       category: newRuleCategory,
       matchType: newRuleMatchType,
     };
-    
+
     const updatedRules = [...categoryRules, newRule];
     saveRules(updatedRules);
     setNewRulePattern('');
@@ -522,21 +525,19 @@ export function Operacoes() {
       <div className="flex gap-2 border-b border-slate-200">
         <button
           onClick={() => setActiveTab('lancamento')}
-          className={`px-4 py-2 text-sm font-semibold border-b-2 transition ${
-            activeTab === 'lancamento'
-              ? 'border-primary text-primary'
-              : 'border-transparent text-slate-500 hover:text-slate-700'
-          }`}
+          className={`px-4 py-2 text-sm font-semibold border-b-2 transition ${activeTab === 'lancamento'
+            ? 'border-primary text-primary'
+            : 'border-transparent text-slate-500 hover:text-slate-700'
+            }`}
         >
           Lançamento
         </button>
         <button
           onClick={() => setActiveTab('regras')}
-          className={`px-4 py-2 text-sm font-semibold border-b-2 transition flex items-center gap-2 ${
-            activeTab === 'regras'
-              ? 'border-primary text-primary'
-              : 'border-transparent text-slate-500 hover:text-slate-700'
-          }`}
+          className={`px-4 py-2 text-sm font-semibold border-b-2 transition flex items-center gap-2 ${activeTab === 'regras'
+            ? 'border-primary text-primary'
+            : 'border-transparent text-slate-500 hover:text-slate-700'
+            }`}
         >
           <Settings size={16} />
           Regras de Categorização
@@ -688,11 +689,10 @@ export function Operacoes() {
                     </div>
 
                     <div
-                      className={`rounded-xl border-2 border-dashed p-4 text-center transition cursor-pointer ${
-                        dragActive 
-                          ? 'border-primary bg-primary/5' 
-                          : 'border-slate-200 bg-slate-50 hover:border-slate-300'
-                      }`}
+                      className={`rounded-xl border-2 border-dashed p-4 text-center transition cursor-pointer ${dragActive
+                        ? 'border-primary bg-primary/5'
+                        : 'border-slate-200 bg-slate-50 hover:border-slate-300'
+                        }`}
                       onDragEnter={handleDrag}
                       onDragLeave={handleDrag}
                       onDragOver={handleDrag}
@@ -793,7 +793,7 @@ export function Operacoes() {
             <p className="text-sm text-slate-500 mb-4">
               Defina padrões para categorizar automaticamente as transações importadas.
             </p>
-            
+
             <div className="grid md:grid-cols-4 gap-4 items-end">
               <div className="flex flex-col gap-1">
                 <label className="text-xs font-semibold text-slate-600">Quando a descrição</label>
@@ -844,7 +844,7 @@ export function Operacoes() {
               <h3 className="text-lg font-bold text-navy">Regras ativas</h3>
               <p className="text-sm text-slate-500">{categoryRules.length} regras configuradas</p>
             </div>
-            
+
             {categoryRules.length === 0 ? (
               <div className="p-8 text-center text-slate-400">
                 <Settings size={48} className="mx-auto mb-3 opacity-30" />
@@ -900,12 +900,11 @@ export function Operacoes() {
 
             {/* Status */}
             {importStatus !== 'idle' && (
-              <div className={`mx-6 mt-4 rounded-xl p-4 ${
-                importStatus === 'loading' ? 'bg-blue-50 border border-blue-200 text-blue-700' :
+              <div className={`mx-6 mt-4 rounded-xl p-4 ${importStatus === 'loading' ? 'bg-blue-50 border border-blue-200 text-blue-700' :
                 importStatus === 'success' ? 'bg-green-50 border border-green-200 text-green-700' :
-                importStatus === 'validation' ? 'bg-amber-50 border border-amber-200 text-amber-700' :
-                'bg-red-50 border border-red-200 text-red-700'
-              }`}>
+                  importStatus === 'validation' ? 'bg-amber-50 border border-amber-200 text-amber-700' :
+                    'bg-red-50 border border-red-200 text-red-700'
+                }`}>
                 <div className="flex items-center gap-2">
                   {importStatus === 'loading' && <RefreshCw size={18} className="animate-spin" />}
                   {importStatus === 'success' && <Check size={18} />}
@@ -982,11 +981,10 @@ export function Operacoes() {
                           <select
                             value={line.category}
                             onChange={(e) => updateExtractCategory(line.id, e.target.value)}
-                            className={`w-full px-2 py-1 rounded-lg border text-sm ${
-                              line.matched 
-                                ? 'border-green-200 bg-green-50 text-green-700' 
-                                : 'border-amber-300 bg-amber-50 text-amber-700'
-                            }`}
+                            className={`w-full px-2 py-1 rounded-lg border text-sm ${line.matched
+                              ? 'border-green-200 bg-green-50 text-green-700'
+                              : 'border-amber-300 bg-amber-50 text-amber-700'
+                              }`}
                           >
                             {categories.map(cat => (
                               <option key={cat.id} value={cat.name}>{cat.name}</option>

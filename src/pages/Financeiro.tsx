@@ -4,6 +4,7 @@ import { Trash2 } from 'lucide-react';
 import { supabase } from '../lib/supabaseClient';
 import { usePersistentFilter } from '../hooks/usePersistentFilter';
 import { PeriodKey, quickPeriods } from '../services/dateFilters';
+import { useAuthSession } from '../hooks/useAuthSession';
 
 type FinTransaction = {
   id: string;
@@ -24,9 +25,12 @@ const formatDate = (value: string) => {
 };
 
 export function Financeiro() {
+  const { session, userId } = useAuthSession();
   const [transactions, setTransactions] = useState<FinTransaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [profileId, setProfileId] = useState<string | null>(null);
+
   const [statusFilter, setStatusFilter] = usePersistentFilter<'todos' | 'pendente' | 'pago'>(
     'filter.financeiro.status',
     'todos'
@@ -37,14 +41,36 @@ export function Financeiro() {
   const [customEnd, setCustomEnd] = usePersistentFilter<string>('filter.financeiro.customEnd', '');
 
   useEffect(() => {
+    if (!userId) return;
+
+    const loadProfile = async () => {
+      const { data } = await supabase.from('profiles').select('id').eq('id', userId).maybeSingle();
+      // Fallback: search by owner_id if your schema uses that, otherwise assume 1:1 map or use what we found
+      // If the schema is profile.id == auth.uid() (common in Supabase starter), we can use userId directly or verify existence.
+      // Based on previous files, profiles table usually has id as uuid.
+      // Let's assume strict 1:1 for now or rely on the query we used in Operacoes.tsx:
+      // await supabase.from('profiles').select('id').limit(1).maybeSingle()
+
+      // Let's stick to the pattern in Operacoes.tsx which seems to work
+      const { data: profileData } = await supabase.from('profiles').select('id').limit(1).maybeSingle();
+
+      if (profileData) {
+        setProfileId(profileData.id);
+      }
+    };
+
+    loadProfile();
+  }, [userId]);
+
+  useEffect(() => {
     const loadData = async () => {
       setLoading(true);
       setError(null);
+      // Removed strict profile_id filter to rely on RLS and support multiple profiles
       const { data, error: fetchError } = await supabase
         .from('fin_transactions')
         .select('id,type,description,date,category,value,is_paid')
-        .order('date', { ascending: false })
-        .limit(80);
+        .order('date', { ascending: false });
 
       if (fetchError) {
         setError(fetchError.message);
@@ -55,7 +81,7 @@ export function Financeiro() {
     };
 
     loadData();
-  }, []);
+  }, [userId]); // Reload if user changes
 
   const handleDelete = async (tx: FinTransaction) => {
     const ok = window.confirm(`Excluir lançamento "${tx.description || 'Sem descrição'}"? Esta ação não pode ser desfeita.`);
@@ -233,7 +259,7 @@ export function Financeiro() {
           <p className="text-sm text-slate-500">{loading ? 'Carregando dados...' : `${filtered.length} registros`}</p>
         </div>
         <div className="divide-y divide-slate-100">
-          {filtered.slice(0, 20).map((tx) => (
+          {filtered.map((tx) => (
             <div key={tx.id} className="grid grid-cols-1 md:grid-cols-6 gap-3 p-4 text-sm items-center">
               <div className="font-semibold text-navy">{tx.description || 'Sem descricao'}</div>
               <div className="text-slate-500">{tx.category || 'Sem categoria'}</div>

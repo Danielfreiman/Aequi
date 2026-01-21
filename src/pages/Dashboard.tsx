@@ -44,6 +44,7 @@ type Product = {
 };
 
 type Profile = {
+  id: string;
   nome_restaurante: string;
   owner_name: string;
 };
@@ -119,29 +120,39 @@ export function Dashboard() {
     const loadData = async () => {
       setLoading(true);
 
-      const [{ data: txData }, { data: profileData }, { data: productsData }] = await Promise.all([
+      // Fetch all data in parallel
+      const [{ data: txData, error: txError }, { data: productsData, error: prodError }, { data: profileData }] = await Promise.all([
         supabase
           .from('fin_transactions')
           .select('id,type,description,value,date,is_paid,category,items')
           .order('date', { ascending: false }),
         supabase
-          .from('profiles')
-          .select('nome_restaurante,owner_name')
-          .limit(1)
-          .maybeSingle(),
-        supabase
           .from('products')
           .select('id,name,product_type,price,cost,category,is_active')
           .eq('is_active', true),
+        supabase
+          .from('profiles')
+          .select('id, nome_restaurante, owner_name')
+          .limit(1)
+          .maybeSingle(),
       ]);
 
+      if (txError) console.error('Error fetching transactions:', txError);
+      if (prodError) console.error('Error fetching products:', prodError);
+
       setTransactions(txData || []);
-      setProfile(profileData);
       setProducts(productsData || []);
+
+      if (profileData) {
+        setProfile(profileData);
+      }
+
       setLoading(false);
     };
 
-    loadData();
+    if (session) { // Load if session exists
+      loadData();
+    }
   }, [userId]);
 
   const { start, end } = getPeriodDates(period);
@@ -302,8 +313,8 @@ export function Dashboard() {
               key={p}
               onClick={() => setPeriod(p)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${period === p
-                  ? 'bg-primary text-white shadow'
-                  : 'text-slate-600 hover:bg-slate-100'
+                ? 'bg-primary text-white shadow'
+                : 'text-slate-600 hover:bg-slate-100'
                 }`}
             >
               {PERIOD_LABELS[p]}

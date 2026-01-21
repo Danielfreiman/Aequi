@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
-import { Plus, Pencil, Trash2, Search, X, Save, Package, Layers, Box, Cookie } from 'lucide-react';
+import { Plus, Pencil, Trash2, Search, X, Save, Package, Layers, Box, Cookie, History } from 'lucide-react';
+import { useAuthSession } from '../hooks/useAuthSession';
 
 type ProductType = 'ingredient' | 'final' | 'complement';
 
@@ -18,6 +19,14 @@ type Product = {
   pdv_code: string | null;
   ifood_code: string | null;
   is_active: boolean;
+  user_id?: string;
+  created_at: string;
+};
+
+type CostHistory = {
+  id: string;
+  product_id: string;
+  cost: number;
   created_at: string;
 };
 
@@ -50,6 +59,7 @@ const UNITS = [
 ];
 
 export function Produtos() {
+  const { session } = useAuthSession();
   const [products, setProducts] = useState<Product[]>([]);
   const [compositions, setCompositions] = useState<Composition[]>([]);
   const [loading, setLoading] = useState(true);
@@ -61,6 +71,11 @@ export function Produtos() {
   const [showModal, setShowModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [saving, setSaving] = useState(false);
+
+  // Histórico de custo
+  const [showHistory, setShowHistory] = useState(false);
+  const [costHistory, setCostHistory] = useState<CostHistory[]>([]);
+  const [loadingHistory, setLoadingHistory] = useState(false);
 
   // Composição do produto
   const [editCompositions, setEditCompositions] = useState<{ ingredient_id: string; quantity: string; unit: string }[]>([]);
@@ -88,7 +103,7 @@ export function Produtos() {
   const loadProducts = async () => {
     setLoading(true);
     setError(null);
-    
+
     const { data, error: fetchError } = await supabase
       .from('products')
       .select('*')
@@ -197,10 +212,35 @@ export function Produtos() {
     setShowModal(true);
   };
 
+  const fetchHistory = async (productId: string) => {
+    setLoadingHistory(true);
+    const { data, error: histError } = await supabase
+      .from('product_cost_history')
+      .select('*')
+      .eq('product_id', productId)
+      .order('created_at', { ascending: false });
+
+    if (histError) {
+      setError(histError.message);
+    } else {
+      setCostHistory(data || []);
+    }
+    setLoadingHistory(false);
+  };
+
+  const toggleHistory = () => {
+    if (!showHistory && editingProduct) {
+      fetchHistory(editingProduct.id);
+    }
+    setShowHistory(!showHistory);
+  };
+
   const closeModal = () => {
     setShowModal(false);
     setEditingProduct(null);
     setEditCompositions([]);
+    setShowHistory(false);
+    setCostHistory([]);
   };
 
   const addCompositionRow = () => {
@@ -260,7 +300,7 @@ export function Produtos() {
         if (formData.product_type === 'final') {
           // Deletar composições antigas
           await supabase.from('product_compositions').delete().eq('product_id', editingProduct.id);
-          
+
           // Inserir novas
           if (editCompositions.length > 0) {
             const validComps = editCompositions.filter((c) => c.ingredient_id && c.quantity);
@@ -278,14 +318,32 @@ export function Produtos() {
         }
 
         setSuccess('Produto atualizado com sucesso!');
+
+        // Gravar histórico se o custo mudou
+        if (finalCost !== editingProduct.cost) {
+          await supabase.from('product_cost_history').insert({
+            product_id: editingProduct.id,
+            cost: finalCost,
+            user_id: session?.user?.id
+          });
+        }
       } else {
         const { data: newProduct, error: insertError } = await supabase
           .from('products')
-          .insert(payload)
+          .insert({ ...payload, user_id: session?.user?.id })
           .select()
           .single();
 
         if (insertError) throw insertError;
+
+        // Gravar histórico inicial
+        if (newProduct.cost !== null) {
+          await supabase.from('product_cost_history').insert({
+            product_id: newProduct.id,
+            cost: newProduct.cost,
+            user_id: session?.user?.id
+          });
+        }
 
         // Inserir composições
         if (formData.product_type === 'final' && editCompositions.length > 0) {
@@ -381,33 +439,30 @@ export function Produtos() {
       <div className="flex gap-2 border-b border-slate-200">
         <button
           onClick={() => setActiveTab('final')}
-          className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold border-b-2 transition ${
-            activeTab === 'final'
-              ? 'border-primary text-primary'
-              : 'border-transparent text-slate-500 hover:text-slate-700'
-          }`}
+          className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold border-b-2 transition ${activeTab === 'final'
+            ? 'border-primary text-primary'
+            : 'border-transparent text-slate-500 hover:text-slate-700'
+            }`}
         >
           <Package size={18} />
           Produtos Finais
         </button>
         <button
           onClick={() => setActiveTab('ingredient')}
-          className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold border-b-2 transition ${
-            activeTab === 'ingredient'
-              ? 'border-primary text-primary'
-              : 'border-transparent text-slate-500 hover:text-slate-700'
-          }`}
+          className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold border-b-2 transition ${activeTab === 'ingredient'
+            ? 'border-primary text-primary'
+            : 'border-transparent text-slate-500 hover:text-slate-700'
+            }`}
         >
           <Box size={18} />
           Ingredientes
         </button>
         <button
           onClick={() => setActiveTab('complement')}
-          className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold border-b-2 transition ${
-            activeTab === 'complement'
-              ? 'border-primary text-primary'
-              : 'border-transparent text-slate-500 hover:text-slate-700'
-          }`}
+          className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold border-b-2 transition ${activeTab === 'complement'
+            ? 'border-primary text-primary'
+            : 'border-transparent text-slate-500 hover:text-slate-700'
+            }`}
         >
           <Cookie size={18} />
           Complementos
@@ -548,7 +603,7 @@ export function Produtos() {
                       )}
                     </td>
                     <td className="px-4 py-3 text-right font-semibold text-navy">
-                      {activeTab === 'ingredient' 
+                      {activeTab === 'ingredient'
                         ? (product.cost ? formatCurrency(product.cost) : '-')
                         : formatCurrency(product.price)
                       }
@@ -559,11 +614,10 @@ export function Produtos() {
                     <td className="px-4 py-3 text-center">
                       <button
                         onClick={() => toggleActive(product)}
-                        className={`px-2 py-1 rounded-lg text-xs font-semibold ${
-                          product.is_active
-                            ? 'bg-green-50 text-green-700'
-                            : 'bg-slate-100 text-slate-500'
-                        }`}
+                        className={`px-2 py-1 rounded-lg text-xs font-semibold ${product.is_active
+                          ? 'bg-green-50 text-green-700'
+                          : 'bg-slate-100 text-slate-500'
+                          }`}
                       >
                         {product.is_active ? 'Ativo' : 'Inativo'}
                       </button>
@@ -625,11 +679,10 @@ export function Produtos() {
                         key={type}
                         type="button"
                         onClick={() => setFormData((prev) => ({ ...prev, product_type: type }))}
-                        className={`flex-1 px-3 py-2 rounded-lg text-sm font-semibold border transition ${
-                          formData.product_type === type
-                            ? 'bg-primary text-white border-primary'
-                            : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300'
-                        }`}
+                        className={`flex-1 px-3 py-2 rounded-lg text-sm font-semibold border transition ${formData.product_type === type
+                          ? 'bg-primary text-white border-primary'
+                          : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300'
+                          }`}
                       >
                         {PRODUCT_TYPE_LABELS[type]}
                       </button>
@@ -665,9 +718,21 @@ export function Produtos() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-600 mb-1">
-                    {formData.product_type === 'ingredient' ? 'Custo por unidade' : 'Preço de Venda'}
-                  </label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-xs font-semibold text-slate-600">
+                      {formData.product_type === 'ingredient' ? 'Custo por unidade' : 'Preço de Venda'}
+                    </label>
+                    {editingProduct && (
+                      <button
+                        type="button"
+                        onClick={toggleHistory}
+                        className="text-[10px] font-bold text-primary hover:underline flex items-center gap-1"
+                      >
+                        <History size={12} />
+                        {showHistory ? 'Ocultar Histórico' : 'Ver Histórico'}
+                      </button>
+                    )}
+                  </div>
                   <input
                     type="number"
                     step="0.01"
@@ -755,6 +820,31 @@ export function Produtos() {
                   ))}
                 </datalist>
               </div>
+
+              {/* Histórico de Custo */}
+              {showHistory && (
+                <div className="border border-primary/20 bg-primary/5 rounded-xl p-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                  <div className="flex items-center gap-2 mb-3">
+                    <History size={16} className="text-primary" />
+                    <span className="text-sm font-bold text-navy">Histórico de Alterações de Custo</span>
+                  </div>
+
+                  {loadingHistory ? (
+                    <div className="py-4 text-center text-xs text-slate-500">Carregando histórico...</div>
+                  ) : costHistory.length === 0 ? (
+                    <div className="py-4 text-center text-xs text-slate-500">Nenhum registro de histórico encontrado.</div>
+                  ) : (
+                    <div className="max-h-40 overflow-y-auto space-y-2 pr-2 custom-scrollbar">
+                      {costHistory.map((h) => (
+                        <div key={h.id} className="flex items-center justify-between text-xs py-2 border-b border-navy/10 last:border-0">
+                          <span className="font-medium text-navy">{formatCurrency(h.cost)}</span>
+                          <span className="text-slate-500">{new Date(h.created_at).toLocaleString('pt-BR')}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Composição (apenas para produtos finais) */}
               {formData.product_type === 'final' && (
