@@ -212,8 +212,25 @@ export function IntegracaoIFood() {
         const smoke = await fetch('/api/ifood/smoke');
         const smokeData = await smoke.json();
 
+
         if (smokeData.ok && smokeData.merchants?.[0]) {
-          setMerchant(smokeData.merchants[0]);
+          const m = smokeData.merchants[0];
+          setMerchant(m);
+
+          // PERSISTÊNCIA: Salva a conexão ativa no banco de dados para o usuário
+          if (userId) {
+            await supabase.from('ifood_connections').upsert({
+              profile_id: userId,
+              merchant_id: m.id,
+              merchant_name: m.name,
+              corporate_name: m.corporateName,
+              cnpj: m.cnpj,
+              status: 'active',
+              address: m.address,
+              updated_at: new Date().toISOString()
+            }, { onConflict: 'profile_id' });
+          }
+
         } else {
           // If smoke failed but token ok, still technically connected but maybe no merchants
           setConnectionMessage('Token OK, mas falha ao listar lojas.');
@@ -229,24 +246,35 @@ export function IntegracaoIFood() {
     }
   };
 
+
   // Inicia o fluxo - agora apenas verifica o backend
   const handleConnect = () => {
     checkConnection();
   };
 
+
   const handleDisconnect = async () => {
-    // In centralized mode, "disconnect" mostly means clearing local UI state, 
-    // since the server still has the env vars. 
-    // We could optionally call an endpoint to clear cache, but for UI:
-    setMerchant(null);
-    setAccessToken(null);
-    setConnectionStatus('idle');
-    setConnectionMessage('Desconectado da visualização.');
-    setCategories([]);
-    setProducts([]);
-    setOrders([]);
-    setOrdersSummary(null);
+    try {
+      if (userId) {
+        await supabase
+          .from('ifood_connections')
+          .update({ status: 'inactive', updated_at: new Date().toISOString() })
+          .eq('profile_id', userId);
+      }
+
+      setMerchant(null);
+      setAccessToken(null);
+      setConnectionStatus('idle');
+      setConnectionMessage('Integração desativada.');
+      setCategories([]);
+      setProducts([]);
+      setOrders([]);
+      setOrdersSummary(null);
+    } catch (error) {
+      console.error('Erro ao desconectar:', error);
+    }
   };
+
 
 
   // Funções para produtos salvos (aba Produtos)
