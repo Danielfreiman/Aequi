@@ -35,6 +35,7 @@ BEGIN
 END $$;
 
 -- 4. Fix view_ifood_cmv_analysis to work with store_id and global products
+DROP VIEW IF EXISTS public.view_ifood_cmv_analysis;
 CREATE OR REPLACE VIEW public.view_ifood_cmv_analysis AS
 SELECT 
     io.store_id,
