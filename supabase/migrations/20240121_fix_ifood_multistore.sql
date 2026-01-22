@@ -27,6 +27,13 @@ BEGIN
     END IF;
     
     IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'ifood_order_items_order_item_unique') THEN
+        -- Cleanup duplicates before adding constraint
+        DELETE FROM public.ifood_order_items a
+        USING public.ifood_order_items b
+        WHERE a.id < b.id 
+          AND a.order_id = b.order_id 
+          AND a.external_id = b.external_id;
+
         ALTER TABLE public.ifood_order_items ADD CONSTRAINT ifood_order_items_order_item_unique UNIQUE(order_id, external_id);
     END IF;
 END $$;
