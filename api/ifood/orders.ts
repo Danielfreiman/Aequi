@@ -98,6 +98,8 @@ function generateMockOrders(merchantId: string, startDate: string, endDate: stri
           quantity: 1,
           unitPrice: itemsAmount,
           totalPrice: itemsAmount,
+          fees: Number((itemsAmount * 0.12).toFixed(2)),
+          netValue: Number((itemsAmount * 0.88).toFixed(2)),
         }
       ]
     });

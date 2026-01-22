@@ -20,6 +20,11 @@ interface Order {
     order_status: string;
     customer_name: string;
     total_amount: number;
+    delivery_fee: number;
+    items_amount: number;
+    discounts: number;
+    fees: number;
+    net_amount: number;
     order_timestamp: string;
 }
 
@@ -270,10 +275,14 @@ export function Pedidos() {
                                 ) : (
                                     <ul className="divide-y divide-slate-100">
                                         {orderItems.map((item: any) => (
-                                            <li key={item.id} className="py-3 flex justify-between">
-                                                <div>
+                                            <li key={item.id} className="py-3 flex justify-between items-start">
+                                                <div className="flex-1">
                                                     <p className="font-medium text-navy">{item.quantity}x {item.name}</p>
                                                     {item.observations && <p className="text-xs text-slate-500">Obs: {item.observations}</p>}
+                                                    <div className="flex items-center gap-2 mt-0.5">
+                                                        <span className="text-[10px] text-red-500 font-bold">Taxa: - {currencyFormatter.format(item.fees || 0)}</span>
+                                                        <span className="text-[10px] text-green-600 font-black">Net: {currencyFormatter.format(item.net_amount || item.total_price)}</span>
+                                                    </div>
                                                 </div>
                                                 <p className="font-medium text-slate-700">{currencyFormatter.format(item.total_price)}</p>
                                             </li>
@@ -292,15 +301,27 @@ export function Pedidos() {
                                     <span>Itens</span>
                                     <span>{currencyFormatter.format(selectedOrder.items_amount || 0)}</span>
                                 </div>
+                                {selectedOrder.fees > 0 && (
+                                    <div className="flex justify-between text-red-500">
+                                        <span>Comissão iFood</span>
+                                        <span>- {currencyFormatter.format(selectedOrder.fees)}</span>
+                                    </div>
+                                )}
                                 {selectedOrder.discounts > 0 && (
                                     <div className="flex justify-between text-green-600">
                                         <span>Descontos</span>
                                         <span>- {currencyFormatter.format(selectedOrder.discounts)}</span>
                                     </div>
                                 )}
-                                <div className="pt-2 border-t border-slate-200 flex justify-between font-bold text-navy text-lg">
-                                    <span>Total</span>
-                                    <span>{currencyFormatter.format(selectedOrder.total_amount)}</span>
+                                <div className="pt-2 border-t border-slate-200">
+                                    <div className="flex justify-between font-bold text-navy text-lg">
+                                        <span>Total</span>
+                                        <span>{currencyFormatter.format(selectedOrder.total_amount)}</span>
+                                    </div>
+                                    <div className="flex justify-between text-green-600 font-black text-xs uppercase tracking-wider mt-1">
+                                        <span>Recebimento Líquido</span>
+                                        <span>{currencyFormatter.format(selectedOrder.net_amount || selectedOrder.total_amount)}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>

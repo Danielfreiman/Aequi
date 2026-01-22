@@ -527,6 +527,12 @@ export function Produtos() {
                 <th className="text-right px-4 py-3 font-semibold text-slate-600">
                   {activeTab === 'ingredient' ? 'Custo/Un' : 'Preço'}
                 </th>
+                {activeTab === 'final' && (
+                  <>
+                    <th className="text-right px-4 py-3 font-semibold text-slate-600">Taxa iFood</th>
+                    <th className="text-right px-4 py-3 font-semibold text-slate-600">Líquido</th>
+                  </>
+                )}
                 <th className="text-right px-4 py-3 font-semibold text-slate-600">Custo</th>
                 <th className="text-center px-4 py-3 font-semibold text-slate-600">Status</th>
                 <th className="text-right px-4 py-3 font-semibold text-slate-600">Ações</th>
@@ -608,6 +614,16 @@ export function Produtos() {
                         : formatCurrency(product.price)
                       }
                     </td>
+                    {activeTab === 'final' && (
+                      <>
+                        <td className="px-4 py-3 text-right text-red-500 font-medium">
+                          {product.ifood_code ? formatCurrency(product.price * 0.12) : '-'}
+                        </td>
+                        <td className="px-4 py-3 text-right text-green-600 font-bold">
+                          {product.ifood_code ? formatCurrency(product.price * 0.88) : formatCurrency(product.price)}
+                        </td>
+                      </>
+                    )}
                     <td className="px-4 py-3 text-right text-slate-600">
                       {product.cost ? formatCurrency(product.cost) : '-'}
                     </td>
@@ -645,7 +661,7 @@ export function Produtos() {
               })}
               {!loading && filteredProducts.length === 0 && (
                 <tr>
-                  <td colSpan={activeTab === 'final' ? 9 : 8} className="px-4 py-8 text-center text-slate-500">
+                  <td colSpan={activeTab === 'final' ? 11 : 8} className="px-4 py-8 text-center text-slate-500">
                     Nenhum item encontrado.
                   </td>
                 </tr>
@@ -793,6 +809,30 @@ export function Produtos() {
                       className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm disabled:bg-slate-50"
                       placeholder="0.00"
                     />
+                  </div>
+                </div>
+              )}
+
+              {formData.product_type === 'final' && formData.ifood_code && formData.price && (
+                <div className="p-4 bg-slate-50 rounded-xl border border-slate-100 flex justify-between items-center animate-in fade-in slide-in-from-top-1">
+                  <div>
+                    <p className="text-[10px] text-slate-500 font-bold uppercase">Projeção iFood (12%)</p>
+                    <div className="flex gap-4 mt-1">
+                      <div>
+                        <p className="text-[9px] text-slate-400">Taxa</p>
+                        <p className="text-sm font-bold text-red-500">- {formatCurrency(parseFloat(formData.price) * 0.12)}</p>
+                      </div>
+                      <div>
+                        <p className="text-[9px] text-slate-400">Receb. Líquido</p>
+                        <p className="text-sm font-black text-green-600">{formatCurrency(parseFloat(formData.price) * 0.88)}</p>
+                      </div>
+                      <div>
+                        <p className="text-[9px] text-slate-400">Margem Bruta</p>
+                        <p className="text-sm font-black text-primary">
+                          {formatCurrency((parseFloat(formData.price) * 0.88) - (parseFloat(calculatedCost?.toString() || formData.cost || '0')))}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}

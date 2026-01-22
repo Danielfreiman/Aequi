@@ -457,14 +457,50 @@ function IntegracaoDetail({ store }: { store: any }) {
         profile_id: store.profile_id,
         ifood_order_id: o.id,
         short_code: o.shortCode,
+        order_type: o.type,
         order_status: o.status,
         customer_name: o.customer.name,
         total_amount: o.total.order,
+        delivery_fee: o.total.deliveryFee || 0,
+        items_amount: o.total.items || 0,
+        discounts: o.total.discount || 0,
         fees: o.total.fees || 0,
         net_amount: o.total.netValue || o.total.order,
         order_timestamp: o.createdAt
       }));
-      await supabase.from('ifood_orders').upsert(ordersToSave, { onConflict: 'store_id,ifood_order_id' });
+      const { data: savedOrders, error: ordersError } = await supabase
+        .from('ifood_orders')
+        .upsert(ordersToSave, { onConflict: 'store_id,ifood_order_id' })
+        .select();
+
+      if (ordersError) throw ordersError;
+
+      // 3. Save Order Items
+      if (savedOrders) {
+        const itemsToSave: any[] = [];
+        orders.forEach(o => {
+          const dbOrder = savedOrders.find(so => so.ifood_order_id === o.id);
+          if (dbOrder) {
+            o.items.forEach((item: any) => {
+              itemsToSave.push({
+                order_id: dbOrder.id,
+                external_id: item.id,
+                name: item.name,
+                quantity: item.quantity,
+                unit_price: item.unitPrice,
+                total_price: item.totalPrice,
+                fees: item.fees || (item.totalPrice * 0.12), // Fallback to 12%
+                net_amount: item.netValue || (item.totalPrice * 0.88),
+                observations: item.observations
+              });
+            });
+          }
+        });
+
+        if (itemsToSave.length > 0) {
+          await supabase.from('ifood_order_items').upsert(itemsToSave, { onConflict: 'order_id,external_id' });
+        }
+      }
 
       const transactions = orders.filter(o => o.status === 'CONCLUDED').map(o => ({
         store_id: storeId,
