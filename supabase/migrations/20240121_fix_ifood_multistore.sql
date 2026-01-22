@@ -15,6 +15,8 @@ END $$;
 -- 2. Ensure store_id expansion for isolation
 ALTER TABLE public.menu_items ADD COLUMN IF NOT EXISTS store_id UUID REFERENCES public.stores(id) ON DELETE CASCADE;
 ALTER TABLE public.ifood_orders ADD COLUMN IF NOT EXISTS store_id UUID REFERENCES public.stores(id) ON DELETE CASCADE;
+ALTER TABLE public.ifood_orders ADD COLUMN IF NOT EXISTS fees DECIMAL(12,2) DEFAULT 0;
+ALTER TABLE public.ifood_orders ADD COLUMN IF NOT EXISTS net_amount DECIMAL(12,2) DEFAULT 0;
 ALTER TABLE public.fin_transactions ADD COLUMN IF NOT EXISTS store_id UUID REFERENCES public.stores(id) ON DELETE CASCADE;
 
 -- 3. Fix constraints for menu_items and ifood_orders to use store_id

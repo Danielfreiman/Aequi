@@ -70,6 +70,8 @@ function generateMockOrders(merchantId: string, startDate: string, endDate: stri
     const orderDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
     const total = 50 + Math.random() * 200;
     const itemsAmount = Number((total * 0.8).toFixed(2));
+    const fees = Number((total * 0.12).toFixed(2));
+    const netValue = Number((total - fees).toFixed(2));
 
     orders.push({
       id: `order-${suffix}-${i}`,
@@ -82,7 +84,9 @@ function generateMockOrders(merchantId: string, startDate: string, endDate: stri
         items: itemsAmount,
         deliveryFee: Number((total * 0.1).toFixed(2)),
         discount: 0,
-        additionalFees: 0
+        additionalFees: 0,
+        fees,
+        netValue
       },
       customer: {
         name: `Cliente iFood Loja ${suffix}`,

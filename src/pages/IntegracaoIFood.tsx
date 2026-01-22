@@ -460,6 +460,8 @@ function IntegracaoDetail({ store }: { store: any }) {
         order_status: o.status,
         customer_name: o.customer.name,
         total_amount: o.total.order,
+        fees: o.total.fees || 0,
+        net_amount: o.total.netValue || o.total.order,
         order_timestamp: o.createdAt
       }));
       await supabase.from('ifood_orders').upsert(ordersToSave, { onConflict: 'store_id,ifood_order_id' });
@@ -468,7 +470,7 @@ function IntegracaoDetail({ store }: { store: any }) {
         store_id: storeId,
         date: o.createdAt.split('T')[0],
         description: `Pedido iFood #${o.shortCode}`,
-        value: o.total.order,
+        value: o.total.netValue || o.total.order,
         type: 'Receita',
         category: 'Vendas iFood',
         is_paid: true,
@@ -679,7 +681,11 @@ function IntegracaoDetail({ store }: { store: any }) {
                         </div>
                         <div className="text-right">
                           <p className="font-bold text-navy">{currencyFormatter.format(o.total.order)}</p>
-                          <p className={`text-[9px] font-bold uppercase ${o.status === 'CONCLUDED' ? 'text-green-600' : 'text-slate-400'}`}>{o.status}</p>
+                          <div className="flex flex-col items-end mt-0.5">
+                            <span className="text-[9px] text-red-400 font-bold">- {currencyFormatter.format(o.total.fees || 0)} iFood</span>
+                            <span className="text-[10px] text-green-600 font-black">Net: {currencyFormatter.format(o.total.netValue || o.total.order)}</span>
+                          </div>
+                          <p className={`text-[8px] font-black uppercase mt-1 ${o.status === 'CONCLUDED' ? 'text-green-600/50' : 'text-slate-300'}`}>{o.status}</p>
                         </div>
                       </div>
                     ))}

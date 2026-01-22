@@ -102,6 +102,8 @@ export type IFoodOrder = {
     deliveryFee: number;
     discount: number;
     order: number;
+    fees?: number;
+    netValue?: number;
   };
   items: {
     id: string;
@@ -128,8 +130,8 @@ export type IFoodOrder = {
 };
 
 export type IFoodOrdersSummary = {
-  totalOrders: number;
-  totalRevenue: number;
+  count: number;
+  totalValue: number;
   averageTicket: number;
   deliveryOrders: number;
   takeoutOrders: number;
@@ -170,7 +172,7 @@ export async function getIFoodToken(credentials: IFoodCredentials): Promise<IFoo
   }
 
   const data = await response.json();
-  
+
   tokenCache = {
     accessToken: data.accessToken,
     expiresIn: data.expiresIn,
@@ -263,8 +265,8 @@ export async function getProductComplements(merchantId: string, productId: strin
  * Busca histórico de pedidos
  */
 export async function getOrdersHistory(
-  merchantId: string, 
-  startDate: string, 
+  merchantId: string,
+  startDate: string,
   endDate: string,
   page: number = 0,
   size: number = 50
@@ -317,12 +319,12 @@ export async function getOrderDetails(merchantId: string, orderId: string): Prom
 export function calculateOrdersSummary(orders: IFoodOrder[]): IFoodOrdersSummary {
   const completedOrders = orders.filter(o => o.status !== 'CANCELLED');
   const cancelledOrders = orders.filter(o => o.status === 'CANCELLED');
-  
+
   const totalRevenue = completedOrders.reduce((sum, o) => sum + o.total.order, 0);
-  
+
   return {
-    totalOrders: orders.length,
-    totalRevenue,
+    count: orders.length,
+    totalValue: totalRevenue,
     averageTicket: completedOrders.length > 0 ? totalRevenue / completedOrders.length : 0,
     deliveryOrders: orders.filter(o => o.type === 'DELIVERY').length,
     takeoutOrders: orders.filter(o => o.type === 'TAKEOUT').length,
@@ -350,33 +352,33 @@ export function cleanCNPJ(cnpj: string): string {
  */
 export function isValidCNPJ(cnpj: string): boolean {
   const digits = cleanCNPJ(cnpj);
-  
+
   if (digits.length !== 14) return false;
   if (/^(\d)\1+$/.test(digits)) return false;
-  
+
   // Validação dos dígitos verificadores
   let sum = 0;
   let weight = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-  
+
   for (let i = 0; i < 12; i++) {
     sum += parseInt(digits[i]) * weight[i];
   }
-  
+
   let remainder = sum % 11;
   let digit1 = remainder < 2 ? 0 : 11 - remainder;
-  
+
   if (parseInt(digits[12]) !== digit1) return false;
-  
+
   sum = 0;
   weight = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-  
+
   for (let i = 0; i < 13; i++) {
     sum += parseInt(digits[i]) * weight[i];
   }
-  
+
   remainder = sum % 11;
   let digit2 = remainder < 2 ? 0 : 11 - remainder;
-  
+
   return parseInt(digits[13]) === digit2;
 }
 
