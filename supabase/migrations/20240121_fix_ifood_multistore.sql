@@ -36,6 +36,11 @@ BEGIN
 
         ALTER TABLE public.ifood_order_items ADD CONSTRAINT ifood_order_items_order_item_unique UNIQUE(order_id, external_id);
     END IF;
+
+    -- Ensure products.ifood_id is unique for upsert
+    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'products_ifood_id_unique') THEN
+        ALTER TABLE public.products ADD CONSTRAINT products_ifood_id_unique UNIQUE(ifood_id);
+    END IF;
 END $$;
 ALTER TABLE public.fin_transactions ADD COLUMN IF NOT EXISTS store_id UUID REFERENCES public.stores(id) ON DELETE CASCADE;
 
@@ -95,6 +100,7 @@ WITH order_items_costs AS (
 )
 SELECT 
     io.store_id,
+    io.profile_id,
     io.ifood_order_id,
     io.short_code,
     io.order_timestamp as date,
@@ -113,4 +119,4 @@ JOIN
 WHERE 
     io.order_status = 'CONCLUDED'
 GROUP BY 
-    io.store_id, io.ifood_order_id, io.short_code, io.order_timestamp, io.net_amount;
+    io.store_id, io.profile_id, io.ifood_order_id, io.short_code, io.order_timestamp, io.net_amount;

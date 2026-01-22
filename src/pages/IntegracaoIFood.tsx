@@ -459,7 +459,7 @@ function IntegracaoDetail({ store }: { store: any }) {
       await supabase.from('menu_items').upsert(menuItems, { onConflict: 'store_id,ifood_id' });
 
       const globalProducts = products.map(p => ({
-        user_id: userId,
+        profile_id: store.profile_id,
         product_type: 'final' as const,
         name: p.name,
         description: p.description,

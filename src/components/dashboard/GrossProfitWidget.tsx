@@ -39,31 +39,19 @@ export function GrossProfitWidget({ userId }: { userId: string | null }) {
 
                 let totalRevenue = 0;
                 let totalCost = 0;
+                let hasNullProfit = false;
 
                 // Summing up
                 analysis?.forEach((row: any) => {
                     totalRevenue += Number(row.revenue || 0);
+                    if (row.gross_profit === null) {
+                        hasNullProfit = true;
+                    }
                     totalCost += Number(row.estimated_total_cost || 0);
                 });
 
-                // Check for products sold with NO cost (cost is null or 0)
-                // We need a separate query or join analysis logic.
-                // The view returns estimated_total_cost, which is quantity * cost.
-                // If cost is null, the sum might be null or 0.
-                // Let's verify products in `ifood_order_items` that have no cost in `products`.
-
-                const { count, error: countError } = await supabase
-                    .from('ifood_order_items')
-                    .select('ifood_product_id', { count: 'exact', head: true })
-                    .not('ifood_product_id', 'is', null);
-
-                // Since we can't easily join in client-side to find missing costs efficiently without a specific view,
-                // let's rely on checking if any product with `ifood_id` in the `products` table has cost 0 or null
-                // AND appears in orders.
-
-                // Better approach: fetch all active products associated with recent orders and check their costs.
-                // For simplicity/performance in this widget, let's just count products with cost = 0 or null
-                // that are linked to iFood.
+                // Count products that ARE in orders but HAVE NO cost
+                // We'll use a more direct approach: products table filter
                 const { count: missingCount } = await supabase
                     .from('products')
                     .select('*', { count: 'exact', head: true })
@@ -74,8 +62,8 @@ export function GrossProfitWidget({ userId }: { userId: string | null }) {
                 setData({
                     revenue: totalRevenue,
                     cost: totalCost,
-                    grossProfit: totalRevenue - totalCost,
-                    margin: totalRevenue > 0 ? ((totalRevenue - totalCost) / totalRevenue) * 100 : 0,
+                    grossProfit: hasNullProfit ? null : totalRevenue - totalCost,
+                    margin: !hasNullProfit && totalRevenue > 0 ? ((totalRevenue - totalCost) / totalRevenue) * 100 : 0,
                     missingCostCount: missingCount || 0
                 });
 
@@ -126,7 +114,10 @@ export function GrossProfitWidget({ userId }: { userId: string | null }) {
                     <div>
                         <p className="text-sm font-semibold text-slate-600">Lucro Bruto</p>
                         <p className="text-2xl font-black text-green-600">
-                            {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(data?.grossProfit || 0)}
+                            {data?.grossProfit !== null
+                                ? new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(data?.grossProfit || 0)
+                                : <span className="text-sm text-slate-400 font-medium italic">Custo ausente</span>
+                            }
                         </p>
                     </div>
                     <div className="text-right">
