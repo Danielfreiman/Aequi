@@ -19,6 +19,17 @@ ALTER TABLE public.ifood_orders ADD COLUMN IF NOT EXISTS fees DECIMAL(12,2) DEFA
 ALTER TABLE public.ifood_orders ADD COLUMN IF NOT EXISTS net_amount DECIMAL(12,2) DEFAULT 0;
 ALTER TABLE public.ifood_order_items ADD COLUMN IF NOT EXISTS fees DECIMAL(12,2) DEFAULT 0;
 ALTER TABLE public.ifood_order_items ADD COLUMN IF NOT EXISTS net_amount DECIMAL(12,2) DEFAULT 0;
+-- Standardize column name and add unique constraint for upsert
+DO $$ 
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'ifood_order_items' AND column_name = 'ifood_product_id') THEN
+        ALTER TABLE public.ifood_order_items RENAME COLUMN ifood_product_id TO external_id;
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'ifood_order_items_order_item_unique') THEN
+        ALTER TABLE public.ifood_order_items ADD CONSTRAINT ifood_order_items_order_item_unique UNIQUE(order_id, external_id);
+    END IF;
+END $$;
 ALTER TABLE public.fin_transactions ADD COLUMN IF NOT EXISTS store_id UUID REFERENCES public.stores(id) ON DELETE CASCADE;
 
 -- 3. Fix constraints for menu_items and ifood_orders to use store_id
@@ -82,7 +93,7 @@ FROM
 JOIN 
     public.ifood_order_items ioi ON io.id = ioi.order_id
 LEFT JOIN 
-    public.products p ON ioi.ifood_product_id = p.ifood_id
+    public.products p ON ioi.external_id = p.ifood_id
 -- We join by ifood_id. Since ifood_id is unique across iFood catalog, it should work.
 -- If multi-user collision is a concern, we'd join on user_id too.
 WHERE 
