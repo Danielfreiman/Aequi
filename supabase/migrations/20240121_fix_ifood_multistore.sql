@@ -88,11 +88,11 @@ SELECT
     io.ifood_order_id,
     io.short_code,
     io.order_timestamp as date,
-    io.total_amount as revenue,
+    io.net_amount as revenue,
     SUM(ioi.quantity * p.cost) as estimated_total_cost,
-    io.total_amount - SUM(ioi.quantity * p.cost) as gross_profit,
+    io.net_amount - SUM(ioi.quantity * p.cost) as gross_profit,
     CASE 
-        WHEN io.total_amount > 0 THEN (io.total_amount - SUM(ioi.quantity * p.cost)) / io.total_amount * 100 
+        WHEN io.net_amount > 0 THEN (io.net_amount - SUM(ioi.quantity * p.cost)) / io.net_amount * 100 
         ELSE 0 
     END as margin_percent
 FROM 

@@ -132,6 +132,8 @@ export type IFoodOrder = {
 export type IFoodOrdersSummary = {
   count: number;
   totalValue: number;
+  totalFees: number;
+  totalNetValue: number;
   averageTicket: number;
   deliveryOrders: number;
   takeoutOrders: number;
@@ -321,10 +323,14 @@ export function calculateOrdersSummary(orders: IFoodOrder[]): IFoodOrdersSummary
   const cancelledOrders = orders.filter(o => o.status === 'CANCELLED');
 
   const totalRevenue = completedOrders.reduce((sum, o) => sum + o.total.order, 0);
+  const totalFees = completedOrders.reduce((sum, o) => sum + (o.total.fees || 0), 0);
+  const totalNetValue = completedOrders.reduce((sum, o) => sum + (o.total.netValue || o.total.order), 0);
 
   return {
     count: orders.length,
     totalValue: totalRevenue,
+    totalFees,
+    totalNetValue,
     averageTicket: completedOrders.length > 0 ? totalRevenue / completedOrders.length : 0,
     deliveryOrders: orders.filter(o => o.type === 'DELIVERY').length,
     takeoutOrders: orders.filter(o => o.type === 'TAKEOUT').length,

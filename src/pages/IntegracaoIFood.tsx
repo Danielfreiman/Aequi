@@ -262,6 +262,9 @@ function IntegracaoDetail({ store }: { store: any }) {
   const [loadingSavedProducts, setLoadingSavedProducts] = useState(false);
   const [editingProduct, setEditingProduct] = useState<SavedProduct | null>(null);
 
+  // Profit/CMV State
+  const [cmvSummary, setCmvSummary] = useState<{ grossProfit: number; marginPercent: number; totalCost: number } | null>(null);
+
   // Load Saved Connection
   const loadSavedConnection = async () => {
     if (!storeId) return;
@@ -404,10 +407,35 @@ function IntegracaoDetail({ store }: { store: any }) {
     setLoadingSavedProducts(false);
   };
 
+  const loadCmvData = async () => {
+    if (!storeId) return;
+    const { data } = await supabase
+      .from('view_ifood_cmv_analysis')
+      .select('gross_profit, margin_percent, estimated_total_cost, revenue')
+      .eq('store_id', storeId);
+
+    if (data && data.length > 0) {
+      const grossProfit = data.reduce((sum, row) => sum + row.gross_profit, 0);
+      const totalCost = data.reduce((sum, row) => sum + row.estimated_total_cost, 0);
+      const totalNetRevenue = data.reduce((sum, row) => sum + row.revenue, 0);
+
+      setCmvSummary({
+        grossProfit,
+        totalCost,
+        marginPercent: totalNetRevenue > 0 ? (grossProfit / totalNetRevenue) * 100 : 0
+      });
+    } else {
+      setCmvSummary(null);
+    }
+  };
+
   useEffect(() => {
     if (connectionStatus === 'connected' && merchant) {
       if (activeTab === 'cardapio') loadMenu();
-      if (activeTab === 'pedidos') loadOrders();
+      if (activeTab === 'pedidos') {
+        loadOrders();
+        loadCmvData();
+      }
       if (activeTab === 'produtos') loadSavedProducts();
     }
   }, [connectionStatus, merchant, activeTab]);
@@ -678,24 +706,91 @@ function IntegracaoDetail({ store }: { store: any }) {
                     <h3 className="font-bold text-navy">Histórico e Sincronização</h3>
                     <p className="text-xs text-slate-500">Vendas concluídas geram transações financeiras.</p>
                   </div>
+
+                  {/* Extrato de Taxas Section */}
+                  {ordersSummary && (
+                    <div className="mt-8 grid md:grid-cols-2 gap-6">
+                      <div className="p-6 bg-white rounded-3xl border border-slate-100 shadow-sm">
+                        <h4 className="text-sm font-bold text-navy mb-4 flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                          Extrato de Taxas (Período)
+                        </h4>
+                        <div className="space-y-3">
+                          <div className="flex justify-between items-center py-2 border-b border-slate-50 italic text-slate-500 text-xs text-right mb-2">
+                            <span>Detalhamento estimado das retenções iFood</span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm text-slate-600">Comissões iFood (Plano)</span>
+                            <span className="text-sm font-bold text-red-500">- {currencyFormatter.format(ordersSummary.totalFees)}</span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm text-slate-600">Taxas de Entrega (Repasse)</span>
+                            <span className="text-sm font-bold text-slate-700">{currencyFormatter.format(orders.reduce((sum, o) => sum + (o.total.deliveryFee || 0), 0))}</span>
+                          </div>
+                          <div className="pt-3 border-t border-slate-100 flex justify-between items-center">
+                            <span className="text-sm font-black text-navy">Total de Retenções</span>
+                            <span className="text-sm font-black text-red-600">- {currencyFormatter.format(ordersSummary.totalFees)}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="p-6 bg-white rounded-3xl border border-slate-100 shadow-sm">
+                        <h4 className="text-sm font-bold text-navy mb-4 flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                          Performance de Lucro (Estimado)
+                        </h4>
+                        <div className="space-y-3">
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm text-slate-600">Recebimento Líquido</span>
+                            <span className="text-sm font-bold text-green-600">{currencyFormatter.format(ordersSummary.totalNetValue)}</span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm text-slate-600">Custo de Mercadoria (CMV)</span>
+                            <span className="text-sm font-bold text-red-400">- {currencyFormatter.format(cmvSummary?.totalCost || 0)}</span>
+                          </div>
+                          <div className="pt-3 border-t border-slate-100 flex justify-between items-center">
+                            <span className="text-base font-black text-navy">Lucro Bruto Final</span>
+                            <span className="text-lg font-black text-primary">{currencyFormatter.format(cmvSummary?.grossProfit || 0)}</span>
+                          </div>
+                          <div className="flex justify-end">
+                            <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                              Margem Final: {cmvSummary?.marginPercent.toFixed(1) || 0}%
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                   <button onClick={() => handleImportOrders()} disabled={importingProducts} className="px-4 py-2 bg-green-600 text-white rounded-xl font-bold flex items-center gap-2 hover:bg-green-700 transition">
                     <RefreshCw size={18} className={importingProducts ? 'animate-spin' : ''} />
                     Processar Pedidos
                   </button>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
                   <div className="p-4 bg-slate-50 rounded-2xl">
                     <p className="text-[10px] text-slate-400 font-bold uppercase">Total Pedidos</p>
-                    <p className="text-xl font-black text-navy">{ordersSummary?.count || 0}</p>
+                    <p className="text-lg font-black text-navy">{ordersSummary?.count || 0}</p>
                   </div>
                   <div className="p-4 bg-slate-50 rounded-2xl">
-                    <p className="text-[10px] text-slate-400 font-bold uppercase">Volume Vendas</p>
-                    <p className="text-xl font-black text-green-600">{currencyFormatter.format(ordersSummary?.totalValue || 0)}</p>
+                    <p className="text-[10px] text-slate-400 font-bold uppercase">Volume Bruto</p>
+                    <p className="text-lg font-black text-navy">{currencyFormatter.format(ordersSummary?.totalValue || 0)}</p>
+                  </div>
+                  <div className="p-4 bg-red-50/50 rounded-2xl">
+                    <p className="text-[10px] text-red-500 font-bold uppercase">Taxas Pagas</p>
+                    <p className="text-lg font-black text-red-600">- {currencyFormatter.format(ordersSummary?.totalFees || 0)}</p>
+                  </div>
+                  <div className="p-4 bg-green-50/50 rounded-2xl border border-green-100">
+                    <p className="text-[10px] text-green-600 font-bold uppercase">Rec. Líquido</p>
+                    <p className="text-lg font-black text-green-700">{currencyFormatter.format(ordersSummary?.totalNetValue || 0)}</p>
+                  </div>
+                  <div className="p-4 bg-primary/5 rounded-2xl border border-primary/10">
+                    <p className="text-[10px] text-primary font-bold uppercase">Lucro Bruto Est.</p>
+                    <p className="text-lg font-black text-primary">{currencyFormatter.format(cmvSummary?.grossProfit || 0)}</p>
                   </div>
                   <div className="p-4 bg-slate-50 rounded-2xl">
-                    <p className="text-[10px] text-slate-400 font-bold uppercase">Ticket Médio</p>
-                    <p className="text-xl font-black text-slate-700">{currencyFormatter.format(ordersSummary?.averageTicket || 0)}</p>
+                    <p className="text-[10px] text-slate-400 font-bold uppercase">Margem iFood</p>
+                    <p className="text-lg font-black text-slate-700">{cmvSummary?.marginPercent.toFixed(1) || 0}%</p>
                   </div>
                 </div>
 
@@ -718,10 +813,8 @@ function IntegracaoDetail({ store }: { store: any }) {
                         <div className="text-right">
                           <p className="font-bold text-navy">{currencyFormatter.format(o.total.order)}</p>
                           <div className="flex flex-col items-end mt-0.5">
-                            <span className="text-[9px] text-red-400 font-bold">- {currencyFormatter.format(o.total.fees || 0)} iFood</span>
-                            <span className="text-[10px] text-green-600 font-black">Net: {currencyFormatter.format(o.total.netValue || o.total.order)}</span>
+                            <span className="text-[10px] text-green-600 font-black">Líquido: {currencyFormatter.format(o.total.netValue || (o.total.order * 0.88))}</span>
                           </div>
-                          <p className={`text-[8px] font-black uppercase mt-1 ${o.status === 'CONCLUDED' ? 'text-green-600/50' : 'text-slate-300'}`}>{o.status}</p>
                         </div>
                       </div>
                     ))}
