@@ -106,4 +106,4 @@ LEFT JOIN
 WHERE 
     io.order_status = 'CONCLUDED'
 GROUP BY 
-    io.store_id, io.ifood_order_id, io.short_code, io.order_timestamp, io.total_amount;
+    io.store_id, io.ifood_order_id, io.short_code, io.order_timestamp, io.net_amount;
