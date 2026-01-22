@@ -230,6 +230,9 @@ function IntegracaoDetail({ store }: { store: any }) {
   const [connectionMessage, setConnectionMessage] = useState('');
   const [merchant, setMerchant] = useState<IFoodMerchant | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [cnpjInput, setCnpjInput] = useState('');
+  const [verifyingCnpj, setVerifyingCnpj] = useState(false);
+  const [errorHeader, setErrorHeader] = useState<string | null>(null);
 
   // Tabs
   const [activeTab, setActiveTab] = useState<TabType>('cardapio');
@@ -301,12 +304,51 @@ function IntegracaoDetail({ store }: { store: any }) {
   }, [searchParams]);
 
   const handleConnect = async () => {
+    if (!cnpjInput.replace(/\D/g, '')) {
+      alert('Por favor, insira o CNPJ da loja iFood.');
+      return;
+    }
+
+    setVerifyingCnpj(true);
     setConnectionStatus('connecting');
-    setConnectionMessage('Iniciando conexão iFood...');
-    // Real redirection would happen here. For now simulate success:
-    window.open('/api/ifood/auth?storeId=' + storeId, '_blank');
-    // The user would come back to the success page which updates DB
-    setTimeout(loadSavedConnection, 5000);
+    setConnectionMessage('Verificando CNPJ no iFood...');
+    setErrorHeader(null);
+
+    try {
+      // 1. Fetch Merchant Details by CNPJ
+      const response = await fetch(`/api/ifood/merchant?cnpj=${cnpjInput.replace(/\D/g, '')}`);
+      if (!response.ok) {
+        throw new Error('Loja não encontrada com este CNPJ no iFood.');
+      }
+
+      const merchantData = await response.json();
+
+      // 2. Save Connection to DB
+      const { error: dbError } = await supabase.from('ifood_connections').upsert({
+        store_id: storeId,
+        merchant_id: merchantData.id,
+        merchant_name: merchantData.name,
+        corporate_name: merchantData.corporateName,
+        cnpj: merchantData.cnpj,
+        status: 'active',
+        address: merchantData.address,
+        access_token: 'centralized_token', // We use centralized credentials on backend
+        expires_at: new Date(Date.now() + 3600 * 1000).toISOString()
+      }, { onConflict: 'store_id' });
+
+      if (dbError) throw dbError;
+
+      // 3. Update Local State
+      setMerchant(merchantData);
+      setConnectionStatus('connected');
+      setConnectionMessage('');
+    } catch (err: any) {
+      console.error('Error connecting iFood:', err);
+      setErrorHeader(err.message);
+      setConnectionStatus('idle');
+    } finally {
+      setVerifyingCnpj(false);
+    }
   };
 
   const handleDisconnect = async () => {
@@ -472,18 +514,36 @@ function IntegracaoDetail({ store }: { store: any }) {
           </div>
           <h3 className="text-xl font-bold text-navy mb-2">Conectar {store.name}</h3>
           <p className="text-slate-500 text-sm max-w-md mx-auto mb-8">
-            Para gerenciar o cardápio e sincronizar pedidos desta loja, você precisa autorizar a conexão com sua conta iFood.
+            Para gerenciar o cardápio e sincronizar pedidos desta loja, informe o CNPJ cadastrado no iFood.
           </p>
+
+          <div className="max-w-xs mx-auto mb-6">
+            <input
+              type="text"
+              value={cnpjInput}
+              onChange={(e) => setCnpjInput(e.target.value)}
+              placeholder="00.000.000/0000-00"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary/20 text-center font-bold text-lg"
+            />
+          </div>
+
+          {errorHeader && (
+            <div className="mb-6 p-4 bg-red-50 text-red-600 rounded-xl text-sm font-semibold flex items-center gap-2 justify-center">
+              <AlertCircle size={16} />
+              {errorHeader}
+            </div>
+          )}
+
           <button
             onClick={handleConnect}
-            disabled={connectionStatus === 'connecting'}
-            className="px-8 py-3 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 transition flex items-center gap-2 mx-auto"
+            disabled={verifyingCnpj}
+            className="px-8 py-3 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 transition flex items-center gap-2 mx-auto disabled:opacity-50"
           >
-            {connectionStatus === 'connecting' ? <RefreshCw className="animate-spin" size={20} /> : <ExternalLink size={20} />}
-            Conectar com iFood
+            {verifyingCnpj ? <RefreshCw className="animate-spin" size={20} /> : <Check size={20} />}
+            Ativar Conexão iFood
           </button>
           <p className="mt-6 text-xs text-slate-400 flex items-center justify-center gap-1">
-            <Info size={12} /> Máximo de 1 conta iFood por loja cadastrada.
+            <Info size={12} /> A conexão é baseada no CNPJ da sua loja iFood.
           </p>
         </div>
       )}
