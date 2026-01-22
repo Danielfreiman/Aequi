@@ -63,16 +63,16 @@ function generateMockOrders(merchantId: string, startDate: string, endDate: stri
   const orders = [];
   const start = new Date(startDate);
   const end = new Date(endDate);
-  const count = 50; // Generate 50 orders for testing
+  const count = 50;
+  const suffix = merchantId.slice(-4);
 
   for (let i = 0; i < count; i++) {
     const orderDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
     const total = 50 + Math.random() * 200;
-
     const itemsAmount = Number((total * 0.8).toFixed(2));
 
     orders.push({
-      id: `order-ifood-${i}`,
+      id: `order-${suffix}-${i}`,
       shortCode: Math.random().toString(36).substring(2, 6).toUpperCase(),
       createdAt: orderDate.toISOString(),
       type: Math.random() > 0.2 ? 'DELIVERY' : 'TAKEOUT',
@@ -85,12 +85,12 @@ function generateMockOrders(merchantId: string, startDate: string, endDate: stri
         additionalFees: 0
       },
       customer: {
-        name: `Cliente iFood ${i}`,
+        name: `Cliente iFood Loja ${suffix}`,
       },
       items: [
         {
-          id: `product-${i % 5}`,
-          name: i % 2 === 0 ? 'Hambúrguer Gourmet' : 'Pizza Calabresa',
+          id: `product-${suffix}-${i % 5}`,
+          name: i % 2 === 0 ? `Hambúrguer Gourmet ${suffix}` : `Pizza Calabresa ${suffix}`,
           quantity: 1,
           unitPrice: itemsAmount,
           totalPrice: itemsAmount,

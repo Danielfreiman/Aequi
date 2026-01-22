@@ -39,18 +39,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const merchant = mockMerchants[cleanCnpj];
 
     if (!merchant) {
+      // Create a deterministic mock name based on CNPJ
+      const suffix = cleanCnpj.slice(-4);
       const dynamicMerchant = {
         id: `merchant-${cleanCnpj.slice(0, 8)}`,
-        name: 'Restaurante Conectado',
-        corporateName: 'EMPRESA CONECTADA LTDA',
+        name: `Restaurante iFood ${suffix}`,
+        corporateName: `IFOOD TESTE UNIDADE ${suffix} LTDA`,
         cnpj: cleanCnpj,
         status: 'AVAILABLE',
         createdAt: new Date().toISOString(),
         address: {
           street: 'Rua Principal',
-          number: '100',
+          number: suffix,
           neighborhood: 'Centro',
-          city: 'São Paulo',
+          city: 'Cidade iFood',
           state: 'SP',
           postalCode: '01000-000',
         },
