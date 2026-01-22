@@ -318,10 +318,8 @@ export function Pedidos() {
                                         <span>Recebimento Líquido</span>
                                         <span>{currencyFormatter.format(selectedOrder.net_amount || selectedOrder.total_amount)}</span>
                                     </div>
-                                    <div className="flex justify-between text-primary font-black text-[10px] uppercase tracking-wider mt-2 bg-primary/5 p-2 rounded-lg">
-                                        <span>Lucro Bruto Est.</span>
-                                        <span>{currencyFormatter.format((selectedOrder.net_amount || selectedOrder.total_amount) * 0.4)}</span>
-                                        {/* Note: 40% margin is just a placeholder here, for real data we'd join with costs */}
+                                    <div className="text-[10px] text-slate-400 mt-4 text-center italic border-t border-slate-50 pt-2">
+                                        Análise de lucro disponível no módulo iFood após sincronização de custos.
                                     </div>
                                 </div>
                             </div>

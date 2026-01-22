@@ -83,26 +83,33 @@ END $$;
 -- 4. Fix view_ifood_cmv_analysis to work with store_id and global products
 DROP VIEW IF EXISTS public.view_ifood_cmv_analysis;
 CREATE OR REPLACE VIEW public.view_ifood_cmv_analysis AS
+WITH order_items_costs AS (
+    SELECT 
+        io.id as order_uuid,
+        ioi.quantity,
+        p.cost,
+        CASE WHEN p.cost IS NULL OR p.cost = 0 THEN 1 ELSE 0 END as has_missing_cost
+    FROM public.ifood_orders io
+    JOIN public.ifood_order_items ioi ON io.id = ioi.order_id
+    LEFT JOIN public.products p ON ioi.external_id = p.ifood_id
+)
 SELECT 
     io.store_id,
     io.ifood_order_id,
     io.short_code,
     io.order_timestamp as date,
     io.net_amount as revenue,
-    SUM(ioi.quantity * p.cost) as estimated_total_cost,
-    io.net_amount - SUM(ioi.quantity * p.cost) as gross_profit,
+    CASE WHEN SUM(oc.has_missing_cost) > 0 THEN NULL ELSE SUM(oc.quantity * oc.cost) END as estimated_total_cost,
+    CASE WHEN SUM(oc.has_missing_cost) > 0 THEN NULL ELSE io.net_amount - SUM(oc.quantity * oc.cost) END as gross_profit,
     CASE 
-        WHEN io.net_amount > 0 THEN (io.net_amount - SUM(ioi.quantity * p.cost)) / io.net_amount * 100 
+        WHEN SUM(oc.has_missing_cost) > 0 THEN NULL
+        WHEN io.net_amount > 0 THEN (io.net_amount - SUM(oc.quantity * oc.cost)) / io.net_amount * 100 
         ELSE 0 
     END as margin_percent
 FROM 
     public.ifood_orders io
 JOIN 
-    public.ifood_order_items ioi ON io.id = ioi.order_id
-LEFT JOIN 
-    public.products p ON ioi.external_id = p.ifood_id
--- We join by ifood_id. Since ifood_id is unique across iFood catalog, it should work.
--- If multi-user collision is a concern, we'd join on user_id too.
+    order_items_costs oc ON io.id = oc.order_uuid
 WHERE 
     io.order_status = 'CONCLUDED'
 GROUP BY 

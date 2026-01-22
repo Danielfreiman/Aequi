@@ -415,12 +415,13 @@ function IntegracaoDetail({ store }: { store: any }) {
       .eq('store_id', storeId);
 
     if (data && data.length > 0) {
-      const grossProfit = data.reduce((sum, row) => sum + row.gross_profit, 0);
-      const totalCost = data.reduce((sum, row) => sum + row.estimated_total_cost, 0);
-      const totalNetRevenue = data.reduce((sum, row) => sum + row.revenue, 0);
+      const hasMissingCosts = data.some(row => row.gross_profit === null || row.gross_profit === undefined);
+      const grossProfit = data.reduce((sum, row) => sum + (row.gross_profit || 0), 0);
+      const totalCost = data.reduce((sum, row) => sum + (row.estimated_total_cost || 0), 0);
+      const totalNetRevenue = data.reduce((sum, row) => sum + (row.revenue || 0), 0);
 
       setCmvSummary({
-        grossProfit,
+        grossProfit: hasMissingCosts ? null as any : grossProfit,
         totalCost,
         marginPercent: totalNetRevenue > 0 ? (grossProfit / totalNetRevenue) * 100 : 0
       });
@@ -786,11 +787,21 @@ function IntegracaoDetail({ store }: { store: any }) {
                   </div>
                   <div className="p-4 bg-primary/5 rounded-2xl border border-primary/10">
                     <p className="text-[10px] text-primary font-bold uppercase">Lucro Bruto Est.</p>
-                    <p className="text-lg font-black text-primary">{currencyFormatter.format(cmvSummary?.grossProfit || 0)}</p>
+                    <p className="text-lg font-black text-primary">
+                      {cmvSummary?.grossProfit !== null
+                        ? currencyFormatter.format(cmvSummary?.grossProfit || 0)
+                        : <span className="text-[10px] text-slate-400 font-medium">Custo ausente</span>
+                      }
+                    </p>
                   </div>
                   <div className="p-4 bg-slate-50 rounded-2xl">
                     <p className="text-[10px] text-slate-400 font-bold uppercase">Margem iFood</p>
-                    <p className="text-lg font-black text-slate-700">{cmvSummary?.marginPercent.toFixed(1) || 0}%</p>
+                    <p className="text-lg font-black text-slate-700">
+                      {cmvSummary?.marginPercent !== null
+                        ? `${cmvSummary?.marginPercent.toFixed(1)}%`
+                        : <span className="text-[10px] text-slate-300 font-medium">-</span>
+                      }
+                    </p>
                   </div>
                 </div>
 
