@@ -326,13 +326,14 @@ function IntegracaoDetail({ store }: { store: any }) {
       // 2. Save Connection to DB
       const { error: dbError } = await supabase.from('ifood_connections').upsert({
         store_id: storeId,
+        profile_id: store.profile_id, // Mandatory for current RLS
         merchant_id: merchantData.id,
         merchant_name: merchantData.name,
         corporate_name: merchantData.corporateName,
         cnpj: merchantData.cnpj,
         status: 'active',
         address: merchantData.address,
-        access_token: 'centralized_token', // We use centralized credentials on backend
+        access_token: 'centralized_token',
         expires_at: new Date(Date.now() + 3600 * 1000).toISOString()
       }, { onConflict: 'store_id' });
 
@@ -417,6 +418,7 @@ function IntegracaoDetail({ store }: { store: any }) {
     try {
       const menuItems = products.map(p => ({
         store_id: storeId,
+        profile_id: store.profile_id,
         name: p.name,
         description: p.description,
         price: p.price.value,
@@ -452,6 +454,7 @@ function IntegracaoDetail({ store }: { store: any }) {
     try {
       const ordersToSave = orders.map(o => ({
         store_id: storeId,
+        profile_id: store.profile_id,
         ifood_order_id: o.id,
         short_code: o.shortCode,
         order_status: o.status,

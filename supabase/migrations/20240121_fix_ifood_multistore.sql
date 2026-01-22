@@ -18,6 +18,10 @@ ALTER TABLE public.ifood_orders ADD COLUMN IF NOT EXISTS store_id UUID REFERENCE
 ALTER TABLE public.fin_transactions ADD COLUMN IF NOT EXISTS store_id UUID REFERENCES public.stores(id) ON DELETE CASCADE;
 
 -- 3. Fix constraints for menu_items and ifood_orders to use store_id
+ALTER TABLE public.ifood_connections ALTER COLUMN profile_id DROP NOT NULL;
+ALTER TABLE public.menu_items ALTER COLUMN profile_id DROP NOT NULL;
+ALTER TABLE public.ifood_orders ALTER COLUMN profile_id DROP NOT NULL;
+
 ALTER TABLE public.menu_items DROP CONSTRAINT IF EXISTS menu_items_profile_id_ifood_id_key;
 DO $$ 
 BEGIN
@@ -32,6 +36,26 @@ BEGIN
     IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'ifood_orders_store_ifood_unique') THEN
         ALTER TABLE public.ifood_orders ADD CONSTRAINT ifood_orders_store_ifood_unique UNIQUE(store_id, ifood_order_id);
     END IF;
+END $$;
+
+-- 4. Update RLS policies to support store_id context
+DO $$
+DECLARE tbl TEXT;
+BEGIN
+  FOR tbl IN SELECT unnest(ARRAY['ifood_connections','menu_items','ifood_orders']) LOOP
+    EXECUTE format($f$
+      DROP POLICY IF EXISTS "%1$s_by_store" ON public.%1$s;
+      CREATE POLICY "%1$s_by_store" ON public.%1$s
+      FOR ALL USING (
+        EXISTS (SELECT 1 FROM public.stores s WHERE s.id = store_id)
+        OR
+        EXISTS (SELECT 1 FROM public.profiles p WHERE p.id = profile_id AND (p.owner_id = auth.uid() or EXISTS (SELECT 1 FROM public.profile_users m WHERE m.profile_id = p.id AND m.user_id = auth.uid()))))
+      WITH CHECK (
+        EXISTS (SELECT 1 FROM public.stores s WHERE s.id = store_id)
+        OR
+        EXISTS (SELECT 1 FROM public.profiles p WHERE p.id = profile_id AND (p.owner_id = auth.uid() or EXISTS (SELECT 1 FROM public.profile_users m WHERE m.profile_id = p.id AND m.user_id = auth.uid()))));
+    $f$, tbl);
+  END LOOP;
 END $$;
 
 -- 4. Fix view_ifood_cmv_analysis to work with store_id and global products
