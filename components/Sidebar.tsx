@@ -1,7 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { LayoutDashboard, Receipt, TrendingUp, Settings, ChevronDown, UtensilsCrossed } from 'lucide-react';
+import { supabase } from '../lib/supabaseClient';
 
 export const Sidebar: React.FC = () => {
+  const [profile, setProfile] = useState({ nome_restaurante: 'Chef Antônio', avatar_url: '' });
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const { data, error } = await supabase.from('profiles').select('nome_restaurante, avatar_url').limit(1).single();
+      if (!error && data) {
+        setProfile({
+          nome_restaurante: data.nome_restaurante || 'Chef Antônio',
+          avatar_url: data.avatar_url || '',
+        });
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
   return (
     <aside className="hidden md:flex flex-col w-72 bg-navy h-full text-white shrink-0 relative z-20">
       <div className="p-8 pb-4">
@@ -39,10 +56,10 @@ export const Sidebar: React.FC = () => {
         <button className="flex items-center gap-3 w-full p-2 rounded-xl hover:bg-white/5 transition-colors text-left">
           <div 
             className="size-10 rounded-full bg-cover bg-center border-2 border-primary/30" 
-            style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuADGEL_rPodJZEaa-dkKZEwihTiGl_kGJV1AJsERpjdYU7GibHDPGVjTpAUpTyN0b_qMveepUpjHdFkwqb8RJ6X0VrMwhv0FG_BJnQIFRwDSzsAGmihptKU00IuKeaZAsO_jqqJp4-mWTYxQ0Z9t7d8iAAyoxBhxsUtBRU0TkQIp10kROUz2yvvnZf34zkd5ItFYPQ7MGoLDaOJ40Zd1ZhSFVxwLFKONs1w3lN239MxngdVfn3VHUS6BmrWYpU7VukC6qCm2j9UFNqi')" }}
+            style={{ backgroundImage: `url(${profile.avatar_url || 'https://via.placeholder.com/150'})` }}
           />
           <div className="flex flex-col overflow-hidden">
-            <span className="text-sm font-semibold text-white truncate">Chef Antônio</span>
+            <span className="text-sm font-semibold text-white truncate">{profile.nome_restaurante}</span>
             <span className="text-xs text-gray-400 truncate">Sapore Italiano</span>
           </div>
           <ChevronDown className="text-gray-500 ml-auto size-5" />
