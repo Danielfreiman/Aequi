@@ -20,6 +20,7 @@ export function Ajustes() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [profile, setProfile] = useState({ name: '', avatar_url: '' });
 
   useEffect(() => {
     const loadData = async () => {
@@ -28,7 +29,7 @@ export function Ajustes() {
 
       const [{ data: profileData, error: profileError }, { data: storeData, error: storeError }, { data: categoryData, error: categoryError }] =
         await Promise.all([
-          supabase.from('profiles').select('id').limit(1).single(),
+          supabase.from('profiles').select('id, name, avatar_url').limit(1).single(),
           supabase.from('stores').select('id,name,location').order('name', { ascending: true }),
           supabase.from('finance_categories').select('id,name').order('name', { ascending: true }),
         ]);
@@ -37,6 +38,7 @@ export function Ajustes() {
         setError(profileError?.message || storeError?.message || categoryError?.message || 'Erro ao carregar dados.');
       } else {
         setProfileId(profileData?.id || null);
+        setProfile({ name: profileData?.name || '', avatar_url: profileData?.avatar_url || '' });
         setStores(storeData || []);
         setCategories(categoryData || []);
       }
@@ -46,6 +48,23 @@ export function Ajustes() {
 
     loadData();
   }, []);
+
+  const handleProfileUpdate = async () => {
+    if (!profileId) return;
+    setSaving(true);
+    setError(null);
+
+    const { error: updateError } = await supabase
+      .from('profiles')
+      .update({ name: profile.name, avatar_url: profile.avatar_url })
+      .eq('id', profileId);
+
+    if (updateError) {
+      setError(updateError.message);
+    }
+
+    setSaving(false);
+  };
 
   const handleAddCategory = async () => {
     if (!newCategory.trim() || !profileId) return;
@@ -84,6 +103,36 @@ export function Ajustes() {
       {error && <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-600">{error}</div>}
 
       <div className="grid lg:grid-cols-2 gap-6">
+        <div className="rounded-2xl bg-white border border-slate-100 shadow-soft overflow-hidden">
+          <div className="p-5 border-b border-slate-100">
+            <h3 className="text-lg font-bold text-navy">Perfil</h3>
+            <p className="text-sm text-slate-500">Atualize seu nome e foto de perfil.</p>
+          </div>
+          <div className="p-5 flex flex-col gap-3">
+            <label className="text-xs font-semibold text-slate-500 uppercase">Nome</label>
+            <input
+              value={profile.name}
+              onChange={(event) => setProfile({ ...profile, name: event.target.value })}
+              placeholder="Seu nome"
+              className="rounded-xl border border-slate-200 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+            />
+            <label className="text-xs font-semibold text-slate-500 uppercase">Foto de Perfil (URL)</label>
+            <input
+              value={profile.avatar_url}
+              onChange={(event) => setProfile({ ...profile, avatar_url: event.target.value })}
+              placeholder="URL da foto"
+              className="rounded-xl border border-slate-200 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+            />
+            <button
+              onClick={handleProfileUpdate}
+              disabled={saving || !profileId}
+              className="px-4 py-2 rounded-xl bg-primary text-white text-sm font-semibold disabled:opacity-60"
+            >
+              {saving ? 'Salvando...' : 'Atualizar Perfil'}
+            </button>
+          </div>
+        </div>
+
         <div className="rounded-2xl bg-white border border-slate-100 shadow-soft overflow-hidden">
           <div className="p-5 border-b border-slate-100">
             <h3 className="text-lg font-bold text-navy">Lojas</h3>
