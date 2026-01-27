@@ -1,3 +1,4 @@
+﻿import React, { useEffect, useState } from 'react';
 import {
   BadgeDollarSign,
   ClipboardList,
@@ -10,7 +11,6 @@ import {
   CalendarClock,
   LineChart,
   UtensilsCrossed,
-  Upload,
   Package,
   Store,
   PlusCircle,
@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 
 import { NavLink } from 'react-router-dom';
+import { supabase } from '../../lib/supabaseClient';
 
 const itemClass =
   'flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium hover:bg-white/5 transition-colors';
@@ -29,6 +30,27 @@ interface SidebarProps {
 }
 
 export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
+  const [profile, setProfile] = useState({ nome_restaurante: '', avatar_url: '' });
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('nome_restaurante, avatar_url')
+        .limit(1)
+        .maybeSingle();
+
+      if (!error && data) {
+        setProfile({
+          nome_restaurante: data.nome_restaurante || '',
+          avatar_url: data.avatar_url || '',
+        });
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
   return (
     <>
       {/* Mobile Overlay */}
@@ -217,13 +239,14 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
             <div
               className="size-10 rounded-full bg-cover bg-center border-2 border-primary/30"
               style={{
-                backgroundImage:
-                  "url('https://lh3.googleusercontent.com/aida-public/AB6AXuADGEL_rPodJZEaa-dkKZEwihTiGl_kGJV1AJsERpjdYU7GibHDPGVjTpAUpTyN0b_qMveepUpjHdFkwqb8RJ6X0VrMwhv0FG_BJnQIFRwDSzsAGmihptKU00IuKeaZAsO_jqqJp4-mWTYxQ0Z9t7d8iAAyoxBhxsUtBRU0TkQIp10kROUz2yvvnZf34zkd5ItFYPQ7MGoLDaOJ40Zd1ZhSFVxwLFKONs1w3lN239MxngdVfn3VHUS6BmrWYpU7VukC6qCm2j9UFNqi')",
+                backgroundImage: `url(${profile.avatar_url || 'https://via.placeholder.com/150'})`,
               }}
             />
             <div className="flex flex-col overflow-hidden">
-              <span className="text-sm font-semibold text-white truncate">Chef Antônio</span>
-              <span className="text-xs text-white/60 truncate">Sapore Italiano</span>
+              <span className="text-sm font-semibold text-white truncate">
+                {profile.nome_restaurante || 'Seu restaurante'}
+              </span>
+              <span className="text-xs text-white/60 truncate">Perfil ativo</span>
             </div>
           </div>
         </div>
@@ -231,3 +254,4 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
     </>
   );
 }
+
