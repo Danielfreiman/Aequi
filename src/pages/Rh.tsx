@@ -7,6 +7,7 @@ type Employee = {
   name: string;
   email: string | null;
   role: string | null;
+  access_level: string | null;
   status: string | null;
   created_at: string | null;
   external_id: string | null;
@@ -30,6 +31,7 @@ export function Rh() {
     name: '',
     email: '',
     role: '',
+    accessLevel: 'full',
     status: 'active',
     externalId: '',
     createAccess: true,
@@ -43,7 +45,7 @@ export function Rh() {
       setError(null);
       const { data, error: fetchError } = await supabase
         .from('hr_employees')
-        .select('id,name,email,role,status,created_at,external_id')
+        .select('id,name,email,role,access_level,status,created_at,external_id')
         .eq('profile_id', profileId)
         .order('created_at', { ascending: false });
 
@@ -142,6 +144,7 @@ export function Rh() {
       name: newEmployee.name.trim(),
       email: email || null,
       role: newEmployee.role.trim() || null,
+      access_level: newEmployee.accessLevel || 'full',
       status: newEmployee.status || null,
       external_id: newEmployee.externalId.trim() || null,
     };
@@ -149,7 +152,7 @@ export function Rh() {
     const { data, error: insertError } = await supabase
       .from('hr_employees')
       .insert(payload)
-      .select('id,name,email,role,status,created_at,external_id')
+      .select('id,name,email,role,access_level,status,created_at,external_id')
       .single();
 
     if (insertError) {
@@ -162,6 +165,7 @@ export function Rh() {
       name: '',
       email: '',
       role: '',
+      accessLevel: 'full',
       status: 'active',
       externalId: '',
       createAccess: true,
@@ -223,8 +227,19 @@ export function Rh() {
                 className="rounded-xl border border-slate-200 px-3 py-2 text-sm"
                 value={newEmployee.role}
                 onChange={(event) => setNewEmployee({ ...newEmployee, role: event.target.value })}
-                placeholder="Ex: Cozinha, Caixa, ponto_only"
+                placeholder="Ex: Cozinha, Caixa"
               />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-semibold text-slate-500">Nível de acesso</label>
+              <select
+                className="rounded-xl border border-slate-200 px-3 py-2 text-sm"
+                value={newEmployee.accessLevel}
+                onChange={(event) => setNewEmployee({ ...newEmployee, accessLevel: event.target.value })}
+              >
+                <option value="full">Acesso completo</option>
+                <option value="ponto_only">Apenas bater ponto</option>
+              </select>
             </div>
             <div className="flex flex-col gap-1">
               <label className="text-xs font-semibold text-slate-500">Status</label>
@@ -292,9 +307,6 @@ export function Rh() {
               </button>
             </div>
           </form>
-          <p className="mt-3 text-xs text-slate-500">
-            Para acesso apenas ao ponto, use o cargo como <strong>ponto_only</strong>.
-          </p>
         </div>
 
         <div className="rounded-2xl bg-white border border-slate-100 shadow-soft p-5 space-y-4">
@@ -342,10 +354,13 @@ export function Rh() {
         </div>
         <div className="divide-y divide-slate-100">
           {filteredEmployees.map((employee) => (
-            <div key={employee.id} className="grid grid-cols-1 md:grid-cols-6 gap-3 p-4 text-sm">
+            <div key={employee.id} className="grid grid-cols-1 md:grid-cols-7 gap-3 p-4 text-sm">
               <div className="font-semibold text-navy">{employee.name}</div>
               <div className="text-slate-500">{employee.email || 'Sem email'}</div>
               <div className="text-slate-500">{employee.role || 'Sem função'}</div>
+              <div className="text-slate-500">
+                {employee.access_level === 'ponto_only' ? 'Apenas ponto' : 'Completo'}
+              </div>
               <div className="text-slate-500">{employee.status || 'Sem status'}</div>
               <div className="text-slate-500">{employee.external_id || '--'}</div>
               <div className="text-slate-500">{formatDate(employee.created_at)}</div>

@@ -7,6 +7,7 @@ type PunchEmployee = {
   name: string | null;
   email: string | null;
   role: string | null;
+  access_level: string | null;
   external_id: string | null;
   status: string | null;
 };
@@ -49,12 +50,12 @@ export function usePunchOnlyAccess(): PunchAccessState {
 
       const { data: employeeData } = await supabase
         .from('hr_employees')
-        .select('id,name,email,role,external_id,status')
+        .select('id,name,email,role,access_level,external_id,status')
         .eq('profile_id', profileId)
         .eq('email', email)
         .maybeSingle();
 
-      const isPunchOnly = employeeData?.role === 'ponto_only';
+      const isPunchOnly = employeeData?.access_level === 'ponto_only';
 
       setState({
         loading: false,
