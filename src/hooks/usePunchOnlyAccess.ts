@@ -20,7 +20,7 @@ type PunchAccessState = {
 };
 
 export function usePunchOnlyAccess(): PunchAccessState {
-  const { session } = useAuthSession();
+  const { session, userId } = useAuthSession();
   const [state, setState] = useState<PunchAccessState>({
     loading: true,
     isPunchOnly: false,
@@ -36,13 +36,30 @@ export function usePunchOnlyAccess(): PunchAccessState {
         return;
       }
 
-      const { data: profileData } = await supabase
-        .from('profiles')
-        .select('id')
-        .limit(1)
-        .maybeSingle();
+      let profileId: string | null = null;
 
-      const profileId = profileData?.id || null;
+      if (userId) {
+        const { data: ownedProfile } = await supabase
+          .from('profiles')
+          .select('id')
+          .eq('owner_id', userId)
+          .order('created_at', { ascending: true })
+          .limit(1)
+          .maybeSingle();
+
+        profileId = ownedProfile?.id || null;
+
+        if (!profileId) {
+          const { data: membership } = await supabase
+            .from('profile_users')
+            .select('profile_id')
+            .eq('user_id', userId)
+            .limit(1)
+            .maybeSingle();
+
+          profileId = membership?.profile_id || null;
+        }
+      }
       if (!profileId) {
         setState({ loading: false, isPunchOnly: false, employee: null, profileId: null });
         return;
@@ -55,7 +72,8 @@ export function usePunchOnlyAccess(): PunchAccessState {
         .eq('email', email)
         .maybeSingle();
 
-      const isPunchOnly = employeeData?.access_level === 'ponto_only';
+      const isPunchOnly =
+        employeeData?.access_level === 'ponto_only' || employeeData?.role === 'ponto_only';
 
       setState({
         loading: false,
@@ -66,7 +84,7 @@ export function usePunchOnlyAccess(): PunchAccessState {
     };
 
     load();
-  }, [session?.user?.email]);
+  }, [session?.user?.email, userId]);
 
   return state;
 }
