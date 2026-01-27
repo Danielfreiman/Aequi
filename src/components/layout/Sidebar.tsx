@@ -115,138 +115,140 @@ export function Sidebar({ isOpen = false, onClose, isPunchOnly = false }: Sideba
               <span>Ponto</span>
             </NavLink>
           ) : (
-          <NavLink
-            to="/app"
-            onClick={onClose}
-            end
-            className={({ isActive }) =>
-              `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
-            }
-          >
-            <LayoutDashboard size={18} />
-            <span>Painel</span>
-          </NavLink>
-          <NavLink
-            to="/app/conciliacao"
-            onClick={onClose}
-            className={({ isActive }) =>
-              `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
-            }
-          >
-            <Receipt size={18} className="shrink-0" />
-            <span>Conciliação iFood</span>
-          </NavLink>
-          <NavLink
-            to="/app/cardapio"
-            onClick={onClose}
-            className={({ isActive }) =>
-              `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
-            }
-          >
-            <TrendingUp size={18} className="shrink-0" />
-            <span>Engenharia de Cardápio</span>
-          </NavLink>
-          <NavLink
-            to="/app/integracao-ifood"
-            onClick={onClose}
-            className={({ isActive }) =>
-              `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
-            }
-          >
-            <Store size={18} className="shrink-0" />
-            <span>Integração iFood</span>
-          </NavLink>
-          <NavLink
-            to="/app/pedidos"
-            onClick={onClose}
-            className={({ isActive }) =>
-              `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
-            }
-          >
-            <ShoppingBag size={18} className="shrink-0" />
-            <span>Pedidos</span>
-          </NavLink>
+            <>
+              <NavLink
+                to="/app"
+                onClick={onClose}
+                end
+                className={({ isActive }) =>
+                  `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
+                }
+              >
+                <LayoutDashboard size={18} />
+                <span>Painel</span>
+              </NavLink>
+              <NavLink
+                to="/app/conciliacao"
+                onClick={onClose}
+                className={({ isActive }) =>
+                  `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
+                }
+              >
+                <Receipt size={18} className="shrink-0" />
+                <span>Conciliação iFood</span>
+              </NavLink>
+              <NavLink
+                to="/app/cardapio"
+                onClick={onClose}
+                className={({ isActive }) =>
+                  `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
+                }
+              >
+                <TrendingUp size={18} className="shrink-0" />
+                <span>Engenharia de Cardápio</span>
+              </NavLink>
+              <NavLink
+                to="/app/integracao-ifood"
+                onClick={onClose}
+                className={({ isActive }) =>
+                  `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
+                }
+              >
+                <Store size={18} className="shrink-0" />
+                <span>Integração iFood</span>
+              </NavLink>
+              <NavLink
+                to="/app/pedidos"
+                onClick={onClose}
+                className={({ isActive }) =>
+                  `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
+                }
+              >
+                <ShoppingBag size={18} className="shrink-0" />
+                <span>Pedidos</span>
+              </NavLink>
 
-          <NavLink
-            to="/app/produtos"
-            onClick={onClose}
-            className={({ isActive }) =>
-              `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
-            }
-          >
-            <Package size={18} className="shrink-0" />
-            <span>Produtos</span>
-          </NavLink>
-          <NavLink
-            to="/app/financeiro"
-            onClick={onClose}
-            className={({ isActive }) =>
-              `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
-            }
-          >
-            <Wallet size={18} className="shrink-0" />
-            <span>Financeiro</span>
-          </NavLink>
-          <NavLink
-            to="/app/contas-pagar"
-            onClick={onClose}
-            className={({ isActive }) =>
-              `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
-            }
-          >
-            <BadgeDollarSign size={18} className="shrink-0" />
-            <span>Contas a Pagar</span>
-          </NavLink>
-          <NavLink
-            to="/app/contas-receber"
-            onClick={onClose}
-            className={({ isActive }) =>
-              `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
-            }
-          >
-            <ClipboardList size={18} className="shrink-0" />
-            <span>Contas a Receber</span>
-          </NavLink>
-          <NavLink
-            to="/app/dre"
-            onClick={onClose}
-            className={({ isActive }) =>
-              `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
-            }
-          >
-            <LineChart size={18} className="shrink-0" />
-            <span>DRE</span>
-          </NavLink>
-          <NavLink
-            to="/app/ponto"
-            onClick={onClose}
-            className={({ isActive }) =>
-              `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
-            }
-          >
-            <CalendarClock size={18} className="shrink-0" />
-            <span>Ponto</span>
-          </NavLink>
-          <NavLink
-            to="/app/rh"
-            onClick={onClose}
-            className={({ isActive }) =>
-              `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
-            }
-          >
-            <Users size={18} className="shrink-0" />
-            <span>RH</span>
-          </NavLink>
-          <NavLink
-            to="/app/ajustes"
-            onClick={onClose}
-            className={({ isActive }) =>
-              `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
-            }
-          >
-            <Settings size={18} className="shrink-0" />
-            <span>Ajustes</span>
-          </NavLink>
+              <NavLink
+                to="/app/produtos"
+                onClick={onClose}
+                className={({ isActive }) =>
+                  `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
+                }
+              >
+                <Package size={18} className="shrink-0" />
+                <span>Produtos</span>
+              </NavLink>
+              <NavLink
+                to="/app/financeiro"
+                onClick={onClose}
+                className={({ isActive }) =>
+                  `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
+                }
+              >
+                <Wallet size={18} className="shrink-0" />
+                <span>Financeiro</span>
+              </NavLink>
+              <NavLink
+                to="/app/contas-pagar"
+                onClick={onClose}
+                className={({ isActive }) =>
+                  `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
+                }
+              >
+                <BadgeDollarSign size={18} className="shrink-0" />
+                <span>Contas a Pagar</span>
+              </NavLink>
+              <NavLink
+                to="/app/contas-receber"
+                onClick={onClose}
+                className={({ isActive }) =>
+                  `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
+                }
+              >
+                <ClipboardList size={18} className="shrink-0" />
+                <span>Contas a Receber</span>
+              </NavLink>
+              <NavLink
+                to="/app/dre"
+                onClick={onClose}
+                className={({ isActive }) =>
+                  `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
+                }
+              >
+                <LineChart size={18} className="shrink-0" />
+                <span>DRE</span>
+              </NavLink>
+              <NavLink
+                to="/app/ponto"
+                onClick={onClose}
+                className={({ isActive }) =>
+                  `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
+                }
+              >
+                <CalendarClock size={18} className="shrink-0" />
+                <span>Ponto</span>
+              </NavLink>
+              <NavLink
+                to="/app/rh"
+                onClick={onClose}
+                className={({ isActive }) =>
+                  `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
+                }
+              >
+                <Users size={18} className="shrink-0" />
+                <span>RH</span>
+              </NavLink>
+              <NavLink
+                to="/app/ajustes"
+                onClick={onClose}
+                className={({ isActive }) =>
+                  `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
+                }
+              >
+                <Settings size={18} className="shrink-0" />
+                <span>Ajustes</span>
+              </NavLink>
+            </>
           )}
         </nav>
 

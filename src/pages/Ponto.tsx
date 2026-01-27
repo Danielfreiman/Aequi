@@ -1,7 +1,7 @@
 ﻿import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { usePunchOnlyAccess } from '../hooks/usePunchOnlyAccess';
-\ntype TimeCard = {
+type TimeCard = {
   id: string;
   employee_id: string | null;
   employee_external_id: string | null;
@@ -13,7 +13,7 @@ import { usePunchOnlyAccess } from '../hooks/usePunchOnlyAccess';
   hours_worked: number | null;
   notes: string | null;
 };
-\ntype Employee = {
+type Employee = {
   id: string;
   external_id: string | null;
   name: string | null;
@@ -621,4 +621,6 @@ export function Ponto() {
     </section>
   );
 }
+
+
 
