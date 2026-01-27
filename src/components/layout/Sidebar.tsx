@@ -112,7 +112,7 @@ export function Sidebar({ isOpen = false, onClose, isPunchOnly = false }: Sideba
               }
             >
               <CalendarClock size={18} className="shrink-0" />
-              <span>Ponto</span>
+              <span>Bater ponto</span>
             </NavLink>
           ) : (
             <>

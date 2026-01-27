@@ -72,6 +72,10 @@ export function Ponto() {
     const today = new Date();
     return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
   });
+  const [punchMonthRef, setPunchMonthRef] = useState(() => {
+    const today = new Date();
+    return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
+  });
 
   const [newEntry, setNewEntry] = useState({
     employeeId: '',
@@ -317,6 +321,16 @@ export function Ponto() {
     return timeCards.filter((card) => card.employee_id === employee.id).slice(0, 10);
   }, [timeCards, employee?.id]);
 
+  const punchMonthCards = useMemo(() => {
+    if (!employee?.id) return [] as TimeCard[];
+    const [year, month] = punchMonthRef.split('-').map(Number);
+    return timeCards.filter((card) => {
+      if (card.employee_id !== employee.id) return false;
+      const d = new Date(card.date);
+      return d.getFullYear() === year && d.getMonth() + 1 === month;
+    });
+  }, [timeCards, employee?.id, punchMonthRef]);
+
   if (isPunchOnly) {
     return (
       <section className="space-y-6">
@@ -364,11 +378,26 @@ export function Ponto() {
 
         <div className="rounded-2xl bg-white border border-slate-100 shadow-soft overflow-hidden">
           <div className="p-5 border-b border-slate-100">
-            <h3 className="text-lg font-bold text-navy">Últimos registros</h3>
-            <p className="text-sm text-slate-500">{loading ? 'Carregando...' : `${punchCards.length} registros`}</p>
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+              <div>
+                <h3 className="text-lg font-bold text-navy">Marcações do mês</h3>
+                <p className="text-sm text-slate-500">
+                  {loading ? 'Carregando...' : `${punchMonthCards.length} registros`}
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <label className="text-xs font-semibold text-slate-500">Mês</label>
+                <input
+                  type="month"
+                  className="rounded-xl border border-slate-200 px-3 py-2 text-sm"
+                  value={punchMonthRef}
+                  onChange={(event) => setPunchMonthRef(event.target.value)}
+                />
+              </div>
+            </div>
           </div>
           <div className="divide-y divide-slate-100">
-            {punchCards.map((card) => (
+            {punchMonthCards.map((card) => (
               <div key={card.id} className="grid grid-cols-1 md:grid-cols-4 gap-3 p-4 text-sm">
                 <div className="font-semibold text-navy">{formatDate(card.date)}</div>
                 <div className="text-slate-500">Entrada: {card.check_in || '--'}</div>
@@ -376,7 +405,7 @@ export function Ponto() {
                 <div className="text-slate-500">Horas: {card.hours_worked ?? '--'}</div>
               </div>
             ))}
-            {!loading && punchCards.length === 0 && (
+            {!loading && punchMonthCards.length === 0 && (
               <div className="p-6 text-sm text-slate-500">Nenhum registro ainda.</div>
             )}
           </div>
