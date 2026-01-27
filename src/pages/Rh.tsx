@@ -2,7 +2,7 @@
 import { supabase } from '../lib/supabaseClient';
 import { usePunchOnlyAccess } from '../hooks/usePunchOnlyAccess';
 
- type Employee = {
+type Employee = {
   id: string;
   name: string;
   email: string | null;
@@ -32,6 +32,9 @@ export function Rh() {
     role: '',
     status: 'active',
     externalId: '',
+    createAccess: true,
+    password: '',
+    confirmPassword: '',
   });
 
   useEffect(() => {
@@ -52,9 +55,9 @@ export function Rh() {
       setLoading(false);
     };
 
-      if (profileId) {
-        loadData();
-      }
+    if (profileId) {
+      loadData();
+    }
   }, [profileId]);
 
   const filteredEmployees = useMemo(() => {
@@ -89,10 +92,55 @@ export function Rh() {
       return;
     }
 
+    const email = newEmployee.email.trim();
+    const shouldCreateAccess = newEmployee.createAccess;
+
+    if (shouldCreateAccess) {
+      if (!email) {
+        setMessage('Informe o email para criar acesso.');
+        return;
+      }
+      if (!newEmployee.password || newEmployee.password.length < 6) {
+        setMessage('A senha precisa ter pelo menos 6 caracteres.');
+        return;
+      }
+      if (newEmployee.password !== newEmployee.confirmPassword) {
+        setMessage('As senhas não conferem.');
+        return;
+      }
+
+      const { data: sessionData } = await supabase.auth.getSession();
+      const token = sessionData.session?.access_token;
+      if (!token) {
+        setMessage('Sessão inválida. Faça login novamente.');
+        return;
+      }
+
+      const response = await fetch('/api/auth/create-user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          email,
+          password: newEmployee.password,
+          name: newEmployee.name.trim(),
+          profileId,
+        }),
+      });
+
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        setMessage(err.error || 'Erro ao criar usuário.');
+        return;
+      }
+    }
+
     const payload = {
       profile_id: profileId,
       name: newEmployee.name.trim(),
-      email: newEmployee.email.trim() || null,
+      email: email || null,
       role: newEmployee.role.trim() || null,
       status: newEmployee.status || null,
       external_id: newEmployee.externalId.trim() || null,
@@ -110,8 +158,17 @@ export function Rh() {
     }
 
     setEmployees((prev) => [data, ...prev]);
-    setNewEmployee({ name: '', email: '', role: '', status: 'active', externalId: '' });
-    setMessage('Colaborador adicionado.');
+    setNewEmployee({
+      name: '',
+      email: '',
+      role: '',
+      status: 'active',
+      externalId: '',
+      createAccess: true,
+      password: '',
+      confirmPassword: '',
+    });
+    setMessage(shouldCreateAccess ? 'Colaborador adicionado e acesso criado.' : 'Colaborador adicionado.');
   };
 
   return (
@@ -188,6 +245,44 @@ export function Rh() {
                 onChange={(event) => setNewEmployee({ ...newEmployee, externalId: event.target.value })}
               />
             </div>
+
+            <div className="md:col-span-2 flex items-center gap-2">
+              <input
+                id="create-access"
+                type="checkbox"
+                className="size-4"
+                checked={newEmployee.createAccess}
+                onChange={(event) => setNewEmployee({ ...newEmployee, createAccess: event.target.checked })}
+              />
+              <label htmlFor="create-access" className="text-sm text-slate-600">
+                Criar acesso ao sistema
+              </label>
+            </div>
+
+            {newEmployee.createAccess && (
+              <>
+                <div className="flex flex-col gap-1">
+                  <label className="text-xs font-semibold text-slate-500">Senha</label>
+                  <input
+                    type="password"
+                    className="rounded-xl border border-slate-200 px-3 py-2 text-sm"
+                    value={newEmployee.password}
+                    onChange={(event) => setNewEmployee({ ...newEmployee, password: event.target.value })}
+                  />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <label className="text-xs font-semibold text-slate-500">Confirmar senha</label>
+                  <input
+                    type="password"
+                    className="rounded-xl border border-slate-200 px-3 py-2 text-sm"
+                    value={newEmployee.confirmPassword}
+                    onChange={(event) => setNewEmployee({ ...newEmployee, confirmPassword: event.target.value })}
+                  />
+                </div>
+                <p className="md:col-span-2 text-xs text-slate-500">Senha mínima: 6 caracteres.</p>
+              </>
+            )}
+
             <div className="md:col-span-2">
               <button
                 type="submit"
@@ -264,4 +359,3 @@ export function Rh() {
     </section>
   );
 }
-
