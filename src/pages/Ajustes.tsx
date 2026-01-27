@@ -20,7 +20,7 @@ export function Ajustes() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
-  const [profile, setProfile] = useState({ name: '', avatar_url: '' });
+  const [profile, setProfile] = useState({ nome_restaurante: '', avatar_url: '' });
 
   useEffect(() => {
     const loadData = async () => {
@@ -29,7 +29,7 @@ export function Ajustes() {
 
       const [{ data: profileData, error: profileError }, { data: storeData, error: storeError }, { data: categoryData, error: categoryError }] =
         await Promise.all([
-          supabase.from('profiles').select('id, name, avatar_url').limit(1).single(),
+          supabase.from('profiles').select('id, nome_restaurante, avatar_url').limit(1).single(),
           supabase.from('stores').select('id,name,location').order('name', { ascending: true }),
           supabase.from('finance_categories').select('id,name').order('name', { ascending: true }),
         ]);
@@ -38,7 +38,7 @@ export function Ajustes() {
         setError(profileError?.message || storeError?.message || categoryError?.message || 'Erro ao carregar dados.');
       } else {
         setProfileId(profileData?.id || null);
-        setProfile({ name: profileData?.name || '', avatar_url: profileData?.avatar_url || '' });
+        setProfile({ nome_restaurante: profileData?.nome_restaurante || '', avatar_url: profileData?.avatar_url || '' });
         setStores(storeData || []);
         setCategories(categoryData || []);
       }
@@ -56,7 +56,7 @@ export function Ajustes() {
 
     const { error: updateError } = await supabase
       .from('profiles')
-      .update({ name: profile.name, avatar_url: profile.avatar_url })
+      .update({ nome_restaurante: profile.nome_restaurante, avatar_url: profile.avatar_url })
       .eq('id', profileId);
 
     if (updateError) {
@@ -109,11 +109,11 @@ export function Ajustes() {
             <p className="text-sm text-slate-500">Atualize seu nome e foto de perfil.</p>
           </div>
           <div className="p-5 flex flex-col gap-3">
-            <label className="text-xs font-semibold text-slate-500 uppercase">Nome</label>
+            <label className="text-xs font-semibold text-slate-500 uppercase">Nome do Restaurante</label>
             <input
-              value={profile.name}
-              onChange={(event) => setProfile({ ...profile, name: event.target.value })}
-              placeholder="Seu nome"
+              value={profile.nome_restaurante}
+              onChange={(event) => setProfile({ ...profile, nome_restaurante: event.target.value })}
+              placeholder="Nome do Restaurante"
               className="rounded-xl border border-slate-200 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
             />
             <label className="text-xs font-semibold text-slate-500 uppercase">Foto de Perfil (URL)</label>
