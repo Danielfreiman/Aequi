@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes, Outlet } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes, Outlet, useLocation } from 'react-router-dom';
 import { Menu, LogOut } from 'lucide-react';
 import { Sidebar } from './components/layout/Sidebar';
 import { useState } from 'react';
@@ -24,13 +24,16 @@ import { IntegracaoIFood } from './pages/IntegracaoIFood';
 import { Produtos } from './pages/Produtos.tsx';
 import { Pedidos } from './pages/Pedidos.tsx';
 import { useAuthSession } from './hooks/useAuthSession';
+import { usePunchOnlyAccess } from './hooks/usePunchOnlyAccess';
 
 
 const DashboardLayout = () => {
   const { logout, session, loading } = useAuthSession();
+  const { isPunchOnly, loading: accessLoading } = usePunchOnlyAccess();
+  const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  if (loading) {
+  if (loading || accessLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#f7f4ec]">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#103826]"></div>
@@ -42,13 +45,17 @@ const DashboardLayout = () => {
     return <Navigate to="/login" replace />;
   }
 
+  if (isPunchOnly && !location.pathname.startsWith('/app/ponto')) {
+    return <Navigate to="/app/ponto" replace />;
+  }
+
   return (
     <div className="relative flex h-screen w-full overflow-hidden bg-[#f7f4ec] text-[#0f1720]">
       <div className="absolute inset-0 opacity-[0.55]" aria-hidden>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(46,204,113,0.12),transparent_28%),radial-gradient(circle_at_80%_10%,rgba(12,54,36,0.16),transparent_32%),radial-gradient(circle_at_15%_70%,rgba(255,255,255,0.75),transparent_40%)]" />
         <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(19,32,24,0.04)_0%,rgba(19,32,24,0)_40%,rgba(19,32,24,0.04)_70%)]" />
       </div>
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} isPunchOnly={isPunchOnly} />
       <main className="flex-1 flex flex-col h-full overflow-hidden relative">
         <header className="sticky top-0 flex items-center justify-between p-4 backdrop-blur bg-[#f7f4ec]/85 border-b border-[#d9d1c3] z-10">
           <div className="flex items-center gap-2 md:hidden">

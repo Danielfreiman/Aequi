@@ -27,9 +27,10 @@ const itemClass =
 interface SidebarProps {
   isOpen?: boolean;
   onClose?: () => void;
+  isPunchOnly?: boolean;
 }
 
-export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
+export function Sidebar({ isOpen = false, onClose, isPunchOnly = false }: SidebarProps) {
   const [profile, setProfile] = useState({ nome_restaurante: '', avatar_url: '' });
 
   useEffect(() => {
@@ -87,19 +88,33 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
           </button>
         </div>
 
-        {/* Botão de novo lançamento */}
-        <div className="px-4 pb-2">
-          <NavLink
-            to="/app/operacoes"
-            onClick={onClose}
-            className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-gradient-to-r from-[#2ecc71] to-[#27ae60] text-white text-sm font-semibold shadow-lg shadow-[#2ecc71]/25 hover:brightness-110 transition"
-          >
-            <PlusCircle size={18} />
-            <span>Novo Lançamento</span>
-          </NavLink>
-        </div>
+        {!isPunchOnly && (
+          <div className="px-4 pb-2">
+            <NavLink
+              to="/app/operacoes"
+              onClick={onClose}
+              className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-gradient-to-r from-[#2ecc71] to-[#27ae60] text-white text-sm font-semibold shadow-lg shadow-[#2ecc71]/25 hover:brightness-110 transition"
+            >
+              <PlusCircle size={18} />
+              <span>Novo Lançamento</span>
+            </NavLink>
+          </div>
+        )}
 
         <nav className="flex-1 px-4 py-4 flex flex-col gap-1 overflow-y-auto">
+          {isPunchOnly ? (
+            <NavLink
+              to="/app/ponto"
+              onClick={onClose}
+              end
+              className={({ isActive }) =>
+                `${itemClass} ${isActive ? 'bg-white/10 text-white border border-white/15' : 'text-white/85'}`
+              }
+            >
+              <CalendarClock size={18} className="shrink-0" />
+              <span>Ponto</span>
+            </NavLink>
+          ) : (
           <NavLink
             to="/app"
             onClick={onClose}
@@ -232,6 +247,7 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
             <Settings size={18} className="shrink-0" />
             <span>Ajustes</span>
           </NavLink>
+          )}
         </nav>
 
         <div className="p-4 border-t border-white/10">
